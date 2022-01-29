@@ -13,6 +13,7 @@ import {FieldFile} from "../form/FielsFile";
 import {FieldText} from "../form/FielsText";
 import {FieldVideo} from "../form/FielsVideo";
 import {FieldBool} from "../form/FielsBool";
+import {PushInfo} from "../pushInfo/PushInfo";
 
 
 export const Form = ({data, option, reload}) => {
@@ -61,6 +62,20 @@ export const Form = ({data, option, reload}) => {
         }
     }
 
+    const deleteHandler = async () => {
+        clearErrorPopup();
+        try {
+            await request(`/api/admin_panel${option?.delete_url}`, 'POST', {_id: data?._id}, {
+                Authorization: `${auth.token}`
+            });
+            popupForm.exitHandler()
+            popupForm.openHandler(<PushInfo value={'Запись удалена'} />);
+            reload(0, "null");
+        } catch (e) {
+            setPopupError(data ? 'Ошибка.' : 'Ошибка.');
+        }
+    }
+
     const listField = (item) => {
         if (item.type === 'input') return <FieldInput label={item.label} name={item.value} change={changeRoot} value={value[item.value]} />;
         if (item.type === 'bool') return <FieldBool label={item.label} name={item.value} change={changeRoot} value={value[item.value]} />;
@@ -77,9 +92,25 @@ export const Form = ({data, option, reload}) => {
                 <div className={GlobalStyle.BellotaFontRegular + ' ' + s.popup_label}>
                     Редиктирование
                 </div>
-                <div className={s.button_close} onClick={() => popupForm.exitHandler()}>
-                    <GlobalSvgSelector id='close' />
-                </div>
+                {option.delete_url ? (
+                    <div className={s.block_buttons}>
+                    <div
+                        className={s.popup_button_delete}
+                        onClick={() => deleteHandler()}
+                    >
+                        <div className={GlobalStyle.CustomFontRegular + ' ' + s.popup_button_exit_text}>
+                            Удалить
+                        </div>
+                    </div>
+                    <div className={s.button_close} onClick={() => popupForm.exitHandler()}>
+                        <GlobalSvgSelector id='close' />
+                    </div>
+                    </div>
+                ) : (
+                    <div className={s.button_close} onClick={() => popupForm.exitHandler()}>
+                        <GlobalSvgSelector id='close' />
+                    </div>
+                )}
             </div>
 
             {option?.fields?.map(item => {
@@ -103,6 +134,15 @@ export const Form = ({data, option, reload}) => {
                         </div>
                     )}
                 </div>
+                {/*<div className={s.blcok_buttons}>*/}
+                {/*<div*/}
+                {/*    className={s.popup_button_delete}*/}
+                {/*    onClick={() => popupForm.exitHandler()}*/}
+                {/*>*/}
+                {/*    <div className={GlobalStyle.CustomFontRegular + ' ' + s.popup_button_exit_text}>*/}
+                {/*        Удалить*/}
+                {/*    </div>*/}
+                {/*</div>*/}
                 <div
                     className={s.popup_button_exit}
                     onClick={() => popupForm.exitHandler()}
@@ -111,6 +151,7 @@ export const Form = ({data, option, reload}) => {
                         Отмена
                     </div>
                 </div>
+                {/*</div>*/}
             </div>
         </div>
     );

@@ -372,3 +372,49 @@ module.exports.re_live_sound = async function(req, res) {
     }
 }
 
+module.exports.delete_live_sound = async function(req, res) {
+    try {
+        const check = await checkAdmin.check(req, res);
+        if (!check.id) {
+            return res.status(401).json('Unauthorized');
+        }
+
+        let candidate = await Admin.findOne({_id: check.id});
+
+        let delete_data = await LiveSound.findOne({_id: req.body._id});
+
+        await delete_data.delete();
+
+        res.status(201).json('OK');
+
+        candidate.date_last_activity = new Date();
+        await candidate.save();
+    } catch(e) {
+        errorHandler(res, e);
+        throw e;
+    }
+}
+
+module.exports.delete_video = async function(req, res) {
+    try {
+        const check = await checkAdmin.check(req, res);
+        if (!check.id) {
+            return res.status(401).json('Unauthorized');
+        }
+
+        let candidate = await Admin.findOne({_id: check.id});
+
+        let delete_data = await Video.findOne({_id: req.body._id});
+
+        await delete_data.delete();
+
+        res.status(201).json('OK');
+
+        candidate.date_last_activity = new Date();
+        await candidate.save();
+    } catch(e) {
+        errorHandler(res, e);
+        throw e;
+    }
+}
+

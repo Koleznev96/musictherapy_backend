@@ -47,6 +47,7 @@ export const optionUser = {
 }
 
 export const optionPoster = {
+    delete_url: '/delete_live_sound',
     url: '/re_live_sound',
     fields: [
         {
@@ -77,6 +78,7 @@ export const optionPoster = {
 }
 
 export const optionVideo = {
+    delete_url: '/delete_video',
     url: '/re_video',
     fields: [
         {

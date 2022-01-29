@@ -48,4 +48,10 @@ router.post('/re_video',
 router.post('/re_user',
     controller.re_user);
 
+router.post('/delete_live_sound',
+    controller.delete_live_sound);
+
+router.post('/delete_video',
+    controller.delete_video);
+
 module.exports = router;

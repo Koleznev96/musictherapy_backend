@@ -240,8 +240,14 @@
   margin-bottom: 10px;
 }
 
+.popup_value {
+  width: 100%;
+  align-items: center;
+  color: #fff;
+}
+
 .popup_button_ok {
-  width: 68%;
+  width: 100px;
   height: 46px;
   background-color: $colorButton;
   border-radius: 6px;
@@ -291,6 +297,11 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+}
+
+.blcok_buttons {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .popup_button_ok_text {
