@@ -1,0 +1,38 @@
+{
+  "name": "elsadchess-backend",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node index",
+    "server": "nodemon index",
+    "client-install": "npm install --prefix client",
+    "client": "npm run start --prefix client",
+    "client:install": "npm install --prefix client",
+    "client:build": "npm run build --prefix client",
+    "dev": "concurrently \"npm run server\""
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "bull": "^3.22.7",
+    "cors": "^2.8.5",
+    "dateformat": "^4.5.1",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.1",
+    "mongoose": "^5.12.3",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.2",
+    "node-schedule": "^2.0.0",
+    "normalize.css": "^8.0.1",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0",
+    "socket.io": "^4.3.1"
+  },
+  "devDependencies": {
+    "concurrently": "^6.0.2",
+    "lib": "^4.3.3",
+    "mongodb": "^3.6.5",
+    "nodemon": "^2.0.7"
+  }
+}

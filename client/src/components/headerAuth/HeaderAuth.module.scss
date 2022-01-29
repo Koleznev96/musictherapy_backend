@@ -1,0 +1,39 @@
+@import '../../constants/ColorsStyles';
+
+.body {
+    width: 100%;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    padding-top: 15px;
+    align-content: center;
+    justify-content: center;
+}
+
+.block {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    width: 88px;
+    height: 100px;
+}
+
+.text_glav {
+    margin-left: 40px;
+    font-size: 48px;
+    color: #fff;
+}
+
+@media (max-width:480px){
+    .text_glav {
+        margin-left: 20px;
+        font-size: 36px;
+        color: #fff;
+    }
+    .logo {
+        width: 65px;
+        height: 74px;
+    }
+}

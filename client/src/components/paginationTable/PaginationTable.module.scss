@@ -1,0 +1,49 @@
+@import '../../constants/ColorsStyles';
+
+.root {
+  display: flex;
+  aligin-items: center;
+}
+
+.liner {
+  display: flex;
+  aligin-items: center;
+  align-content: center;
+  margin-top: 4px;
+}
+
+.hr {
+  font-size: 24px;
+}
+
+.current {
+  margin: 5px 4px 0 0px;
+  font-size: 16px;
+}
+
+.end {
+  margin: 5px 0px 0 4px;
+  font-size: 16px;
+}
+
+.next_button {
+  opacity: 0.4;
+  height: 36px;
+  width: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.next_button_active {
+  height: 36px;
+  width: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.8;
+  }
+}
