@@ -33,6 +33,12 @@ app.use('/api/data', dataRoute);
 app.use('/api/admin_panel', adminRoute);
 app.use('/api/upload', uploadRoute);
 
+app.use('/', express.static(path.join(__dirname, 'client')));
+
+app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client'));
+});
+
 
 const server = http.createServer(app);
 
