@@ -33,7 +33,7 @@ app.use('/api/data', dataRoute);
 app.use('/api/admin_panel', adminRoute);
 app.use('/api/upload', uploadRoute);
 
-// app.use('/admin_panel', express.static(path.join(__dirname, 'client', 'build')));
+app.use('/', express.static(path.join(__dirname, 'client', 'build')));
 
 
 //
@@ -44,9 +44,9 @@ app.use('/api/upload', uploadRoute);
 // app.use(express.static("client/build"));
 
 
-// app.get("*", (req, res) => {
-//     res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
-// });
+app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+});
 
 
 const server = http.createServer(app);
