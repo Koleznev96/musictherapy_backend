@@ -426,8 +426,10 @@ module.exports.test_email = async function(req, res) {
     // create reusable transporter object using the default SMTP transport
     let transporter = nodemailer.createTransport({
         // host: "musictherapy.by",
+        service: 'postfix',
         host: "localhost",
-        port: 465,
+        // port: 465,
+        port: 25,
         secure: false, // true for 465, false for other ports
         auth: {
             user: testAccount.user, // generated ethereal user
