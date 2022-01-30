@@ -442,7 +442,7 @@ module.exports.test_email = async function(req, res) {
 
     // send mail with defined transport object
     let info = await transporter.sendMail({
-        from: '"Fred Foo 👻" <foo@example.com>', // sender address
+        from: '"Fred Foo 👻" <businessdevelopermarket@gmail.com>', // sender address
         to: "fc.fenomen@mail.ru, baz@example.com", // list of receivers
         subject: "Hello ✔", // Subject line
         text: "Hello world?", // plain text body
