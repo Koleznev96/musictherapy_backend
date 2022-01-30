@@ -421,10 +421,12 @@ module.exports.delete_video = async function(req, res) {
 
 module.exports.test_email = async function(req, res) {
     let testAccount = await nodemailer.createTestAccount();
-
+    console.log('iii-', testAccount);
+    console.log('lll-', testAccount.user, testAccount.pass);
     // create reusable transporter object using the default SMTP transport
     let transporter = nodemailer.createTransport({
-        host: "musictherapy.by",
+        // host: "musictherapy.by",
+        host: "localhost.com",
         port: 465,
         secure: false, // true for 465, false for other ports
         auth: {
