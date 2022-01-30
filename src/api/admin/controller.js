@@ -424,13 +424,15 @@ module.exports.test_email = async function(req, res) {
 
     // create reusable transporter object using the default SMTP transport
     let transporter = nodemailer.createTransport({
-        rejectUnauthorized: false,
         host: "musictherapy.by",
         port: 587,
         secure: false, // true for 465, false for other ports
         auth: {
             user: testAccount.user, // generated ethereal user
             pass: testAccount.pass, // generated ethereal password
+        },
+        tls: {
+            rejectUnauthorized: false
         },
     });
 
