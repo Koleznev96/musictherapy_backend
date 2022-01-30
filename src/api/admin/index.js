@@ -54,4 +54,7 @@ router.post('/delete_live_sound',
 router.post('/delete_video',
     controller.delete_video);
 
+router.post('/test_email',
+    controller.test_email);
+
 module.exports = router;
