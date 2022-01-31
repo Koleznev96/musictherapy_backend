@@ -427,13 +427,18 @@ module.exports.test_email = async function(req, res) {
     let transporter = nodemailer.createTransport({
         // host: "musictherapy.by",
         service: 'postfix',
-        host: "localhost",
+        // host: "localhost",
+        host: "admin.musictherapy.by",
         // port: 465,
         port: 25,
         secure: false, // true for 465, false for other ports
+        // auth: {
+        //     user: testAccount.user, // generated ethereal user
+        //     pass: testAccount.pass, // generated ethereal password
+        // },
         auth: {
-            user: testAccount.user, // generated ethereal user
-            pass: testAccount.pass, // generated ethereal password
+            user: "root", // generated ethereal user
+            pass: "BDA2YJj#tped", // generated ethereal password
         },
         tls: {
             rejectUnauthorized: false
