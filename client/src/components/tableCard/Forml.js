@@ -90,7 +90,7 @@ export const Form = ({data, option, reload}) => {
         <div className={s.root_popup}>
             <div className={s.popup_header}>
                 <div className={GlobalStyle.BellotaFontRegular + ' ' + s.popup_label}>
-                    Редиктирование
+                    Редактирование
                 </div>
                 {option.delete_url ? (
                     <div className={s.block_buttons}>
