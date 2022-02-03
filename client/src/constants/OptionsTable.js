@@ -69,7 +69,7 @@ export const optionPoster = {
             filter: false,
         },
         {
-            label: 'Ссылку на покупку билетов',
+            label: 'Ссылка на покупку билетов',
             value: 'url',
             type: "input",
             filter: false,
@@ -184,7 +184,7 @@ export const optionCreatePoster = {
             filter: false,
         },
         {
-            label: 'Ссылку на покупку билетов',
+            label: 'Ссылка на покупку билетов',
             value: 'url',
             type: "input",
             filter: false,
