@@ -193,7 +193,8 @@ module.exports.get_list_live_sound = async function(req, res) {
         }
 
         const page = (Number(req.params.page)) * limitPageDataVeb;
-        const filter = req.params.label ? (req.params.label !== "null" ? {label: req.params.label} : {}): {};
+        // const filter = req.params.label ? (req.params.label !== "null" ? {label: req.params.label} : {}): {};
+        const filter = req.params.label ? (req.params.label !== "null" ? {label: {$regex: req.params.label}} : {}): {};
         const data = await LiveSound.find(filter, null, { skip: page, limit: limitPageDataVeb });
         const count_page = Math.ceil((await LiveSound.find(filter).count()) / limitPageDataVeb) - 1;
         res.status(201).json({data, page: Number(req.params.page), count_page, end_page: count_page <= page});
@@ -215,7 +216,8 @@ module.exports.get_list_video = async function(req, res) {
         }
 
         const page = (Number(req.params.page)) * limitPageDataVeb;
-        const filter = req.params.label ? (req.params.label !== "null" ? {label: req.params.label} : {}): {};
+        // const filter = req.params.label ? (req.params.label !== "null" ? {label: req.params.label} : {}): {};
+        const filter = req.params.label ? (req.params.label !== "null" ? {label: {$regex: req.params.label}} : {}): {};
         const data = await Video.find(filter, null, { skip: page, limit: limitPageDataVeb });
         const count_page = Math.ceil((await Video.find(filter).count()) / limitPageDataVeb) - 1;
         res.status(201).json({data, page: Number(req.params.page), count_page, end_page: count_page <= page});
@@ -281,7 +283,9 @@ module.exports.get_list_user = async function(req, res) {
         }
 
         const page = (Number(req.params.page)) * limitPageDataVeb;
-        const filter = req.params.full_name ? (req.params.full_name !== "null" ? {fullName: req.params.full_name} : {}): {};
+        // const filter = req.params.full_name ? (req.params.full_name !== "null" ? {fullName: req.params.full_name} : {}): {};
+        const filter = req.params.full_name ? (req.params.full_name !== "null" ? {fullName: {$regex: req.params.full_name}} : {}): {};
+        console.log('99-', filter)
         const data = await User.find(filter, null, { skip: page, limit: limitPageDataVeb });
         const count_page = Math.ceil((await User.find(filter).count()) / limitPageDataVeb) - 1;
         res.status(201).json({data, page: Number(req.params.page), count_page, end_page: count_page <= page});

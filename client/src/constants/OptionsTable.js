@@ -111,12 +111,6 @@ export const optionVideo = {
             type: "inputarrea",
             filter: false,
         },
-        {
-            label: 'E-mail',
-            value: 'email',
-            type: "input",
-            filter: false,
-        },
     ],
 }
 
@@ -151,12 +145,6 @@ export const optionCreateVideo = {
             label: 'Описание',
             value: 'text',
             type: "inputarrea",
-            filter: false,
-        },
-        {
-            label: 'E-mail',
-            value: 'email',
-            type: "input",
             filter: false,
         },
     ],
