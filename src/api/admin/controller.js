@@ -8,6 +8,7 @@ const jwt = require('jsonwebtoken');
 const keys = require('../../../config/keys');
 const {limitPageDataVeb} = require("../../utils/dataConst");
 const nodemailer = require("nodemailer");
+var fs = require('fs');
 
 
 module.exports.register = async function(req, res) {
@@ -388,6 +389,10 @@ module.exports.delete_live_sound = async function(req, res) {
 
         let delete_data = await LiveSound.findOne({_id: req.body._id});
 
+        await fs.unlink(`./${delete_data.img}`, (err) => {
+            if (err) console.log("no delete!!!!");
+        }).catch((e) => console.log(e));
+
         await delete_data.delete();
 
         res.status(201).json('OK');
@@ -410,6 +415,14 @@ module.exports.delete_video = async function(req, res) {
         let candidate = await Admin.findOne({_id: check.id});
 
         let delete_data = await Video.findOne({_id: req.body._id});
+
+        await fs.unlink(`./${delete_data.video}`, (err) => {
+            if (err) console.log("no delete!!!!");
+        }).catch((e) => console.log(e));
+
+        await fs.unlink(`./${delete_data.poster}`, (err) => {
+            if (err) console.log("no delete!!!!");
+        }).catch((e) => console.log(e));
 
         await delete_data.delete();
 
