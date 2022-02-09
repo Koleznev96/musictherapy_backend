@@ -69,3 +69,39 @@ module.exports.get_list_user = async function(req, res) {
         throw e;
     }
 }
+
+module.exports.get_list_live_sound_ios = async function(req, res) {
+    try {
+        const page = Number(req.params.page);
+        const data = await LiveSound.find({}, null, { skip: page, limit: limitPageData });
+        const count_page = (await LiveSound.find({}).count());
+        res.status(201).json({data, page, count_page, end_page: count_page <= page + limitPageData});
+    } catch(e) {
+        errorHandler(res, e);
+        throw e;
+    }
+}
+
+module.exports.get_list_meditation_ios = async function(req, res) {
+    try {
+        const page = Number(req.params.page);
+        const data = await Video.find({category: "meditation"}, null, { skip: page, limit: limitPageData });
+        const count_page = (await Video.find({category: "meditation"}).count());
+        res.status(201).json({data, page, count_page, end_page: count_page <= page + limitPageData});
+    } catch(e) {
+        errorHandler(res, e);
+        throw e;
+    }
+}
+
+module.exports.get_list_classic_ios = async function(req, res) {
+    try {
+        const page = Number(req.params.page);
+        const data = await Video.find({category: "classic"}, null, { skip: page, limit: limitPageData });
+        const count_page = (await Video.find({category: "classic"}).count());
+        res.status(201).json({data, page, count_page, end_page: count_page <= page + limitPageData});
+    } catch(e) {
+        errorHandler(res, e);
+        throw e;
+    }
+}
