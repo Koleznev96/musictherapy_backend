@@ -8,11 +8,11 @@ import {AuthContext} from "../../context/authContext";
 import {GlobalSvgSelector} from "../../assets/icons/global/GlobalSvgSelector";
 
 
-export const PaginationTable = ({page, endPage, startPage, getData, search}) => {
+export const PaginationTable = ({page, endPage, startPage, getData}) => {
 
     return (
         <div className={s.root}>
-            <div className={page !== startPage ? s.next_button_active : s.next_button} onClick={() => page !== startPage ? getData(page-1, search) : false}>
+            <div className={page !== startPage ? s.next_button_active : s.next_button} onClick={() => page !== startPage ? getData(page-1) : false}>
                 <GlobalSvgSelector id='arrow-left' />
             </div>
             <div className={s.liner}>
@@ -26,7 +26,7 @@ export const PaginationTable = ({page, endPage, startPage, getData, search}) => 
                     {endPage + 1}
                 </div>
             </div>
-            <div className={page !== endPage ? s.next_button_active : s.next_button} onClick={() => page !== endPage ? getData(page+1, search) : false}>
+            <div className={page !== endPage ? s.next_button_active : s.next_button} onClick={() => page !== endPage ? getData(page+1) : false}>
                 <GlobalSvgSelector id='arrow-right' />
             </div>
 

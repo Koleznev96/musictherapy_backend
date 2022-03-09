@@ -23,6 +23,7 @@ require('./src/middleware/passport')(passport);
 
 app.use(require('morgan')('dev'));
 app.use('/uploads', express.static('uploads'));
+app.use('/translations', express.static('translations'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(require('cors')());
@@ -35,6 +36,10 @@ app.use('/api/upload', uploadRoute);
 
 app.use('/', express.static(path.join(__dirname, 'client', 'build')));
 
+app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+});
+
 
 //
 // app.get('*', (req, res) => {
@@ -44,9 +49,7 @@ app.use('/', express.static(path.join(__dirname, 'client', 'build')));
 // app.use(express.static("client/build"));
 
 
-app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
-});
+
 
 
 const server = http.createServer(app);

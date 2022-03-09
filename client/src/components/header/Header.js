@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import s from './Header.module.scss';
 import GlobalStyle from "../GlobalStyle.module.scss";
 import {usePopupForm} from "../../hooks/usePopupForm";
@@ -7,6 +7,9 @@ import {NavLink} from "react-router-dom";
 import {AuthContext} from "../../context/authContext";
 import {FormReEmail} from "./FormReEmail";
 import {FormRePassword} from "./FormRePassword";
+import {optionTranslation, optionVersion} from "../../constants/OptionsTable";
+import {useHttp} from "../../hooks/http.hook";
+import {FormReTranslation} from "./FormReTranslation";
 
 const label_menu = [
     {
@@ -18,15 +21,45 @@ const label_menu = [
         url: '/admin_panel/video'
     },
     {
+        label: 'Аудио',
+        url: '/admin_panel/audio'
+    },
+    {
         label: 'Афиши',
         url: '/admin_panel/posters'
     }
-]
+];
 
 export const Header = () => {
     const popupForm = usePopupForm();
     const auth = useContext(AuthContext);
+    const {request, error, clearError, loading} = useHttp();
     const [status, setStatus] = useState(false);
+    const [dataTranslation, setDataTranslation] = useState(null);
+    const [version, setVersion] = useState(null);
+
+    const getTranslation = async () => {
+        try {
+            const answer = await request(`/api/admin_panel/translation`, 'GET', null, {
+                Authorization: auth.token
+            });
+            setDataTranslation(answer);
+        } catch (e){}
+    }
+
+    const getVersion = async () => {
+        try {
+            const answer = await request(`/api/data/version`, 'GET', null, {
+                Authorization: auth.token
+            });
+            setVersion(answer.version);
+        } catch (e){}
+    }
+
+    useEffect(() => {
+        getTranslation();
+        getVersion();
+    }, [])
 
     const profileHandler = () => {
         setStatus(!status);
@@ -45,6 +78,18 @@ export const Header = () => {
     const logoutHandler = () => {
         profileHandler();
         auth.logout();
+    }
+
+    const translationHandler = () => {
+        profileHandler();
+        popupForm.openHandler(
+            <FormReTranslation data={dataTranslation} option={optionTranslation} reload={getTranslation} status={true} />
+        );
+    }
+
+    const versionHandler = () => {
+        profileHandler();
+        popupForm.openHandler(<FormReTranslation data={version} option={optionVersion} reload={getVersion} status={false} />);
     }
 
     return (
@@ -86,6 +131,16 @@ export const Header = () => {
                 </div>
                 {status ? (
                     <div className={s.list_button}>
+                        <div className={s.button_profile_item} onClick={() => versionHandler()}>
+                            <div className={GlobalStyle.CustomFontMedium + ' ' + s.button_profile_item_text}>
+                                Версия приложения
+                            </div>
+                        </div>
+                        <div className={s.button_profile_item} onClick={() => translationHandler()}>
+                            <div className={GlobalStyle.CustomFontMedium + ' ' + s.button_profile_item_text}>
+                                Переводы
+                            </div>
+                        </div>
                         <div className={s.button_profile_item} onClick={() => rePasswordHandler()}>
                             <div className={GlobalStyle.CustomFontMedium + ' ' + s.button_profile_item_text}>
                                 Изменить пароль

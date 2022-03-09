@@ -1,6 +1,6 @@
 const {Schema, model} = require('mongoose');
 
-const liveSoundSchema = new Schema({
+const audioSchema = new Schema({
     language: [
         String
     ],
@@ -10,22 +10,29 @@ const liveSoundSchema = new Schema({
             value: String,
         },
     ],
-    img: {
+    category: {
         type: String,
-        required: true,
-    },
-    url: {
-        type: String,
-        required: true,
-    },
-    date_event: {
-        type: Date,
         required: false,
+    },
+    genre: {
+        type: String,
+        required: false,
+    },
+    instruments: [
+        String
+    ],
+    audio: {
+        type: String,
+        required: true,
     },
     date: {
         type: Date,
         required: false,
     },
+    like: {
+        type: Number,
+        required: false,
+    },
 });
 
-module.exports = model('LiveSound', liveSoundSchema);
+module.exports = model('Audio', audioSchema);

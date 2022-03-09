@@ -5,6 +5,7 @@ import {Header} from "./components/header/Header";
 import {Users} from "./pages/Users/Users";
 import {Poster} from "./pages/Poster/Poster";
 import {Video} from "./pages/Video/Video";
+import {Audio} from "./pages/Audio/Audio";
 
 export const useRoutes = (isAuthenticated) => {
     if (isAuthenticated) {
@@ -17,6 +18,9 @@ export const useRoutes = (isAuthenticated) => {
                     </Route>
                     <Route path="/admin_panel/video" exact>
                         <Video />
+                    </Route>
+                    <Route path="/admin_panel/audio" exact>
+                        <Audio />
                     </Route>
                     <Route path="/admin_panel/posters" exact>
                         <Poster />

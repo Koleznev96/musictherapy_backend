@@ -25,10 +25,22 @@ const userSchema = new Schema({
         type: Date,
         required: false,
     },
+    access: {
+        type: String,
+        required: false,
+    },
     registration_date: {
         type: Date,
         required: false,
     },
+    token: {
+        type: String,
+        required: false,
+    },
+    questionnaire: {
+        type: JSON,
+        required: false,
+    }
 });
 
 module.exports = model('User', userSchema);

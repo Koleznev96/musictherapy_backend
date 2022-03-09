@@ -6,6 +6,7 @@ import {GlobalSvgSelector} from "../../assets/icons/global/GlobalSvgSelector";
 import {ColorsStyles} from "../../constants/ColorsStyles";
 import ClipLoader from "react-spinners/ClipLoader";
 import {Form} from "./Forml";
+import {optionQuestionnaire} from "../../constants/OptionsTable";
 
 
 const string_date = (string) => {
@@ -18,13 +19,21 @@ const string_date = (string) => {
     return year + '/' + month + '/' + day + '  ' + hours + ':' + minutes;
 }
 
-export const TableCard = ({option, data, loading, reload, setData}) => {
+export const TableCard = ({option, data, loading, reload, setData, optionQuestionnaire, optionPassword}) => {
     const popupForm = usePopupForm();
     const [status, setStatus] = useState(null);
     const [statusFilter, setStatusFilter] = useState(false);
 
     const itemHandler = (item) => {
-        popupForm.openHandler(<Form data={item} option={option} reload={reload}/>);
+        popupForm.openHandler(
+            <Form
+                data={item}
+                option={option}
+                reload={reload}
+                optionQuestionnaire={optionQuestionnaire}
+                optionPassword={optionPassword}
+            />
+        );
     }
 
     const settingFieldHandler = (item) => {
@@ -51,20 +60,25 @@ export const TableCard = ({option, data, loading, reload, setData}) => {
     return (
         <table className={s.table} cellSpacing="0">
             <tr className={s.table_tr}>
-            {option?.fields?.map(item => (
-                <td className={GlobalStyle.CustomFontBold + ' ' + s.table_td} onClick={() => settingFieldHandler(item)}>
-                    <div className={s.table_td_block}>
-                        <div className={GlobalStyle.CustomFontBold + ' ' + s.table_td_label}>
-                            {item.label}
+            {option?.fields?.map(item => {
+                if (!item.not_see)
+                return (
+                    <td className={GlobalStyle.CustomFontBold + ' ' + s.table_td}
+                        onClick={() => settingFieldHandler(item)}>
+                        <div className={s.table_td_block}>
+                            <div className={GlobalStyle.CustomFontBold + ' ' + s.table_td_label}>
+                                {item.label}
+                            </div>
+                            {item.filter ? (
+                                <div
+                                    className={status ? (status === item.value ? s.icon_filter_active : s.icon_filter) : s.icon_filter}>
+                                    <GlobalSvgSelector id={!statusFilter ? 'arrow' : 'arrow_top'}/>
+                                </div>
+                            ) : null}
                         </div>
-                        {item.filter ? (
-                        <div className={status ? (status === item.value ? s.icon_filter_active : s.icon_filter): s.icon_filter}>
-                            <GlobalSvgSelector id={!statusFilter ? 'arrow' : 'arrow_top'} />
-                        </div>
-                        ) : null}
-                    </div>
-                </td>
-            ))}
+                    </td>
+                )
+            })}
             </tr>
             {loading ? (
                 <tr className={s.td_error}>
@@ -92,19 +106,31 @@ export const TableCard = ({option, data, loading, reload, setData}) => {
                 ) : (
                     data?.map((data_item, index) => (
                         <tr className={index % 2 === 0 ? s.tr_br : s.tr} onClick={() => itemHandler(data_item)}>
-                        {option?.fields?.map(field_item => (
-                            <td className={GlobalStyle.CustomFontRegular + ' ' + s.td}>
-                                {field_item.value === 'category' ? (
-                                    data_item[field_item.value] === 'meditation' ? 'Медитация' : 'Классика HD'
-                                ) : (
-                                    field_item.type === 'date' ? (
-                                        string_date(data_item[field_item.value])
-                                        // data_item[field_item.value]
-                                    ) : (String(data_item[field_item.value]).length > 35 ? (data_item[field_item.value].slice(0, 35) + '...') : data_item[field_item.value])
+                        {option?.fields?.map(field_item => {
+                            if (!field_item.not_see)
+                                return (
+                                    <td className={GlobalStyle.CustomFontRegular + ' ' + s.td}>
+                                        {(field_item.type === 'bool') ? (
+                                            field_item.list_value?.find(element => element.value === data_item[field_item.value])?.label
+                                            // data_item[field_item.value] === 'meditation' ? 'Медитация' : (data_item[field_item.value] === 'classic' ? 'Классика HD' : 'Инструменты')
+                                        ) : (
+                                            field_item.type === 'box' ? (
+                                                data_item[field_item.value].slice(0, data_item[field_item.value].length > 5 ? 5 : data_item[field_item.value].length).join(', ')
+                                            ) :
+                                                (field_item.type === 'date' ? (
+                                                string_date(data_item[field_item.value])
+                                                // data_item[field_item.value]
+                                            ) : (
+                                                field_item.translation ? (
+                                                    String(data_item[field_item.value][0].value).length > 35 ? (data_item[field_item.value][0].value.slice(0, 35) + '...') : data_item[field_item.value][0].value
+                                                ) : (
+                                                String(data_item[field_item.value]).length > 35 ? (data_item[field_item.value].slice(0, 35) + '...') : data_item[field_item.value]
+                                                )
+                                        )))
+                                        }
+                                    </td>
                                 )
-                            }
-                            </td>
-                        ))}
+                        })}
                         </tr>
                     ))
                 )

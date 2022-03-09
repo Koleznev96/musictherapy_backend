@@ -27,17 +27,20 @@ export const Video = () => {
         setData([...new_data]);
     }
 
-    const getData = async (page, search) => {
+    const getData = async (page, rel) => {
         page = page ? page : 0;
-        search = search?.length > 0 ? search : "null";
-        setSearch(search ? (search?.length > 0 ? search : "null") : "null");
+        let search_ = search?.length > 0 ? search : "null";
+        if (rel === "null") {
+            search_ = "null";
+            setSearch("");
+        }
         try {
-            const answer = await request(`/api/admin_panel/video/${page}/${search}`, 'GET', null, {
+            const answer = await request(`/api/admin_panel/video/${page}/${search_}`, 'GET', null, {
                 Authorization: auth.token
             });
             setPage(page);
-            setEndPage(answer.count_page);
-            setData(answer.data);
+            setEndPage(answer?.count_page);
+            setData(answer?.data);
         } catch (e){}
     }
 
@@ -50,7 +53,7 @@ export const Video = () => {
     return (
         <div className={s.root}>
             <div className={s.header}>
-                <Search callback={getData} placeholder={'Поиск по названию'} />
+                <Search value={search} callback={setSearch} placeholder={'Поиск по названию'} handler={getData}/>
                 <div
                     className={s.create_button_ok}
                     onClick={() => creteHandler()}

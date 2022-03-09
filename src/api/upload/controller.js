@@ -9,6 +9,14 @@ module.exports.upload_image = async function(req, res) {
     return res.status(404).json('Error');
 }
 
+module.exports.upload_translation = async function(req, res) {
+    const image_url = req.file ? req.file.path : '';
+    if (image_url) {
+        return res.status(201).json(image_url);
+    }
+    return res.status(404).json('Error');
+}
+
 module.exports.upload_video = async function(req, res) {
     const image_url = req.file ? req.file.path : '';
     if (image_url) {

@@ -3,13 +3,7 @@ import s from './Search.module.scss';
 import {GlobalSvgSelector} from "../../assets/icons/global/GlobalSvgSelector";
 
 
-export const Search = ({callback, placeholder}) => {
-    const [value, setValue] = useState('');
-
-    useEffect( () => {
-        if (value.length === 0) callback(0, "null")
-    }, [value]);
-
+export const Search = ({value, callback, placeholder, handler}) => {
     return (
         <div className={s.root}>
             <input
@@ -17,9 +11,9 @@ export const Search = ({callback, placeholder}) => {
                 type='text'
                 className={s.input}
                 placeholder={placeholder}
-                onChange={(value) => setValue(value.target.value)}
+                onChange={(value) => callback(value.target.value)}
             />
-            <div className={s.button} onClick={() => callback(0, value)}>
+            <div className={s.button} onClick={() => handler(0)}>
                 <GlobalSvgSelector id='search' />
             </div>
         </div>
