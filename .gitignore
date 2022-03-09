@@ -12,12 +12,12 @@ client/node_modules
 ./uploads/
 /uploads/
 
-client/build
-client/build/
-/client/build
-/client/build/
-./client/build/
-./client/build
+#client/build
+#client/build/
+#/client/build
+#/client/build/
+#./client/build/
+#./client/build
 
 # testing
 /coverage
