@@ -1,6 +1,7 @@
 const Admin = require('./src/models/Admin');
+const Version = require('./src/models/Version');
 
-module.exports.startServer = async () => {
+module.exports.startServerCheckAdmin = async () => {
     const count = await Admin.find().count();
     if (count >= 1) return;
 
@@ -17,4 +18,17 @@ module.exports.startServer = async () => {
     });
 
     await admin.save();
+}
+
+module.exports.startServerCheckVersion = async () => {
+    const count = await Version.find().count();
+    if (count >= 1) return;
+
+    let version = new Admin({
+        version: '1',
+        label: [{language: "ru", value: ""}, {language: "com", value: ""}],
+        root: 0,
+    });
+
+    await version.save();
 }

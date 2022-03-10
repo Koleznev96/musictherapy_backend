@@ -1,11 +1,12 @@
 const server = require('./app');
-const {startServer} = require("./startFunctionals");
+const {startServerCheckAdmin, startServerCheckVersion} = require("./startFunctionals");
 // const {uploadTranslation} = require("./translations/translation");
 port = process.env.PORT || 5000;
 
 // uploadTranslation();
 
-startServer();
+startServerCheckAdmin();
+startServerCheckVersion();
 
 server.listen(port,  () => console.log(`Server start, port = ${port}`));
 
