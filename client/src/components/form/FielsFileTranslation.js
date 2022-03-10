@@ -24,6 +24,8 @@ export const FieldFileTranslation = ({label, name, change, value, languages}) =>
             setBoxField(valueNew);
             if (valueNew[itemMenu].value && valueNew[itemMenu].value.length > 0) setStatus('delete');
             else setStatus('upload');
+        } else {
+            setBoxField([{language: 'ru', value: ''}, {language: 'com', value: ''}]);
         }
     }
 

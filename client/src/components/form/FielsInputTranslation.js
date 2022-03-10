@@ -11,6 +11,8 @@ export const FieldInputTranslation = ({label, name, change, value, languages}) =
     useEffect(() => {
         if (value && value.length > 0) {
             setBoxField(value);
+        } else {
+            setBoxField([{language: 'ru', value: ''}, {language: 'com', value: ''}]);
         }
     }, [value]);
 
