@@ -24,7 +24,7 @@ module.exports.startServerCheckVersion = async () => {
     const count = await Version.find().count();
     if (count >= 1) return;
 
-    let version = new Admin({
+    let version = new Version({
         version: '1',
         label: [{language: "ru", value: ""}, {language: "com", value: ""}],
         root: 0,
