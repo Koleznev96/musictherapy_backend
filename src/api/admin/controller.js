@@ -546,6 +546,38 @@ module.exports.delete_user = async function(req, res) {
     }
 }
 
+module.exports.delete_audio = async function(req, res) {
+    try {
+        const check = await checkAdmin.check(req, res);
+        if (!check.id) {
+            return res.status(401).json('Unauthorized');
+        }
+
+        let candidate = await Admin.findOne({_id: check.id});
+
+        let delete_data = await Audio.findOne({_id: req.body._id});
+
+        // await fs.unlink(`./${delete_data.video}`, (err) => {
+        //     if (err) console.log("no delete!!!!");
+        // }).catch((e) => console.log(e));
+        //
+        // await fs.unlink(`./${delete_data.poster}`, (err) => {
+        //     if (err) console.log("no delete!!!!");
+        // }).catch((e) => console.log(e));
+
+        await delete_data.delete();
+
+        res.status(201).json('OK');
+
+        candidate.date_last_activity = new Date();
+        await candidate.save();
+    } catch(e) {
+        errorHandler(res, e);
+        // throw e;
+    }
+
+}
+
 module.exports.delete_video = async function(req, res) {
     try {
         const check = await checkAdmin.check(req, res);

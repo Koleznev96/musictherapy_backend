@@ -63,6 +63,9 @@ router.post('/delete_live_sound',
 router.post('/delete_video',
     controller.delete_video);
 
+router.post('/delete_audio',
+    controller.delete_audio);
+
 router.get('/test_email',
     controller.test_email);
 
