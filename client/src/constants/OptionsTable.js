@@ -75,6 +75,20 @@ export const optionVersion = {
             default: '',
         },
         {
+            label: 'dfgfxg',
+            value: 'fghdfh',
+            type: "input",
+            default: '',
+        },
+        {
+            translation: true,
+            label: 'Постер для видео',
+            value: 'poster',
+            type: "img_translation",
+            filter: false,
+            default: [{language: 'ru', value: ''}, {language: 'com', value: ''}],
+        },
+        {
             translation: true,
             label: 'Текст для обновления',
             value: 'label',
