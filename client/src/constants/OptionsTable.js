@@ -79,7 +79,8 @@ export const optionVersion = {
             label: 'Текст для обновления',
             value: 'label',
             type: "input_translation",
-            default: '',
+            filter: true,
+            default: [{language: 'ru', value: ''}, {language: 'com', value: ''}],
         },
     ]
 }
