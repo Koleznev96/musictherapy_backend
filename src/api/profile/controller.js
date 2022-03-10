@@ -71,7 +71,11 @@ module.exports.translation = async function(req, res) {
         const translation = await Translation.findOne({root: 0});
         let obj;
         await fs.readFile(`./${translation[language]}`, 'utf8', async function (err, data) {
-            if (err) console.log('errr, not File:', `./${translation[language]}`);
+            if (err) {
+                console.log('errr, not File:', `./${translation[language]}`);
+                res.status(201).json({});
+                return;
+            }
             res.status(201).json(JSON.parse(data));
         });
 
