@@ -18,6 +18,10 @@ import {FieldBox} from "../form/FielsBox";
 import Scrollbars from "react-custom-scrollbars-2";
 import {Link, NavLink} from "react-router-dom";
 import {httpServer} from "../../const";
+import {FieldTextTranslation} from "../form/FielsTextTranslation";
+import {optionLanguages} from "../../constants/OptionsTable";
+import {FieldFileTranslation} from "../form/FielsFileTranslation";
+import {FieldInputTranslation} from "../form/FielsInputTranslation";
 
 
 export const FormReTranslation = ({data, option, reload, status}) => {
@@ -89,6 +93,9 @@ export const FormReTranslation = ({data, option, reload, status}) => {
         if (item.type === 'img') return <FieldFile label={item.label} name={item.value} change={change} value={value[item.value]} />;
         if (item.type === 'video') return <FieldVideo label={item.label} name={item.value} change={change} value={value[item.value]} />;
         if (item.type === 'inputarrea') return <FieldText label={item.label} name={item.value} change={change} value={value[item.value]} />;
+        if (item.type === 'inputarrea_translation') return <FieldTextTranslation label={item.label} name={item.value} change={change} value={value[item.value]} languages={optionLanguages} />;
+        if (item.type === 'img_translation') return <FieldFileTranslation label={item.label} name={item.value} change={change} value={value[item.value]} languages={optionLanguages} />;
+        if (item.type === 'input_translation') return <FieldInputTranslation label={item.label} name={item.value} change={change} value={value[item.value]} languages={optionLanguages} />;
         return null;
     }
 
