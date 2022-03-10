@@ -90,7 +90,7 @@ module.exports.get_list_live_sound_ios = async function(req, res) {
         for (let i = 0; i < data.length; i++) {
             data[i].dostup = !!(!data[i].access || data[i].access.indexOf(access));
         }
-        res.status(201).json({data, page, count_page, end_page: count_page <= page + limitPageData});
+        res.status(201).json({data, page, count_page, end_page: count_page <= page + limitPageData, access});
     } catch(e) {
         errorHandler(res, e);
         // throw e;
@@ -116,7 +116,7 @@ module.exports.get_list_meditation_ios = async function(req, res) {
                 data[i].like = status ? 1 : 0;
             }
         }
-        res.status(201).json({data, page, count_page, end_page: count_page <= page + limitPageData});
+        res.status(201).json({data, page, count_page, end_page: count_page <= page + limitPageData, access});
     } catch(e) {
         errorHandler(res, e);
         // throw e;
@@ -197,7 +197,7 @@ module.exports.get_list_tool_ios = async function(req, res) {
                 data[i].like = status ? 1 : 0;
             }
         }
-        res.status(201).json({data, page, count_page, end_page: count_page <= page + limitPageData});
+        res.status(201).json({data, page, count_page, end_page: count_page <= page + limitPageData, access});
     } catch(e) {
         errorHandler(res, e);
         // throw e;
