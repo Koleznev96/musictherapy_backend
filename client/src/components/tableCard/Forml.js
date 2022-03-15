@@ -20,9 +20,10 @@ import {FieldInputTranslation} from "../form/FielsInputTranslation";
 import {optionLanguages} from "../../constants/OptionsTable";
 import {FieldFileTranslation} from "../form/FielsFileTranslation";
 import {FieldTextTranslation} from "../form/FielsTextTranslation";
+import cloneDeep from 'lodash/cloneDeep';
 
 
-export const Form = ({data, option, reload, optionQuestionnaire, optionPassword}) => {
+export const Form = ({data, option, reload, optionQuestionnaire, optionPassword, optionEdit, setNewData}) => {
     const popupForm = usePopupForm();
     const auth = useContext(AuthContext);
     const {request, error, clearError, loading} = useHttp();
@@ -40,7 +41,7 @@ export const Form = ({data, option, reload, optionQuestionnaire, optionPassword}
     useEffect(() => {
         let field = {};
         option?.fields?.forEach(item => {
-            field[item.value] = data ? data[item.value] : item.default;
+            field[item.value] = data ? data[item.value] : cloneDeep(item.default);
         });
         setValue(field);
         if (optionQuestionnaire) {
@@ -53,7 +54,7 @@ export const Form = ({data, option, reload, optionQuestionnaire, optionPassword}
         if (optionPassword) {
             setPassword({password: data.password});
         }
-    }, [option]);
+    }, [option, popupForm.isOpen]);
 
     const changeRoot = (data) => {
         let new_data = {...value};
@@ -85,7 +86,7 @@ export const Form = ({data, option, reload, optionQuestionnaire, optionPassword}
     const saveHandler = async () => {
         clearErrorPopup();
         try {
-            await request(`/api/admin_panel${option?.url}`, 'POST',
+            const newData = await request(`/api/admin_panel${option?.url}`, 'POST',
                 {data: value, _id: data?._id, password: optionPassword ? password.password : null, questionnaire: optionQuestionnaire ? questionnaire : null},
                 {
                     Authorization: `${auth.token}`
@@ -93,6 +94,14 @@ export const Form = ({data, option, reload, optionQuestionnaire, optionPassword}
             );
             setPopupOk(data ? 'Изменения сохранены.' : 'Добавлено.');
             reload(0, "null");
+            if (!data) {
+                popupForm.openHandler(<Form
+                    data={newData}
+                    option={optionEdit}
+                    reload={reload}
+                />)
+                // setNewData(newData);
+            }
         } catch (e) {
             setPopupError(data ? 'Ошибка.' : 'Заполните все поля.');
         }

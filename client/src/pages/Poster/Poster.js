@@ -45,7 +45,7 @@ export const Poster = () => {
     useEffect(() => {getData(0, "null")}, []);
 
     const creteHandler = () => {
-        popupForm.openHandler(<Form data={null} option={optionCreatePoster} reload={getData}/>);
+        popupForm.openHandler(<Form data={null} option={optionCreatePoster} reload={getData} optionEdit={optionPoster}/>);
     }
 
     return (

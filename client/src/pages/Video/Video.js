@@ -47,7 +47,7 @@ export const Video = () => {
     useEffect(() => {getData(0, "null")}, []);
 
     const creteHandler = () => {
-        popupForm.openHandler(<Form data={null} option={optionCreateVideo} reload={getData}/>);
+        popupForm.openHandler(<Form data={null} option={optionCreateVideo} reload={getData} optionEdit={optionVideo}/>);
     }
 
     return (

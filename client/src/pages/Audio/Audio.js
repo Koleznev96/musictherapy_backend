@@ -25,6 +25,7 @@ export const Audio = () => {
     const [search, setSearch] = useState("");
     const [category, setCategory] = useState("");
     const [genre, setGenre] = useState("");
+    const [newData, setNewData] = useState(null);
 
     const filtersData = (new_data) => {
         setData([...new_data]);
@@ -53,10 +54,14 @@ export const Audio = () => {
         } catch (e){}
     }
 
+    // useEffect(() => {
+    //     setNewData(null);
+    // }, [popupForm.isOpen]);
+
     useEffect(() => {getData(0, "null")}, []);
 
     const creteHandler = () => {
-        popupForm.openHandler(<Form data={null} option={optionCreateAudio} reload={getData}/>);
+        popupForm.openHandler(<Form data={null} option={optionCreateAudio} reload={getData} optionEdit={optionAudio} setNewData={setNewData}/>);
     }
 
     return (

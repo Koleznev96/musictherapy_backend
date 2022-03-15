@@ -57,13 +57,24 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
         setStatus(item.value);
     }
 
+    const StringLang = (data) => {
+        let answer = '';
+        data?.forEach((item, index) => {
+            if (item === 'ru') answer += 'рус';
+            else answer += 'анг';
+            answer +=  data?.length - 1 > index ? ', ' : '';
+        });
+        return answer;
+    }
+
     return (
         <table className={s.table} cellSpacing="0">
+            <thead>
             <tr className={s.table_tr}>
-            {option?.fields?.map(item => {
+            {option?.fields?.map((item, index) => {
                 if (!item.not_see)
                 return (
-                    <td className={GlobalStyle.CustomFontBold + ' ' + s.table_td}
+                    <td key={index} className={GlobalStyle.CustomFontBold + ' ' + s.table_td}
                         onClick={() => settingFieldHandler(item)}>
                         <div className={s.table_td_block}>
                             <div className={GlobalStyle.CustomFontBold + ' ' + s.table_td_label}>
@@ -80,6 +91,8 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
                 )
             })}
             </tr>
+            </thead>
+            <tbody>
             {loading ? (
                 <tr className={s.td_error}>
                     <td colSpan={option?.fields?.length}>
@@ -105,7 +118,7 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
                     </>
                 ) : (
                     data?.map((data_item, index) => (
-                        <tr className={index % 2 === 0 ? s.tr_br : s.tr} onClick={() => itemHandler(data_item)}>
+                        <tr key={index} className={index % 2 === 0 ? s.tr_br : s.tr} onClick={() => itemHandler(data_item)}>
                         {option?.fields?.map(field_item => {
                             if (!field_item.not_see)
                                 return (
@@ -115,6 +128,9 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
                                             // data_item[field_item.value] === 'meditation' ? 'Медитация' : (data_item[field_item.value] === 'classic' ? 'Классика HD' : 'Инструменты')
                                         ) : (
                                             field_item.type === 'box' ? (
+                                                field_item.value === 'language' ? (
+                                                    StringLang(data_item[field_item.value])
+                                            ) :
                                                 data_item[field_item.value].slice(0, data_item[field_item.value].length > 5 ? 5 : data_item[field_item.value].length).join(', ')
                                             ) :
                                                 (field_item.type === 'date' ? (
@@ -135,6 +151,7 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
                     ))
                 )
             )}
+            </tbody>
         </table>
     );
 };
