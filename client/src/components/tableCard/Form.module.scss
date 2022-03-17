@@ -10,10 +10,23 @@
   background-color: #fff;
 }
 
+.wrapper_full {
+  width: 100%;
+  display: flex;
+}
+
+.block_field {
+  width: 50%;
+}
+
 .wrapper_bool {
   width: 100%;
   display: flex;
   justify-content: space-between;
+}
+
+.root_click_ {
+  width: 100%;
 }
 
 .root_click {

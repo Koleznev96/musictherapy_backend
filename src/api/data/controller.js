@@ -85,12 +85,13 @@ module.exports.get_list_live_sound_ios = async function(req, res) {
         }
         const page = Number(req.params.page);
         let filter = checkLanguage(req, res);
-        let data = await LiveSound.find(filter, null, { skip: page, limit: limitPageData });
-        const count_page = (await LiveSound.find({}).count());
+        let data = await LiveSound.find(filter);
+        // let data = await LiveSound.find(filter, null, { skip: page, limit: limitPageData });
+        // const count_page = (await LiveSound.find({}).count());
         for (let i = 0; i < data.length; i++) {
             data[i].dostup = !!(!data[i].access || data[i].access.indexOf(access));
         }
-        res.status(201).json({data, page, count_page, end_page: count_page <= page + limitPageData, access});
+        res.status(201).json({data, page, count_page: 1, end_page: true, access});
     } catch(e) {
         errorHandler(res, e);
         // throw e;
@@ -107,8 +108,9 @@ module.exports.get_list_meditation_ios = async function(req, res) {
         const page = Number(req.params.page);
         let filter = checkLanguage(req, res);
         filter.category = "meditation";
-        let data = await Video.find(filter, null, { skip: page, limit: limitPageData });
-        const count_page = (await Video.find(filter).count());
+        let data = await Video.find(filter);
+        // let data = await Video.find(filter, null, { skip: page, limit: limitPageData });
+        // const count_page = (await Video.find(filter).count());
         for (let i = 0; i < data.length; i++) {
             data[i].dostup = !!(!data[i].access || data[i].access.indexOf(access));
             if (check?._id) {
@@ -116,7 +118,7 @@ module.exports.get_list_meditation_ios = async function(req, res) {
                 data[i].like = status ? 1 : 0;
             }
         }
-        res.status(201).json({data, page, count_page, end_page: count_page <= page + limitPageData, access});
+        res.status(201).json({data, page, count_page: 1, end_page: true, access});
     } catch(e) {
         errorHandler(res, e);
         // throw e;
@@ -160,8 +162,9 @@ module.exports.get_list_classic_ios = async function(req, res) {
         const page = Number(req.params.page);
         let filter = checkLanguage(req, res);
         filter.category = "classic";
-        let data = await Video.find(filter, null, { skip: page, limit: limitPageData });
-        const count_page = (await Video.find(filter).count());
+        let data = await Video.find(filter);
+        // let data = await Video.find(filter, null, { skip: page, limit: limitPageData });
+        // const count_page = (await Video.find(filter).count());
 
         for (let i = 0; i < data.length; i++) {
             data[i].dostup = !!(!data[i].access || data[i].access.indexOf(access));
@@ -171,7 +174,7 @@ module.exports.get_list_classic_ios = async function(req, res) {
             }
         }
 
-        res.status(201).json({data, page, count_page, end_page: count_page <= page + limitPageData, access});
+        res.status(201).json({data, page, count_page: 1, end_page: true, access});
     } catch(e) {
         errorHandler(res, e);
         // throw e;
@@ -188,8 +191,9 @@ module.exports.get_list_tool_ios = async function(req, res) {
         const page = Number(req.params.page);
         let filter = checkLanguage(req, res);
         filter.category = "tool";
-        let data = await Video.find(filter, null, { skip: page, limit: limitPageData });
-        const count_page = (await Video.find(filter).count());
+        let data = await Video.find(filter);
+        // let data = await Video.find(filter, null, { skip: page, limit: limitPageData });
+        // const count_page = (await Video.find(filter).count());
         for (let i = 0; i < data.length; i++) {
             data[i].dostup = !!(!data[i].access || data[i].access.indexOf(access));
             if (check?._id) {
@@ -197,7 +201,7 @@ module.exports.get_list_tool_ios = async function(req, res) {
                 data[i].like = status ? 1 : 0;
             }
         }
-        res.status(201).json({data, page, count_page, end_page: count_page <= page + limitPageData, access});
+        res.status(201).json({data, page, count_page: 1, end_page: true, access});
     } catch(e) {
         errorHandler(res, e);
         // throw e;

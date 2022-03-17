@@ -116,19 +116,31 @@ export const optionPassword = {
     ],
 }
 
-export const optionQuestionnaire = {
+export const optionSettings = {
     fields: [
         {
             label: 'Язык',
             value: 'language',
             type: "bool",
             default: '',
-            list_value: [{label: 'ру', value: 'ру'}, {label: 'eng', value: 'eng'}],
+            list_value: [{label: 'ру', value: 'ru'}, {label: 'eng', value: 'com'}],
         },
+        {
+            label: 'Уровень пользователя',
+            value: 'access',
+            type: "bool",
+            default: '',
+            list_value: [{label: 'Гость', value: 'Гость'}, {label: 'Премиум', value: 'Премиум'}, {label: 'VIP', value: 'VIP'}],
+        },
+    ],
+}
+
+export const optionQuestionnaire = {
+    fields: [
         {
             label: 'Дата рождения',
             value: 'date_birth',
-            type: "date",
+            type: "date_full",
             default: '',
         },
         {
@@ -136,7 +148,7 @@ export const optionQuestionnaire = {
             value: 'gender',
             type: "bool",
             default: '',
-            list_value: [{label: 'Мужской', value: 'Мужской'}, {label: 'Женский', value: 'Женский'}, {label: 'Другой', value: 'Другой'}],
+            list_value: [{label: 'Мужской', value: 'Мужской'}, {label: 'Женский', value: 'Женский'}, {label: 'Не указано', value: 'Не указано'}],
         },
         {
             label: 'Страна рождения',
@@ -236,6 +248,81 @@ export const optionPoster = {
     ],
 }
 
+export const optionEditVideo = {
+    delete_url: '/delete_video',
+    url: '/re_video',
+    fields: [
+        {
+            label: 'Язык',
+            value: 'language',
+            type: "box",
+            filter: true,
+            default: [],
+            list_value: [{label: 'Русский', value: 'ru'}, {label: 'Английский', value: 'com'}],
+        },
+        {
+            translation: true,
+            label: 'Название',
+            value: 'label',
+            type: "input_translation",
+            filter: true,
+            default: [{language: 'ru', value: ''}, {language: 'com', value: ''}],
+        },
+        {
+            type: "double_fields",
+            fields: [
+                {
+                    label: 'Категория',
+                    value: 'category',
+                    type: "bool",
+                    filter: true,
+                    default: 'classic',
+                    list_value: [{label: 'Классика HD', value: 'classic'}, {label: 'Медитация', value: 'meditation'}, {label: 'Инструменты', value: 'tool'}],
+                },
+                {
+                    label: 'Доступно для',
+                    value: 'access',
+                    type: "box",
+                    not_see: true,
+                    filter: true,
+                    default: [],
+                    list_value: [{label: 'Без регистрации', value: 'Без регистрации'}, {label: 'Гость', value: 'Гость'}, {label: 'Премиум', value: 'Премиум'}, {label: 'VIP', value: 'VIP'}],
+                },
+            ]
+        },
+        {
+            label: 'Количество лайков',
+            value: 'like',
+            type: "input",
+            filter: true,
+            default: '',
+        },
+        {
+            translation: true,
+            label: 'Постер для видео',
+            value: 'poster',
+            type: "img_translation",
+            filter: false,
+            default: [{language: 'ru', value: ''}, {language: 'com', value: ''}],
+        },
+        {
+            label: 'Видео',
+            value: 'video',
+            type: "video",
+            filter: false,
+            default: '',
+        },
+        {
+            translation: true,
+            label: 'Описание',
+            value: 'text',
+            type: "inputarrea_translation",
+            filter: false,
+            default: [{language: 'ru', value: ''}, {language: 'com', value: ''}],
+        },
+    ],
+}
+
 export const optionVideo = {
     delete_url: '/delete_video',
     url: '/re_video',
@@ -265,13 +352,6 @@ export const optionVideo = {
             list_value: [{label: 'Классика HD', value: 'classic'}, {label: 'Медитация', value: 'meditation'}, {label: 'Инструменты', value: 'tool'}],
         },
         {
-            label: 'Количество лайков',
-            value: 'like',
-            type: "input",
-            filter: true,
-            default: '',
-        },
-        {
             label: 'Доступно для',
             value: 'access',
             type: "box",
@@ -279,6 +359,13 @@ export const optionVideo = {
             filter: true,
             default: [],
             list_value: [{label: 'Без регистрации', value: 'Без регистрации'}, {label: 'Гость', value: 'Гость'}, {label: 'Премиум', value: 'Премиум'}, {label: 'VIP', value: 'VIP'}],
+        },
+        {
+            label: 'Количество лайков',
+            value: 'like',
+            type: "input",
+            filter: true,
+            default: '',
         },
         {
             translation: true,
@@ -302,6 +389,77 @@ export const optionVideo = {
             type: "inputarrea_translation",
             filter: false,
             default: [{language: 'ru', value: ''}, {language: 'com', value: ''}],
+        },
+    ],
+}
+
+export const optionEditAudio = {
+    delete_url: '/delete_audio',
+    url: '/re_audio',
+    fields: [
+        {
+            label: 'Язык',
+            value: 'language',
+            type: "box",
+            filter: true,
+            default: [],
+            list_value: [{label: 'Русский', value: 'ru'}, {label: 'Английский', value: 'com'}],
+        },
+        {
+            translation: true,
+            label: 'Название',
+            value: 'label',
+            type: "input_translation",
+            filter: true,
+            default: [{language: 'ru', value: ''}, {language: 'com', value: ''}],
+        },
+        {
+            type: "double_fields",
+            fields: [
+                {
+                    label: 'Категория',
+                    value: 'category',
+                    type: "bool",
+                    filter: true,
+                    default: 'Релакс',
+                    list_value: [{label: 'Релакс', value: 'Релакс'}, {label: 'Активация', value: 'Активация'}, {label: 'Терапия', value: 'Терапия'}],
+                },
+                {
+                    label: 'Жанр',
+                    value: 'genre',
+                    type: "bool",
+                    filter: true,
+                    default: 'Классика',
+                    list_value: [{label: 'Классика', value: 'Классика'}, {label: 'Эмбиент', value: 'Эмбиент'}],
+                },
+            ]
+        },
+        {
+            label: 'Количество лайков',
+            value: 'like',
+            type: "input",
+            filter: true,
+            default: '',
+        },
+        {
+            label: 'Инструменты',
+            value: 'instruments',
+            type: "box",
+            filter: true,
+            default: [],
+            list_value: [{label: 'Рояль', value: 'Рояль'}, {label: 'Флейта', value: 'Флейта'}, {label: 'Виолончель', value: 'Виолончель'}, {label: 'Скрипка', value: 'Скрипка'},
+                {label: 'Вокал', value: 'Вокал'}, {label: 'Арфа', value: 'Арфа'}, {label: 'Клавесин', value: 'Клавесин'}, {label: 'Орган', value: 'Орган'},
+                {label: 'Гонг', value: 'Гонг'}, {label: 'Тибетские поющие чаши', value: 'Тибетские поющие чаши'}, {label: 'Караталы', value: 'Караталы'}, {label: 'Чакрофоны', value: 'Чакрофоны'},
+                {label: 'Шум дождя', value: 'Шум дождя'}, {label: 'Шум ручья', value: 'Шум ручья'}, {label: 'Шум океана', value: 'Шум океана'}, {label: 'Калимба', value: 'Калимба'},
+                {label: 'Глюкофон', value: 'Глюкофон'}, {label: 'Барчаймс', value: 'Барчаймс'}, {label: 'Колокольчики Коши', value: 'Колокольчики Коши'}, {label: 'Колокольчики Нада', value: 'Колокольчики Нада'},
+                {label: 'Валдайские колокольчики', value: 'Валдайские колокольчики'}, {label: 'Этническая погремушка', value: 'Этническая погремушка'}],
+        },
+        {
+            label: 'Аудио',
+            value: 'audio',
+            type: "video",
+            filter: false,
+            default: '',
         },
     ],
 }
@@ -356,7 +514,11 @@ export const optionAudio = {
             filter: true,
             default: [],
             list_value: [{label: 'Рояль', value: 'Рояль'}, {label: 'Флейта', value: 'Флейта'}, {label: 'Виолончель', value: 'Виолончель'}, {label: 'Скрипка', value: 'Скрипка'},
-                {label: 'Вокал', value: 'Вокал'}, {label: 'Арфа', value: 'Арфа'}, {label: 'Клавесин', value: 'Клавесин'}, {label: 'Орган', value: 'Орган'}, ],
+                {label: 'Вокал', value: 'Вокал'}, {label: 'Арфа', value: 'Арфа'}, {label: 'Клавесин', value: 'Клавесин'}, {label: 'Орган', value: 'Орган'},
+                {label: 'Гонг', value: 'Гонг'}, {label: 'Тибетские поющие чаши', value: 'Тибетские поющие чаши'}, {label: 'Караталы', value: 'Караталы'}, {label: 'Чакрофоны', value: 'Чакрофоны'},
+                {label: 'Шум дождя', value: 'Шум дождя'}, {label: 'Шум ручья', value: 'Шум ручья'}, {label: 'Шум океана', value: 'Шум океана'}, {label: 'Калимба', value: 'Калимба'},
+                {label: 'Глюкофон', value: 'Глюкофон'}, {label: 'Барчаймс', value: 'Барчаймс'}, {label: 'Колокольчики Коши', value: 'Колокольчики Коши'}, {label: 'Колокольчики Нада', value: 'Колокольчики Нада'},
+                {label: 'Валдайские колокольчики', value: 'Валдайские колокольчики'}, {label: 'Этническая погремушка', value: 'Этническая погремушка'}],
         },
         {
             label: 'Аудио',

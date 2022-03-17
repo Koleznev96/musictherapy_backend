@@ -68,6 +68,12 @@ module.exports.translation = async function(req, res) {
     try {
         const language = req.params.language;
 
+        let check = await checkUser.check(req, res);
+        if (check._id) {
+            check.language = language;
+            await check.save();
+        }
+
         const translation = await Translation.findOne({root: 0});
         let obj;
         await fs.readFile(`./${translation[language]}`, 'utf8', async function (err, data) {

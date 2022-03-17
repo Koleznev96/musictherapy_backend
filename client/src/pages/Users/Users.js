@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import s from './Users.module.scss';
 import {useHttp} from "../../hooks/http.hook";
 import {Search} from "../../components/search/Search";
-import {optionPassword, optionQuestionnaire, optionUser} from "../../constants/OptionsTable";
+import {optionPassword, optionQuestionnaire, optionSettings, optionUser} from "../../constants/OptionsTable";
 import {TableCard} from "../../components/tableCard/TableCard";
 import {AuthContext} from "../../context/authContext";
 import {PaginationTable} from "../../components/paginationTable/PaginationTable";
@@ -46,7 +46,7 @@ export const Users = () => {
             <div className={s.header}>
                 <Search value={search} callback={setSearch} placeholder={'Поиск по фамилии'} handler={getData}/>
             </div>
-            <TableCard option={optionUser} optionQuestionnaire={optionQuestionnaire} optionPassword={optionPassword} data={data} loading={loading} reload={getData} setData={filtersData}/>
+            <TableCard option={optionUser} optionQuestionnaire={optionQuestionnaire} optionPassword={optionPassword} optionSettings={optionSettings} data={data} loading={loading} reload={getData} setData={filtersData}/>
             <div className={s.footer}>
                 <PaginationTable page={page} endPage={endPage} startPage={startPage} getData={getData} search={search} />
             </div>

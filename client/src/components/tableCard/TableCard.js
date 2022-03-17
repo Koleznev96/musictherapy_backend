@@ -6,7 +6,7 @@ import {GlobalSvgSelector} from "../../assets/icons/global/GlobalSvgSelector";
 import {ColorsStyles} from "../../constants/ColorsStyles";
 import ClipLoader from "react-spinners/ClipLoader";
 import {Form} from "./Forml";
-import {optionQuestionnaire} from "../../constants/OptionsTable";
+import {optionEditVideo, optionQuestionnaire, optionSettings} from "../../constants/OptionsTable";
 
 
 const string_date = (string) => {
@@ -19,7 +19,7 @@ const string_date = (string) => {
     return year + '/' + month + '/' + day + '  ' + hours + ':' + minutes;
 }
 
-export const TableCard = ({option, data, loading, reload, setData, optionQuestionnaire, optionPassword}) => {
+export const TableCard = ({option, data, loading, reload, setData, optionQuestionnaire, optionPassword, optionSettings, optionEdit}) => {
     const popupForm = usePopupForm();
     const [status, setStatus] = useState(null);
     const [statusFilter, setStatusFilter] = useState(false);
@@ -28,10 +28,11 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
         popupForm.openHandler(
             <Form
                 data={item}
-                option={option}
+                option={optionEdit ? optionEdit : option}
                 reload={reload}
                 optionQuestionnaire={optionQuestionnaire}
                 optionPassword={optionPassword}
+                optionSettings={optionSettings}
             />
         );
     }

@@ -3,7 +3,7 @@ import s from './Video.module.scss';
 import {useHttp} from "../../hooks/http.hook";
 import {Search} from "../../components/search/Search";
 import {Filter} from "../../components/filter/Filter";
-import {optionCreateAudio, optionAudio} from "../../constants/OptionsTable";
+import {optionCreateAudio, optionAudio, optionEditAudio} from "../../constants/OptionsTable";
 import {TableCard} from "../../components/tableCard/TableCard";
 import {AuthContext} from "../../context/authContext";
 import {PaginationTable} from "../../components/paginationTable/PaginationTable";
@@ -81,7 +81,7 @@ export const Audio = () => {
                     </div>
                 </div>
             </div>
-            <TableCard option={optionAudio} data={data} loading={loading} reload={getData} setData={filtersData} />
+            <TableCard option={optionAudio} data={data} loading={loading} reload={getData} setData={filtersData} optionEdit={optionEditAudio}/>
             <div className={s.footer}>
                 <PaginationTable page={page} endPage={endPage} startPage={startPage} getData={getData} />
             </div>

@@ -5,10 +5,6 @@ const QuestionnaireSchema = new Schema({
         type: String,
         required: true,
     },
-    language: {
-        type: String,
-        required: false,
-    },
     date_birth: {
         type: Date,
         required: false,

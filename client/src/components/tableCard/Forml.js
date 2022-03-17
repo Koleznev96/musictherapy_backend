@@ -21,9 +21,11 @@ import {optionLanguages} from "../../constants/OptionsTable";
 import {FieldFileTranslation} from "../form/FielsFileTranslation";
 import {FieldTextTranslation} from "../form/FielsTextTranslation";
 import cloneDeep from 'lodash/cloneDeep';
+import {FieldDateFull} from "../form/FielsDateFull";
+import {FieldDoubleFields} from "../form/FielsDoubleFields";
 
 
-export const Form = ({data, option, reload, optionQuestionnaire, optionPassword, optionEdit, setNewData}) => {
+export const Form = ({data, option, reload, optionQuestionnaire, optionPassword, optionEdit, optionSettings}) => {
     const popupForm = usePopupForm();
     const auth = useContext(AuthContext);
     const {request, error, clearError, loading} = useHttp();
@@ -32,6 +34,7 @@ export const Form = ({data, option, reload, optionQuestionnaire, optionPassword,
     const [value, setValue] = useState({});
     const [questionnaire, setQuestionnaire] = useState({});
     const [password, setPassword] = useState({password: ''});
+    const [settings, setSettings] = useState({});
     const [activeMenu, setActiveMenu] = useState(0);
 
     const itemMenuHandler = (index) => {
@@ -41,6 +44,10 @@ export const Form = ({data, option, reload, optionQuestionnaire, optionPassword,
     useEffect(() => {
         let field = {};
         option?.fields?.forEach(item => {
+            if (item.type === "double_fields") {
+                field[item.fields[0].value] = data ? data[item.fields[0].value] : cloneDeep(item.fields[0].default);
+                field[item.fields[1].value] = data ? data[item.fields[1].value] : cloneDeep(item.fields[1].default);
+            } else
             field[item.value] = data ? data[item.value] : cloneDeep(item.default);
         });
         setValue(field);
@@ -54,6 +61,13 @@ export const Form = ({data, option, reload, optionQuestionnaire, optionPassword,
         if (optionPassword) {
             setPassword({password: data.password});
         }
+        if (optionSettings) {
+            let fieldSettings = {};
+            optionSettings?.fields?.forEach(item => {
+                fieldSettings[item.value] = data ? data[item.value] : cloneDeep(item.default);
+            });
+            setSettings(fieldSettings);
+        }
     }, [option, popupForm.isOpen]);
 
     const changeRoot = (data) => {
@@ -66,6 +80,12 @@ export const Form = ({data, option, reload, optionQuestionnaire, optionPassword,
         let new_data = {...questionnaire};
         new_data[data.name] = data.value;
         setQuestionnaire(new_data);
+    }
+
+    const changeSettings = (data) => {
+        let new_data = {...settings};
+        new_data[data.name] = data.value;
+        setSettings(new_data);
     }
 
     const changePassword = (data) => {
@@ -87,7 +107,11 @@ export const Form = ({data, option, reload, optionQuestionnaire, optionPassword,
         clearErrorPopup();
         try {
             const newData = await request(`/api/admin_panel${option?.url}`, 'POST',
-                {data: value, _id: data?._id, password: optionPassword ? password.password : null, questionnaire: optionQuestionnaire ? questionnaire : null},
+                {data: value, _id: data?._id,
+                    password: optionPassword ? password.password : null,
+                    questionnaire: optionQuestionnaire ? questionnaire : null,
+                    settings: optionSettings ? settings : null,
+                },
                 {
                     Authorization: `${auth.token}`
                 }
@@ -126,12 +150,14 @@ export const Form = ({data, option, reload, optionQuestionnaire, optionPassword,
         if (item.type === 'bool') return <FieldBool label={item.label} name={item.value} change={change} value={value[item.value]} list_value={item.list_value} />;
         if (item.type === 'box') return <FieldBox label={item.label} name={item.value} change={change} value={value[item.value]} list_value={item.list_value} />;
         if (item.type === 'date') return <FieldDate label={item.label} name={item.value} change={change} value={value[item.value]} />;
+        if (item.type === 'date_full') return <FieldDateFull label={item.label} name={item.value} change={change} value={value[item.value]} />;
         if (item.type === 'img') return <FieldFile label={item.label} name={item.value} change={change} value={value[item.value]} />;
         if (item.type === 'video') return <FieldVideo label={item.label} name={item.value} change={change} value={value[item.value]} />;
         if (item.type === 'inputarrea') return <FieldText label={item.label} name={item.value} change={change} value={value[item.value]} />;
         if (item.type === 'inputarrea_translation') return <FieldTextTranslation label={item.label} name={item.value} change={change} value={value[item.value]} languages={optionLanguages} />;
         if (item.type === 'img_translation') return <FieldFileTranslation label={item.label} name={item.value} change={change} value={value[item.value]} languages={optionLanguages} />;
         if (item.type === 'input_translation') return <FieldInputTranslation label={item.label} name={item.value} change={change} value={value[item.value]} languages={optionLanguages} />;
+        if (item.type === 'double_fields') return <FieldDoubleFields fields={item.fields} change={change} value={value} />;
         return null;
     }
 
@@ -163,7 +189,7 @@ export const Form = ({data, option, reload, optionQuestionnaire, optionPassword,
             </div>
             {optionQuestionnaire ? (
                 <div className={s.liner_menu}>
-                    {["Информация", "Анкет", "Пароль"].map((item, index) => (
+                    {["Информация", "Анкета", "Пароль", "Настройки"].map((item, index) => (
                         <div
                             onClick={() => itemMenuHandler(index)}
                             className={s.liner_menu_item + (activeMenu === index ? (' ' + s.liner_menu_item_active): '')}
@@ -175,23 +201,26 @@ export const Form = ({data, option, reload, optionQuestionnaire, optionPassword,
             ) : null}
             <Scrollbars style={{width: '100%', height: '60vh', marginTop: 18}}>
                 <div className={s.items}>
-                    {
-                        activeMenu === 0 ? (
-                            option?.fields?.map(item => {
-                                return listField(item, changeRoot, value)
-                            })
-                        ) : (
-                            activeMenu === 1 ? (
-                                optionQuestionnaire?.fields?.map(item => {
-                                    return listField(item, changeQuestionnaire, questionnaire)
-                                })
-                            ) : (
-                                optionPassword?.fields?.map(item => {
-                                    return listField(item, changePassword, password)
-                                })
-                            )
-                        )
-                    }
+                    {activeMenu === 0 && (
+                        option?.fields?.map(item => {
+                            return listField(item, changeRoot, value)
+                        })
+                    )}
+                    {activeMenu === 1 && (
+                        optionQuestionnaire?.fields?.map(item => {
+                            return listField(item, changeQuestionnaire, questionnaire)
+                        })
+                    )}
+                    {activeMenu === 2 && (
+                        optionPassword?.fields?.map(item => {
+                            return listField(item, changePassword, password)
+                        })
+                    )}
+                    {activeMenu === 3 && (
+                        optionSettings?.fields?.map(item => {
+                            return listField(item, changeSettings, settings)
+                        })
+                    )}
                 </div>
             </Scrollbars>
             <div className={GlobalStyle.CustomFontRegular + ' ' + (popupOk.length !== 0 ? s.popup_ok : s.popup_error)}>

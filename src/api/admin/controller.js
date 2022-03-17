@@ -387,7 +387,11 @@ module.exports.re_user = async function(req, res) {
         });
 
         if (req.body.password) new_data.password = req.body.password;
-
+        if (req.body.settings) {
+            Object.entries(req.body.settings).forEach(item => {
+                new_data[item[0]] = item[1]
+            });
+        }
         await new_data.save();
 
         if (req.body.questionnaire) {

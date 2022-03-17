@@ -78,6 +78,7 @@ module.exports.code_check = async function(req, res) {
         const date = new Date();
         const user = new User({
             email: req.body.email,
+            language: req.body.language ? req.body.language : 'ru',
             password: req.body.password,
             name: req.body.name,
             fullName: req.body.fullName,

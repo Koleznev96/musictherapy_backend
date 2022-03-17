@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import s from './Video.module.scss';
 import {useHttp} from "../../hooks/http.hook";
 import {Search} from "../../components/search/Search";
-import {optionCreateVideo, optionVideo} from "../../constants/OptionsTable";
+import {optionCreateVideo, optionEditVideo, optionVideo} from "../../constants/OptionsTable";
 import {TableCard} from "../../components/tableCard/TableCard";
 import {AuthContext} from "../../context/authContext";
 import {PaginationTable} from "../../components/paginationTable/PaginationTable";
@@ -63,7 +63,7 @@ export const Video = () => {
                     </div>
                 </div>
             </div>
-            <TableCard option={optionVideo} data={data} loading={loading} reload={getData} setData={filtersData} />
+            <TableCard option={optionVideo} data={data} loading={loading} reload={getData} setData={filtersData} optionEdit={optionEditVideo}/>
             <div className={s.footer}>
                 <PaginationTable page={page} endPage={endPage} startPage={startPage} getData={getData} search={search} />
             </div>
