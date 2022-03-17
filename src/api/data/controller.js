@@ -112,7 +112,21 @@ module.exports.get_list_meditation_ios = async function(req, res) {
         // let data = await Video.find(filter, null, { skip: page, limit: limitPageData });
         // const count_page = (await Video.find(filter).count());
         for (let i = 0; i < data.length; i++) {
-            data[i].dostup = !!(!data[i].access || data[i].access.indexOf(access));
+            if (!(!data[i].access || data[i].access.indexOf(access) !== -1)) {
+                if (data[i].access.length === 1 && data[i].access.indexOf("VIP") !== -1) {
+                    data.splice(i, 1);
+                    continue;
+                }
+                if (data[i].access.indexOf("Премиум") !== -1 && data[i].access.indexOf("Без регистрации") === -1
+                    && data[i].access.indexOf("Гость") === -1) {
+                    data[i].dostup = 'premium';
+                } else {
+                    data[i].dostup = 'auth';
+                }
+            } else {
+                data[i].dostup = 'view';
+            }
+            // data[i].dostup = !!(!data[i].access || data[i].access.indexOf(access));
             if (check?._id) {
                 let status = await LikeVideo.findOne({id_root: data[i]._id.toString(), id_user: check?._id.toString()});
                 data[i].like = status ? 1 : 0;
@@ -167,7 +181,21 @@ module.exports.get_list_classic_ios = async function(req, res) {
         // const count_page = (await Video.find(filter).count());
 
         for (let i = 0; i < data.length; i++) {
-            data[i].dostup = !!(!data[i].access || data[i].access.indexOf(access));
+            if (!(!data[i].access || data[i].access.indexOf(access) !== -1)) {
+                if (data[i].access.length === 1 && data[i].access.indexOf("VIP") !== -1) {
+                    data.splice(i, 1);
+                    continue;
+                }
+                if (data[i].access.indexOf("Премиум") !== -1 && data[i].access.indexOf("Без регистрации") === -1
+                    && data[i].access.indexOf("Гость") === -1) {
+                    data[i].dostup = 'premium';
+                } else {
+                    data[i].dostup = 'auth';
+                }
+            } else {
+                data[i].dostup = 'view';
+            }
+            // data[i].dostup = !!(!data[i].access || data[i].access.indexOf(access));
             if (check?._id) {
                 let status = await LikeVideo.findOne({id_root: data[i]._id.toString(), id_user: check?._id.toString()});
                 data[i].like = status ? 1 : 0;
@@ -195,7 +223,21 @@ module.exports.get_list_tool_ios = async function(req, res) {
         // let data = await Video.find(filter, null, { skip: page, limit: limitPageData });
         // const count_page = (await Video.find(filter).count());
         for (let i = 0; i < data.length; i++) {
-            data[i].dostup = !!(!data[i].access || data[i].access.indexOf(access));
+            if (!(!data[i].access || data[i].access.indexOf(access) !== -1)) {
+                if (data[i].access.length === 1 && data[i].access.indexOf("VIP") !== -1) {
+                    data.splice(i, 1);
+                    continue;
+                }
+                if (data[i].access.indexOf("Премиум") !== -1 && data[i].access.indexOf("Без регистрации") === -1
+                    && data[i].access.indexOf("Гость") === -1) {
+                    data[i].dostup = 'premium';
+                } else {
+                    data[i].dostup = 'auth';
+                }
+            } else {
+                data[i].dostup = 'view';
+            }
+            // data[i].dostup = !!(!data[i].access || data[i].access.indexOf(access));
             if (check?._id) {
                 let status = await LikeVideo.findOne({id_root: data[i]._id.toString(), id_user: check?._id.toString()});
                 data[i].like = status ? 1 : 0;
