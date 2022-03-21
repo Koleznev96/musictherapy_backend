@@ -1,10 +1,19 @@
 const {Schema, model} = require('mongoose');
 
 const liveSoundSchema = new Schema({
+    language: [
+        String
+    ],
     label: {
-        type: String,
+        String,
         required: false,
     },
+    label_: [
+        {
+            language: String,
+            value: String,
+        },
+    ],
     img: {
         type: String,
         required: true,

@@ -25,12 +25,15 @@ export const Poster = () => {
         setData([...new_data]);
     }
 
-    const getData = async (page, search) => {
+    const getData = async (page, rel) => {
         page = page ? page : 0;
-        search = search?.length > 0 ? search : "null";
-        setSearch(search ? (search?.length > 0 ? search : "null") : "null");
+        let search_ = search?.length > 0 ? search : "null";
+        if (rel === "null") {
+            search_ = "null";
+            setSearch("");
+        }
         try {
-            const answer = await request(`/api/admin_panel/live_sound/${page}/${search}`, 'GET', null, {
+            const answer = await request(`/api/admin_panel/live_sound/${page}/${search_}`, 'GET', null, {
                 Authorization: auth.token
             });
             setPage(page);
@@ -42,13 +45,13 @@ export const Poster = () => {
     useEffect(() => {getData(0, "null")}, []);
 
     const creteHandler = () => {
-        popupForm.openHandler(<Form data={null} option={optionCreatePoster} reload={getData}/>);
+        popupForm.openHandler(<Form data={null} option={optionCreatePoster} reload={getData} optionEdit={optionPoster}/>);
     }
 
     return (
         <div className={s.root}>
             <div className={s.header}>
-                <Search callback={getData} placeholder={'Поиск по названию'} />
+                <Search value={search} callback={setSearch} placeholder={'Поиск по названию'} handler={getData}/>
                 <div
                     className={s.create_button_ok}
                     onClick={() => creteHandler()}

@@ -5,4 +5,4 @@
 export const httpServer = "https://admin.musictherapy.by";
 
 // herocku
-// export const httpServer = "https://elsadchess.herokuapp.com";
+// export const httpServer = "https://musictherapy96.herokuapp.com";

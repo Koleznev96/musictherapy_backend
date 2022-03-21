@@ -11,17 +11,20 @@ module.exports.login = async function(req, res) {
     if (candidate) {
         const passwordResult = req.body.password === candidate.password;
         if (passwordResult) {
-            const token = jwt.sign({
-                email: candidate.email,
-                userId: candidate._id,
-            }, keys.jwt, {expiresIn: 60000 * 60000});
+            // const token = jwt.sign({
+            //     email: candidate.email,
+            //     userId: candidate._id,
+            // }, keys.jwt, {expiresIn: 60000 * 60000});
+
+            const token = 'sdfgsdgf456fdgs' + candidate._id;
+
+            candidate.token = `Bearer ${token}`;
+            candidate.date_last_activity = new Date();
+            await candidate.save();
 
             res.status(200).json({
                 token: `Bearer ${token}`
             });
-
-            candidate.date_last_activity = new Date();
-            await candidate.save();
         } else {
             res.status(409).json({
                 errors: [['email', 'Неверный пароль или e-mail.'], ['password', 'Неверный пароль или e-mail.']]
@@ -57,7 +60,7 @@ module.exports.register = async function(req, res) {
             res.status(201).json({tokenCode});
         } catch(e) {
             errorHandler(res, e);
-            throw e;
+            // throw e;
         }
     }
 }
@@ -75,27 +78,32 @@ module.exports.code_check = async function(req, res) {
         const date = new Date();
         const user = new User({
             email: req.body.email,
+            language: req.body.language ? req.body.language : 'ru',
             password: req.body.password,
             name: req.body.name,
             fullName: req.body.fullName,
             telephone: req.body.telephone,
             date_last_activity: date,
             registration_date: date,
+            access: "Гость"
         });
 
         await code_table.delete();
+        // const token = jwt.sign({
+        //     email: req.body.email,
+        //     userId: user._id,
+        // }, keys.jwt, {expiresIn: 60000 * 60000});
+        const token = 'sdfgsdgf456fdgs' + user._id;
+
+        user.token = `Bearer ${token}`;
         await user.save();
-        const token = jwt.sign({
-            email: user.email,
-            userId: user._id,
-        }, keys.jwt, {expiresIn: 60000 * 60000});
 
         res.status(201).json({
             token: `Bearer ${token}`
         });
     } catch(e) {
         errorHandler(res, e);
-        throw e;
+        // throw e;
     }
 }
 
@@ -114,6 +122,6 @@ module.exports.help_password = async function(req, res) {
         res.status(201).json('OK');
     } catch(e) {
         errorHandler(res, e);
-        throw e;
+        // throw e;
     }
 }

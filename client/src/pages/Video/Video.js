@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import s from './Video.module.scss';
 import {useHttp} from "../../hooks/http.hook";
 import {Search} from "../../components/search/Search";
-import {optionCreateVideo, optionVideo} from "../../constants/OptionsTable";
+import {optionCreateVideo, optionEditVideo, optionVideo} from "../../constants/OptionsTable";
 import {TableCard} from "../../components/tableCard/TableCard";
 import {AuthContext} from "../../context/authContext";
 import {PaginationTable} from "../../components/paginationTable/PaginationTable";
@@ -27,30 +27,33 @@ export const Video = () => {
         setData([...new_data]);
     }
 
-    const getData = async (page, search) => {
+    const getData = async (page, rel) => {
         page = page ? page : 0;
-        search = search?.length > 0 ? search : "null";
-        setSearch(search ? (search?.length > 0 ? search : "null") : "null");
+        let search_ = search?.length > 0 ? search : "null";
+        if (rel === "null") {
+            search_ = "null";
+            setSearch("");
+        }
         try {
-            const answer = await request(`/api/admin_panel/video/${page}/${search}`, 'GET', null, {
+            const answer = await request(`/api/admin_panel/video/${page}/${search_}`, 'GET', null, {
                 Authorization: auth.token
             });
             setPage(page);
-            setEndPage(answer.count_page);
-            setData(answer.data);
+            setEndPage(answer?.count_page);
+            setData(answer?.data);
         } catch (e){}
     }
 
     useEffect(() => {getData(0, "null")}, []);
 
     const creteHandler = () => {
-        popupForm.openHandler(<Form data={null} option={optionCreateVideo} reload={getData}/>);
+        popupForm.openHandler(<Form data={null} option={optionCreateVideo} reload={getData} optionEdit={optionVideo}/>);
     }
 
     return (
         <div className={s.root}>
             <div className={s.header}>
-                <Search callback={getData} placeholder={'Поиск по названию'} />
+                <Search value={search} callback={setSearch} placeholder={'Поиск по названию'} handler={getData}/>
                 <div
                     className={s.create_button_ok}
                     onClick={() => creteHandler()}
@@ -60,7 +63,7 @@ export const Video = () => {
                     </div>
                 </div>
             </div>
-            <TableCard option={optionVideo} data={data} loading={loading} reload={getData} setData={filtersData} />
+            <TableCard option={optionVideo} data={data} loading={loading} reload={getData} setData={filtersData} optionEdit={optionEditVideo}/>
             <div className={s.footer}>
                 <PaginationTable page={page} endPage={endPage} startPage={startPage} getData={getData} search={search} />
             </div>

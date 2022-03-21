@@ -5,8 +5,16 @@ const passport = require('passport');
 
 
 router.get('/data',
-    passport.authenticate('jwt', {session: false}),
+    // passport.authenticate('jwt', {session: false}),
     controller.get_data);
+
+router.post('/re_data',
+    // passport.authenticate('jwt', {session: false}),
+    controller.re_data);
+
+router.get('/translation/:language',
+    // passport.authenticate('jwt', {session: false}),
+    controller.translation);
 
 
 module.exports = router;
