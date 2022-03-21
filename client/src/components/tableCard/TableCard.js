@@ -124,7 +124,9 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
                             if (!field_item.not_see)
                                 return (
                                     <td className={GlobalStyle.CustomFontRegular + ' ' + s.td}>
-                                        {(field_item.type === 'bool') ? (
+                                        {!data_item[field_item.value] ? '' : (
+
+                                            (field_item.type === 'bool') ? (
                                             field_item.list_value?.find(element => element.value === data_item[field_item.value])?.label
                                             // data_item[field_item.value] === 'meditation' ? 'Медитация' : (data_item[field_item.value] === 'classic' ? 'Классика HD' : 'Инструменты')
                                         ) : (
@@ -139,12 +141,13 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
                                                 // data_item[field_item.value]
                                             ) : (
                                                 field_item.translation ? (
+                                                    // 'kkk'
                                                     String(data_item[field_item.value][0].value).length > 35 ? (data_item[field_item.value][0].value.slice(0, 35) + '...') : data_item[field_item.value][0].value
                                                 ) : (
                                                 String(data_item[field_item.value]).length > 35 ? (data_item[field_item.value].slice(0, 35) + '...') : data_item[field_item.value]
                                                 )
                                         )))
-                                        }
+                                        )}
                                     </td>
                                 )
                         })}

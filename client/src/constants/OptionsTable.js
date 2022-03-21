@@ -219,7 +219,7 @@ export const optionPoster = {
         {
             translation: true,
             label: 'Название',
-            value: 'label',
+            value: 'label_',
             type: "input_translation",
             filter: true,
             default: [{language: 'ru', value: ''}, {language: 'com', value: ''}],
@@ -263,7 +263,7 @@ export const optionEditVideo = {
         {
             translation: true,
             label: 'Название',
-            value: 'label',
+            value: 'label_',
             type: "input_translation",
             filter: true,
             default: [{language: 'ru', value: ''}, {language: 'com', value: ''}],
@@ -300,7 +300,7 @@ export const optionEditVideo = {
         {
             translation: true,
             label: 'Постер для видео',
-            value: 'poster',
+            value: 'poster_',
             type: "img_translation",
             filter: false,
             default: [{language: 'ru', value: ''}, {language: 'com', value: ''}],
@@ -315,7 +315,7 @@ export const optionEditVideo = {
         {
             translation: true,
             label: 'Описание',
-            value: 'text',
+            value: 'text_',
             type: "inputarrea_translation",
             filter: false,
             default: [{language: 'ru', value: ''}, {language: 'com', value: ''}],
@@ -338,7 +338,7 @@ export const optionVideo = {
         {
             translation: true,
             label: 'Название',
-            value: 'label',
+            value: 'label_',
             type: "input_translation",
             filter: true,
             default: [{language: 'ru', value: ''}, {language: 'com', value: ''}],
@@ -370,7 +370,7 @@ export const optionVideo = {
         {
             translation: true,
             label: 'Постер для видео',
-            value: 'poster',
+            value: 'poster_',
             type: "img_translation",
             filter: false,
             default: [{language: 'ru', value: ''}, {language: 'com', value: ''}],
@@ -385,7 +385,7 @@ export const optionVideo = {
         {
             translation: true,
             label: 'Описание',
-            value: 'text',
+            value: 'text_',
             type: "inputarrea_translation",
             filter: false,
             default: [{language: 'ru', value: ''}, {language: 'com', value: ''}],
@@ -544,7 +544,7 @@ export const optionCreateVideo = {
         {
             translation: true,
             label: 'Название',
-            value: 'label',
+            value: 'label_',
             type: "input_translation",
             filter: true,
             default: [{language: 'ru', value: ''}, {language: 'com', value: ''}],
@@ -568,7 +568,7 @@ export const optionCreateVideo = {
         {
             translation: true,
             label: 'Постер для видео',
-            value: 'poster',
+            value: 'poster_',
             type: "img_translation",
             filter: false,
             default: [{language: 'ru', value: ''}, {language: 'com', value: ''}],
@@ -583,7 +583,7 @@ export const optionCreateVideo = {
         {
             translation: true,
             label: 'Описание',
-            value: 'text',
+            value: 'text_',
             type: "inputarrea_translation",
             filter: false,
             default: [{language: 'ru', value: ''}, {language: 'com', value: ''}],
@@ -659,7 +659,7 @@ export const optionCreatePoster = {
         {
             translation: true,
             label: 'Название',
-            value: 'label',
+            value: 'label_',
             type: "input_translation",
             filter: true,
             default: [{language: 'ru', value: ''}, {language: 'com', value: ''}],

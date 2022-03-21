@@ -25,11 +25,20 @@ router.get('/meditation/ios/:page',
 router.get('/classic/ios/:page',
     controller.get_list_classic_ios);
 
-router.get('/audio/:category/:page',
-    controller.get_list_audio_ios);
+router.get('/v2/live_sound/ios/:page',
+    controller.get_v2_list_live_sound_ios);
 
-router.get('/tool/ios/:page',
+router.get('/v2/meditation/ios/:page',
+    controller.get_v2_list_meditation_ios);
+
+router.get('/v2/classic/ios/:page',
+    controller.get_v2_list_classic_ios);
+
+router.get('/v2/tool/ios/:page',
     controller.get_list_tool_ios);
+
+router.get('/audio/:category/:page',
+    controller.get_v2_list_audio_ios);
 
 router.post('/video/like/:status',
     controller.video_like);

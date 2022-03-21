@@ -280,7 +280,7 @@ module.exports.get_list_video = async function(req, res) {
         }
 
         const page = (Number(req.params.page)) * limitPageDataVeb;
-        const filter = req.params.label ? (req.params.label !== "null" ? {label: {$elemMatch: {value: {$regex: req.params.label}}}} : {}): {};
+        const filter = req.params.label ? (req.params.label !== "null" ? {label_: {$elemMatch: {value: {$regex: req.params.label}}}} : {}): {};
         let data = await Video.find(filter, null, { skip: page, limit: limitPageDataVeb });
         const count_page = Math.ceil((await Video.find(filter).count()) / limitPageDataVeb) - 1;
 

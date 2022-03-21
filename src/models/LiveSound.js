@@ -4,7 +4,11 @@ const liveSoundSchema = new Schema({
     language: [
         String
     ],
-    label: [
+    label: {
+        String,
+        required: false,
+    },
+    label_: [
         {
             language: String,
             value: String,

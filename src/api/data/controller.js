@@ -11,6 +11,86 @@ const Version = require("../../models/Version");
 const {checkLanguage} = require("./detectionLanguage");
 
 
+module.exports.get_list_live_sound_ios = async function(req, res) {
+    try {
+        let access = "Без регистрации";
+        const page = Number(req.params.page);
+        let filter = {language: {$eq: 'ru'}};
+        let data = await LiveSound.find(filter, null, { skip: page, limit: limitPageData });
+        const count_page = (await LiveSound.find({}).count());
+        for (let i = 0; i < data.length; i++) {
+            // if (data[i].access.indexOf(access) === -1) {
+            //     data.splice(i, 1);
+            //     continue;
+            // }
+            data[i].label = data[i].label_?.find(item => item.language === 'ru')?.value;
+        }
+        res.status(201).json({data, page, count_page, end_page: count_page <= page + limitPageData, access});
+    } catch(e) {
+        errorHandler(res, e);
+        console.log('err-', e)
+        // throw e;
+    }
+}
+
+module.exports.get_list_meditation_ios = async function(req, res) {
+    try {
+        const check = await checkUser.check(req, res);
+        let access = "Без регистрации";
+        if (check?._id) {
+            access = check.access ? check.access : "Гость";
+        }
+        const page = Number(req.params.page);
+        let filter = {language: {$eq: 'ru'}};
+        filter.category = "meditation";
+        let data = await Video.find(filter, null, { skip: page, limit: limitPageData });
+        const count_page = (await Video.find(filter).count());
+        for (let i = 0; i < data.length; i++) {
+            if (data[i].access.indexOf(access) === -1) {
+                data.splice(i, 1);
+                continue;
+            }
+            data[i].label = data[i].label_?.find(item => item.language === 'ru')?.value;
+            data[i].poster = data[i].poster_?.find(item => item.language === 'ru')?.value;
+            data[i].text = data[i].text_?.find(item => item.language === 'ru')?.value;
+        }
+        res.status(201).json({data, page, count_page, end_page: count_page <= page + limitPageData, access});
+    } catch(e) {
+        errorHandler(res, e);
+        // throw e;
+    }
+}
+
+module.exports.get_list_classic_ios = async function(req, res) {
+    try {
+        const check = await checkUser.check(req, res);
+        let access = "Без регистрации";
+        if (check?._id) {
+            access = check.access ? check.access : "Гость";
+        }
+        const page = Number(req.params.page);
+        let filter = {language: {$eq: 'ru'}};
+        filter.category = "classic";
+        let data = await Video.find(filter, null, { skip: page, limit: limitPageData });
+        const count_page = (await Video.find(filter).count());
+
+        for (let i = 0; i < data.length; i++) {
+            if (data[i].access.indexOf(access) === -1) {
+                data.splice(i, 1);
+                continue;
+            }
+            data[i].label = data[i].label_?.find(item => item.language === 'ru')?.value;
+            data[i].poster = data[i].poster_?.find(item => item.language === 'ru')?.value;
+            data[i].text = data[i].text_?.find(item => item.language === 'ru')?.value;
+        }
+        res.status(201).json({data, page, count_page, end_page: count_page <= page + limitPageData, access});
+    } catch(e) {
+        errorHandler(res, e);
+        // throw e;
+    }
+}
+
+
 module.exports.get_list_live_sound = async function(req, res) {
     try {
         const page = Number(req.params.page);
@@ -76,7 +156,7 @@ module.exports.get_list_user = async function(req, res) {
     }
 }
 
-module.exports.get_list_live_sound_ios = async function(req, res) {
+module.exports.get_v2_list_live_sound_ios = async function(req, res) {
     try {
         const check = await checkUser.check(req, res);
         let access = "Без регистрации";
@@ -88,9 +168,9 @@ module.exports.get_list_live_sound_ios = async function(req, res) {
         let data = await LiveSound.find(filter);
         // let data = await LiveSound.find(filter, null, { skip: page, limit: limitPageData });
         // const count_page = (await LiveSound.find({}).count());
-        for (let i = 0; i < data.length; i++) {
-            data[i].dostup = !!(!data[i].access || data[i].access.indexOf(access));
-        }
+        // for (let i = 0; i < data.length; i++) {
+        //     data[i].dostup = !!(!data[i].access || data[i].access.indexOf(access) !== -1);
+        // }
         res.status(201).json({data, page, count_page: 1, end_page: true, access});
     } catch(e) {
         errorHandler(res, e);
@@ -98,7 +178,7 @@ module.exports.get_list_live_sound_ios = async function(req, res) {
     }
 }
 
-module.exports.get_list_meditation_ios = async function(req, res) {
+module.exports.get_v2_list_meditation_ios = async function(req, res) {
     try {
         const check = await checkUser.check(req, res);
         let access = "Без регистрации";
@@ -139,7 +219,7 @@ module.exports.get_list_meditation_ios = async function(req, res) {
     }
 }
 
-module.exports.get_list_audio_ios = async function(req, res) {
+module.exports.get_v2_list_audio_ios = async function(req, res) {
     try {
         const check = await checkUser.check(req, res);
         if (!check._id) {
@@ -166,7 +246,7 @@ module.exports.get_list_audio_ios = async function(req, res) {
     }
 }
 
-module.exports.get_list_classic_ios = async function(req, res) {
+module.exports.get_v2_list_classic_ios = async function(req, res) {
     try {
         const check = await checkUser.check(req, res);
         let access = "Без регистрации";

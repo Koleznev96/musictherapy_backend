@@ -4,13 +4,21 @@ const videoSchema = new Schema({
     language: [
         String
     ],
-    label: [
+    label: {
+        type: String,
+        required: false,
+    },
+    label_: [
         {
             language: String,
             value: String,
         },
     ],
-    poster: [
+    poster: {
+        type: String,
+        required: false,
+    },
+    poster_: [
         {
             language: String,
             value: String,
@@ -20,7 +28,11 @@ const videoSchema = new Schema({
         type: String,
         required: false,
     },
-    text: [
+    text: {
+        type: String,
+        required: false,
+    },
+    text_: [
         {
             language: String,
             value: String,
