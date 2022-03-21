@@ -9,15 +9,15 @@ node_modules
 client/node_modules
 /.pnp
 .pnp.js
-#./uploads/
-#/uploads/
+./uploads/
+/uploads/
 
-#client/build
-#client/build/
-#/client/build
-#/client/build/
-#./client/build/
-#./client/build
+client/build
+client/build/
+/client/build
+/client/build/
+./client/build/
+./client/build
 
 # testing
 /coverage
