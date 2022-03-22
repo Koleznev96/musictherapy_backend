@@ -142,10 +142,14 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
                                             ) : (
                                                 field_item.translation ? (
                                                     // 'kkk'
+                                                    Array.isArray(data_item[field_item.value]) ? (
                                                     String(data_item[field_item.value][0].value).length > 35 ? (data_item[field_item.value][0].value.slice(0, 35) + '...') : data_item[field_item.value][0].value
-                                                ) : (
-                                                String(data_item[field_item.value]).length > 35 ? (data_item[field_item.value].slice(0, 35) + '...') : data_item[field_item.value]
-                                                )
+                                                    ): ''
+                                                    ) : (
+                                                    Array.isArray(data_item[field_item.value]) ? (
+                                                    String(data_item[field_item.value]).length > 35 ? (data_item[field_item.value].slice(0, 35) + '...') : data_item[field_item.value]
+                                                    ): ''
+                                                    )
                                         )))
                                         )}
                                     </td>
