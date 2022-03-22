@@ -141,14 +141,16 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
                                                 // data_item[field_item.value]
                                             ) : (
                                                 field_item.translation ? (
+                                                    console.log('hhhh-', data_item[field_item.value])
                                                     // 'kkk'
-                                                    Array.isArray(data_item[field_item.value]) ? (
-                                                    String(data_item[field_item.value][0].value).length > 35 ? (data_item[field_item.value][0].value.slice(0, 35) + '...') : data_item[field_item.value][0].value
-                                                    ): ''
+                                                    // Array.isArray(data_item[field_item.value]) ? (
+                                                    // String(data_item[field_item.value][0].value).length > 35 ? (data_item[field_item.value][0].value.slice(0, 35) + '...') : data_item[field_item.value][0].value
+                                                    // ): ''
                                                     ) : (
-                                                    Array.isArray(data_item[field_item.value]) ? (
-                                                    String(data_item[field_item.value]).length > 35 ? (data_item[field_item.value].slice(0, 35) + '...') : data_item[field_item.value]
-                                                    ): ''
+                                                    console.log('jjjjj-', data_item[field_item.value])
+                                                    // Array.isArray(data_item[field_item.value]) ? (
+                                                    // String(data_item[field_item.value]).length > 35 ? (data_item[field_item.value].slice(0, 35) + '...') : data_item[field_item.value]
+                                                    // ): ''
                                                     )
                                         )))
                                         )}
