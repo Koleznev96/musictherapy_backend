@@ -97,6 +97,9 @@ export const FieldFileTranslation = ({label, name, change, value, languages}) =>
             </div>
             <div className={s.root_file}>
                 <input
+                    //
+                    onChange={(value) => editFiled(value.target.value, itemMenu)}
+                    //
                     value={boxField[itemMenu]?.value}
                     type='text'
                     className={s.input_file}
