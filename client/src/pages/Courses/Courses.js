@@ -1,8 +1,14 @@
 import React, {useContext, useEffect, useState} from 'react';
-import s from './Poster.module.scss';
+import s from './Courses.module.scss';
 import {useHttp} from "../../hooks/http.hook";
 import {Search} from "../../components/search/Search";
-import {optionCreatePoster, optionCreateVideo, optionPoster, sortNumberFunction} from "../../constants/OptionsTable";
+import {
+    optionCourses, optionCreateCourses,
+    optionCreatePoster,
+    optionCreateVideo, optionEditCourses,
+    optionPoster,
+    sortNumberFunction
+} from "../../constants/OptionsTable";
 import {TableCard} from "../../components/tableCard/TableCard";
 import {AuthContext} from "../../context/authContext";
 import {PaginationTable} from "../../components/paginationTable/PaginationTable";
@@ -11,7 +17,7 @@ import {Form} from "../../components/tableCard/Forml";
 import GlobalStyle from "../../components/GlobalStyle.module.scss";
 
 
-export const Poster = () => {
+export const Courses = () => {
     const auth = useContext(AuthContext);
     const popupForm = usePopupForm();
     const [data, setData] = useState([]);
@@ -33,7 +39,7 @@ export const Poster = () => {
             setSearch("");
         }
         try {
-            const answer = await request(`/api/admin_panel/live_sound/${page}/${search_}`, 'GET', null, {
+            const answer = await request(`/api/admin_panel/courses/${page}/${search_}`, 'GET', null, {
                 Authorization: auth.token
             });
             setPage(page);
@@ -45,7 +51,7 @@ export const Poster = () => {
     useEffect(() => {getData(0, "null")}, []);
 
     const creteHandler = () => {
-        popupForm.openHandler(<Form data={null} option={optionCreatePoster} reload={getData} optionEdit={optionPoster}/>);
+        popupForm.openHandler(<Form data={null} option={optionCreateCourses} reload={getData} optionEdit={optionCreateCourses}/>);
     }
 
     return (
@@ -57,12 +63,13 @@ export const Poster = () => {
                     onClick={() => creteHandler()}
                 >
                     <div className={GlobalStyle.CustomFontRegular + ' ' + s.create_button_ok_text}>
-                        Добавить новую афишу
+                        Добавить новый курс
                     </div>
                 </div>
             </div>
             <TableCard
-                option={optionPoster}
+                optionEdit={optionEditCourses}
+                option={optionCourses}
                 data={data}
                 loading={loading}
                 reload={getData}

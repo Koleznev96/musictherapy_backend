@@ -7,22 +7,10 @@ import {AuthContext} from "../../context/authContext";
 import ClipLoader from "react-spinners/ClipLoader";
 import {ColorsStyles} from "../../constants/ColorsStyles";
 import {useHttp} from "../../hooks/http.hook";
-import {FieldInput} from "../form/FielsInput";
-import {FieldDate} from "../form/FielsDate";
-import {FieldFile} from "../form/FielsFile";
-import {FieldText} from "../form/FielsText";
-import {FieldVideo} from "../form/FielsVideo";
-import {FieldBool} from "../form/FielsBool";
 import {PushInfo} from "../pushInfo/PushInfo";
-import {FieldBox} from "../form/FielsBox";
 import Scrollbars from "react-custom-scrollbars-2";
-import {FieldInputTranslation} from "../form/FielsInputTranslation";
-import {optionLanguages} from "../../constants/OptionsTable";
-import {FieldFileTranslation} from "../form/FielsFileTranslation";
-import {FieldTextTranslation} from "../form/FielsTextTranslation";
+import {listField, optionLanguages} from "../../constants/OptionsTable";
 import cloneDeep from 'lodash/cloneDeep';
-import {FieldDateFull} from "../form/FielsDateFull";
-import {FieldDoubleFields} from "../form/FielsDoubleFields";
 
 
 export const Form = ({data, option, reload, optionQuestionnaire, optionPassword, optionEdit, optionSettings}) => {
@@ -44,7 +32,19 @@ export const Form = ({data, option, reload, optionQuestionnaire, optionPassword,
     useEffect(() => {
         let field = {};
         option?.fields?.forEach(item => {
-            if (item.type === "double_fields") {
+            if (item.type === "list_menu") {
+                item?.list_menu_fields?.forEach(item_menu => {
+                    item_menu?.forEach(element => {
+                        if (element.type === "double_fields") {
+                            field[element.fields[0].value] = data ? data[element.fields[0].value] : cloneDeep(element.fields[0].default);
+                            field[element.fields[1].value] = data ? data[element.fields[1].value] : cloneDeep(element.fields[1].default);
+                        } else
+                        field[element.value] = data ? data[element.value] : cloneDeep(element.default);
+                    });
+                });
+                // field[item.fields[0].value] = data ? data[item.fields[0].value] : cloneDeep(item.fields[0].default);
+                // field[item.fields[1].value] = data ? data[item.fields[1].value] : cloneDeep(item.fields[1].default);
+            } else if (item.type === "double_fields") {
                 field[item.fields[0].value] = data ? data[item.fields[0].value] : cloneDeep(item.fields[0].default);
                 field[item.fields[1].value] = data ? data[item.fields[1].value] : cloneDeep(item.fields[1].default);
             } else
@@ -145,22 +145,6 @@ export const Form = ({data, option, reload, optionQuestionnaire, optionPassword,
         }
     }
 
-    const listField = (item, change, value) => {
-        if (item.type === 'input') return <FieldInput label={item.label} name={item.value} change={change} value={value[item.value]} />;
-        if (item.type === 'bool') return <FieldBool label={item.label} name={item.value} change={change} value={value[item.value]} list_value={item.list_value} />;
-        if (item.type === 'box') return <FieldBox label={item.label} name={item.value} change={change} value={value[item.value]} list_value={item.list_value} />;
-        if (item.type === 'date') return <FieldDate label={item.label} name={item.value} change={change} value={value[item.value]} />;
-        if (item.type === 'date_full') return <FieldDateFull label={item.label} name={item.value} change={change} value={value[item.value]} />;
-        if (item.type === 'img') return <FieldFile label={item.label} name={item.value} change={change} value={value[item.value]} />;
-        if (item.type === 'video') return <FieldVideo label={item.label} name={item.value} change={change} value={value[item.value]} />;
-        if (item.type === 'inputarrea') return <FieldText label={item.label} name={item.value} change={change} value={value[item.value]} />;
-        if (item.type === 'inputarrea_translation') return <FieldTextTranslation label={item.label} name={item.value} change={change} value={value[item.value]} languages={optionLanguages} />;
-        if (item.type === 'img_translation') return <FieldFileTranslation label={item.label} name={item.value} change={change} value={value[item.value]} languages={optionLanguages} />;
-        if (item.type === 'input_translation') return <FieldInputTranslation label={item.label} name={item.value} change={change} value={value[item.value]} languages={optionLanguages} />;
-        if (item.type === 'double_fields') return <FieldDoubleFields fields={item.fields} change={change} value={value} />;
-        return null;
-    }
-
     return (
         <div className={s.root_popup}>
             <div className={s.popup_header}>
@@ -202,23 +186,24 @@ export const Form = ({data, option, reload, optionQuestionnaire, optionPassword,
             <Scrollbars style={{width: '100%', height: '60vh', marginTop: 18}}>
                 <div className={s.items}>
                     {activeMenu === 0 && (
+
                         option?.fields?.map(item => {
-                            return listField(item, changeRoot, value)
+                            return listField({item: item, change: changeRoot, value: value, optionLanguages: optionLanguages, id_data: data?._id})
                         })
                     )}
                     {activeMenu === 1 && (
                         optionQuestionnaire?.fields?.map(item => {
-                            return listField(item, changeQuestionnaire, questionnaire)
+                            return listField({item: item, change: changeQuestionnaire, value: questionnaire, optionLanguages: optionLanguages})
                         })
                     )}
                     {activeMenu === 2 && (
                         optionPassword?.fields?.map(item => {
-                            return listField(item, changePassword, password)
+                            return listField({item: item, change: changePassword,value:  password, optionLanguages: optionLanguages})
                         })
                     )}
                     {activeMenu === 3 && (
                         optionSettings?.fields?.map(item => {
-                            return listField(item, changeSettings, settings)
+                            return listField({item: item, change: changeSettings, value: settings, optionLanguages: optionLanguages})
                         })
                     )}
                 </div>

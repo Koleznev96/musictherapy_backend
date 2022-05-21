@@ -16,6 +16,48 @@ router.get('/classic/:page',
     passport.authenticate('jwt', {session: false}),
     controller.get_list_classic);
 
+router.get('/get_list_test',
+    controller.get_list_test);
+
+router.get('/get_list_course',
+    controller.get_list_course);
+
+// начать тест
+router.post('/start_test',
+    controller.start_test);
+
+// начать курс
+router.post('/start_course',
+    controller.start_course);
+
+// получение вопроса
+router.get('/get_question_test/:id_test/:id_user_test/:number',
+    controller.get_question_test);
+
+// получение урока
+router.get('/get_lesson_course/:course_id/:user_course_id/:number',
+    controller.get_lesson_course);
+
+// ответи на тест
+router.post('/answer_question_test',
+    controller.answer_question_test);
+
+// ответи на урок
+router.post('/answer_question_lesson',
+    controller.answer_question_lesson);
+
+// завершение теста
+router.post('/complete_test',
+    controller.complete_test);
+
+// завершить курс
+router.post('/complete_course',
+    controller.complete_course);
+
+// получение результата по тесту
+router.get('/test_return_result/:id/:user_test_id',
+    controller.test_return_result);
+
 router.get('/live_sound/ios/:page',
     controller.get_list_live_sound_ios);
 

@@ -6,6 +6,10 @@ import {Users} from "./pages/Users/Users";
 import {Poster} from "./pages/Poster/Poster";
 import {Video} from "./pages/Video/Video";
 import {Audio} from "./pages/Audio/Audio";
+// import {Maps} from "./pages/Maps/Maps";
+import {Tests} from "./pages/Tests/Tests";
+import {Courses} from "./pages/Courses/Courses";
+
 
 export const useRoutes = (isAuthenticated) => {
     if (isAuthenticated) {
@@ -25,6 +29,18 @@ export const useRoutes = (isAuthenticated) => {
                     <Route path="/admin_panel/posters" exact>
                         <Poster />
                     </Route>
+                    <Route path="/admin_panel/tests" exact>
+                        <Tests />
+                    </Route>
+                    <Route path="/admin_panel/courses" exact>
+                        <Courses />
+                    </Route>
+                    {/*<Route path="/admin_panel/maps" exact>*/}
+                    {/*    <Maps />*/}
+                    {/*</Route>*/}
+                    {/*<Route path="/admin_panel/consultant" exact>*/}
+                    {/*    <Test />*/}
+                    {/*</Route>*/}
                     <Redirect to="/admin_panel/users" />
                 </Switch>
             </>

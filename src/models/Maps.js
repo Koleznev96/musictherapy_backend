@@ -1,13 +1,9 @@
 const {Schema, model} = require('mongoose');
 
-const liveSoundSchema = new Schema({
+const mapsSchema = new Schema({
     language: [
         String
     ],
-    label: {
-        String,
-        required: false,
-    },
     label_: [
         {
             language: String,
@@ -22,18 +18,10 @@ const liveSoundSchema = new Schema({
         type: String,
         required: true,
     },
-    date_event: {
-        type: Date,
-        required: false,
-    },
-    date: {
-        type: Date,
-        required: false,
-    },
     number: {
         type: Number,
         required: false,
     },
 });
 
-module.exports = model('LiveSound', liveSoundSchema);
+module.exports = model('Maps', mapsSchema);

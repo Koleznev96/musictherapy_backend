@@ -1,17 +1,26 @@
 import React, {useContext, useEffect, useState} from 'react';
-import s from './Poster.module.scss';
+import s from './Maps.module.scss';
 import {useHttp} from "../../hooks/http.hook";
 import {Search} from "../../components/search/Search";
-import {optionCreatePoster, optionCreateVideo, optionPoster, sortNumberFunction} from "../../constants/OptionsTable";
+import {
+    optionCreateMaps,
+    optionCreateVideo, optionEditMaps,
+    optionEditVideo,
+    optionMaps,
+    optionVideo,
+    sortNumberFunction
+} from "../../constants/OptionsTable";
 import {TableCard} from "../../components/tableCard/TableCard";
 import {AuthContext} from "../../context/authContext";
 import {PaginationTable} from "../../components/paginationTable/PaginationTable";
+import ClipLoader from "react-spinners/ClipLoader";
+import {ColorsStyles} from "../../constants/ColorsStyles";
+import GlobalStyle from "../../components/GlobalStyle.module.scss";
 import {usePopupForm} from "../../hooks/usePopupForm";
 import {Form} from "../../components/tableCard/Forml";
-import GlobalStyle from "../../components/GlobalStyle.module.scss";
 
 
-export const Poster = () => {
+export const Maps = () => {
     const auth = useContext(AuthContext);
     const popupForm = usePopupForm();
     const [data, setData] = useState([]);
@@ -33,19 +42,20 @@ export const Poster = () => {
             setSearch("");
         }
         try {
-            const answer = await request(`/api/admin_panel/live_sound/${page}/${search_}`, 'GET', null, {
+            const answer = await request(`/api/admin_panel/maps/${page}/${search_}`, 'GET', null, {
                 Authorization: auth.token
             });
+            // Выполнить сортировку по полю number
             setPage(page);
-            setEndPage(answer.count_page);
-            setData(sortNumberFunction(answer.data));
+            setEndPage(answer?.count_page);
+            setData(sortNumberFunction(answer?.data));
         } catch (e){}
     }
 
     useEffect(() => {getData(0, "null")}, []);
 
     const creteHandler = () => {
-        popupForm.openHandler(<Form data={null} option={optionCreatePoster} reload={getData} optionEdit={optionPoster}/>);
+        popupForm.openHandler(<Form data={null} option={optionCreateMaps} reload={getData} optionEdit={optionMaps}/>);
     }
 
     return (
@@ -57,17 +67,18 @@ export const Poster = () => {
                     onClick={() => creteHandler()}
                 >
                     <div className={GlobalStyle.CustomFontRegular + ' ' + s.create_button_ok_text}>
-                        Добавить новую афишу
+                        Добавить новую карту
                     </div>
                 </div>
             </div>
             <TableCard
-                option={optionPoster}
+                option={optionMaps}
                 data={data}
                 loading={loading}
                 reload={getData}
                 setData={filtersData}
-                table_name={"live_sound"}
+                optionEdit={optionEditMaps}
+                table_name={"maps"}
             />
             <div className={s.footer}>
                 <PaginationTable page={page} endPage={endPage} startPage={startPage} getData={getData} search={search} />

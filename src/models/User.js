@@ -44,7 +44,14 @@ const userSchema = new Schema({
     questionnaire: {
         type: JSON,
         required: false,
-    }
+    },
+    available_courses: [
+        {
+            course_id: String,
+            start_date: Date,
+            end_date: Date,
+        }
+    ],
 });
 
 module.exports = model('User', userSchema);

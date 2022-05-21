@@ -27,6 +27,15 @@ router.post('/create_video',
 router.post('/create_audio',
     controller.create_audio);
 
+router.post('/create_map',
+    controller.create_map);
+
+router.post('/create_test',
+    controller.create_test);
+
+router.post('/create_course',
+    controller.create_course);
+
 router.get('/live_sound/:page/:label',
     controller.get_list_live_sound);
 
@@ -35,6 +44,24 @@ router.get('/video/:page/:label',
 
 router.get('/audio/:page/:label/:category/:genre',
     controller.get_list_audio);
+
+router.get('/maps/:page/:label',
+    controller.get_list_maps);
+
+router.get('/test/:page/:label',
+    controller.get_list_test);
+
+router.get('/courses/:page/:label',
+    controller.get_list_courses);
+
+router.get('/courses_mini_list',
+    controller.get_mini_list_courses);
+
+router.get('/lessons_course/:id',
+    controller.get_lessons_course);
+
+router.get('/questions_test/:id',
+    controller.get_questions_test);
 
 router.get('/meditation/:page/:label',
     controller.get_list_meditation);
@@ -54,6 +81,15 @@ router.post('/re_video',
 router.post('/re_audio',
     controller.re_audio);
 
+router.post('/re_map',
+    controller.re_map);
+
+router.post('/re_test',
+    controller.re_test);
+
+router.post('/re_course',
+    controller.re_course);
+
 router.post('/re_user',
     controller.re_user);
 
@@ -65,6 +101,15 @@ router.post('/delete_video',
 
 router.post('/delete_audio',
     controller.delete_audio);
+
+router.post('/delete_map',
+    controller.delete_map);
+
+router.post('/delete_test',
+    controller.delete_test);
+
+router.post('/delete_course',
+    controller.delete_course);
 
 router.get('/test_email',
     controller.test_email);
@@ -80,5 +125,8 @@ router.post('/re_translation',
 
 router.post('/re_version',
     controller.re_version);
+
+router.post('/reordering',
+    controller.reordering);
 
 module.exports = router;

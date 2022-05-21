@@ -56,7 +56,11 @@ const videoSchema = new Schema({
     dostup: {
         type: String,
         required: false,
-    }
+    },
+    number: {
+        type: Number,
+        required: false,
+    },
 });
 
 module.exports = model('Video', videoSchema);

@@ -7,21 +7,10 @@ import {AuthContext} from "../../context/authContext";
 import ClipLoader from "react-spinners/ClipLoader";
 import {ColorsStyles} from "../../constants/ColorsStyles";
 import {useHttp} from "../../hooks/http.hook";
-import {FieldInput} from "../form/FielsInput";
-import {FieldDate} from "../form/FielsDate";
-import {FieldFile} from "../form/FielsFile";
-import {FieldText} from "../form/FielsText";
-import {FieldVideo} from "../form/FielsVideo";
-import {FieldBool} from "../form/FielsBool";
 import {PushInfo} from "../pushInfo/PushInfo";
-import {FieldBox} from "../form/FielsBox";
 import Scrollbars from "react-custom-scrollbars-2";
-import {Link, NavLink} from "react-router-dom";
 import {httpServer} from "../../const";
-import {FieldTextTranslation} from "../form/FielsTextTranslation";
-import {optionLanguages} from "../../constants/OptionsTable";
-import {FieldFileTranslation} from "../form/FielsFileTranslation";
-import {FieldInputTranslation} from "../form/FielsInputTranslation";
+import {listField, optionLanguages} from "../../constants/OptionsTable";
 
 
 export const FormReTranslation = ({data, option, reload, status}) => {
@@ -85,20 +74,6 @@ export const FormReTranslation = ({data, option, reload, status}) => {
         }
     }
 
-    const listField = (item, change, value) => {
-        if (item.type === 'input') return <FieldInput label={item.label} name={item.value} change={change} value={value[item.value]} />;
-        if (item.type === 'bool') return <FieldBool label={item.label} name={item.value} change={change} value={value[item.value]} list_value={item.list_value} />;
-        if (item.type === 'box') return <FieldBox label={item.label} name={item.value} change={change} value={value[item.value]} list_value={item.list_value} />;
-        if (item.type === 'date') return <FieldDate label={item.label} name={item.value} change={change} value={value[item.value]} />;
-        if (item.type === 'img') return <FieldFile label={item.label} name={item.value} change={change} value={value[item.value]} />;
-        if (item.type === 'video') return <FieldVideo label={item.label} name={item.value} change={change} value={value[item.value]} />;
-        if (item.type === 'inputarrea') return <FieldText label={item.label} name={item.value} change={change} value={value[item.value]} />;
-        if (item.type === 'inputarrea_translation') return <FieldTextTranslation label={item.label} name={item.value} change={change} value={value[item.value]} languages={optionLanguages} />;
-        if (item.type === 'img_translation') return <FieldFileTranslation label={item.label} name={item.value} change={change} value={value[item.value]} languages={optionLanguages} />;
-        if (item.type === 'input_translation') return <FieldInputTranslation label={item.label} name={item.value} change={change} value={value[item.value]} languages={optionLanguages} />;
-        return null;
-    }
-
     const sampleTranslationHandler = () => {
 
     }
@@ -127,7 +102,7 @@ export const FormReTranslation = ({data, option, reload, status}) => {
                     ): null}
                     {
                         option?.fields?.map(item => {
-                            return listField(item, changeRoot, value)
+                            return listField({item: item, change: changeRoot, value: value, optionLanguages: optionLanguages})
                         })
                     }
                 </div>

@@ -27,7 +27,23 @@ const label_menu = [
     {
         label: 'Афиши',
         url: '/admin_panel/posters'
-    }
+    },
+    // {
+    //     label: 'Карты',
+    //     url: '/admin_panel/maps'
+    // },
+    {
+        label: 'Тесты',
+        url: '/admin_panel/tests'
+    },
+    {
+        label: 'Курсы',
+        url: '/admin_panel/courses'
+    },
+    // {
+    //     label: 'Консультант',
+    //     url: '/admin_panel/consultant'
+    // },
 ];
 
 export const Header = () => {

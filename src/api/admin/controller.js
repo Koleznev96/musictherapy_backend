@@ -4,17 +4,26 @@ const Video = require('../../models/Video');
 const Audio = require('../../models/Audio');
 const Admin = require('../../models/Admin');
 const User = require('../../models/User');
+const Test = require('../../models/Test');
+const LessonsCourses = require('../../models/LessonsCourses');
+const QuestionsTest = require('../../models/QuestionsTest');
 const Questionnaire = require('../../models/Questionnaire');
+const UserTest = require('../../models/UserTest');
+const UserCourse = require('../../models/UserCourse');
 const LikeVideo = require('../../models/LikeVideo');
 const LikeAudio = require('../../models/LikeAudio');
+const Maps = require('../../models/Maps');
+const Courses = require('../../models/Courses');
 const Translation = require('../../models/Translation');
 const Version = require('../../models/Version');
+const MaxNumbers = require('../../models/MaxNumbers');
 const checkAdmin = require('./authAdmin');
 const jwt = require('jsonwebtoken');
 const keys = require('../../../config/keys');
 const {limitPageDataVeb} = require("../../utils/dataConst");
 const nodemailer = require("nodemailer");
 var fs = require('fs');
+const UserLessonCourse = require("../../models/UserLessonCourse");
 
 
 module.exports.register = async function(req, res) {
@@ -149,17 +158,22 @@ module.exports.create_live_sound = async function(req, res) {
 
         let candidate = await Admin.findOne({_id: check.id});
 
+        let dataTable = await MaxNumbers.findOne({table_name: "video"});
+        dataTable.number = dataTable.number + 1;
+
         const new_data = new LiveSound({
             ...req.body.data,
-            date: new Date()
+            date: new Date(),
+            number: dataTable.number,
         });
 
-        candidate.date_last_activity = new Date();
-
-        await candidate.save();
         await new_data.save();
+        await dataTable.save();
 
-        return res.status(201).json(new_data);
+        res.status(201).json(new_data);
+
+        candidate.date_last_activity = new Date();
+        await candidate.save();
     } catch(e) {
         errorHandler(res, e);
         // throw e;
@@ -174,17 +188,23 @@ module.exports.create_audio = async function(req, res) {
         }
 
         let candidate = await Admin.findOne({_id: check.id});
+
+        let dataTable = await MaxNumbers.findOne({table_name: "video"});
+        dataTable.number = dataTable.number + 1;
+
         const new_data = new Audio({
             ...req.body.data,
-            date: new Date()
+            date: new Date(),
+            number: dataTable.number,
         });
 
-        candidate.date_last_activity = new Date();
-
-        await candidate.save();
         await new_data.save();
+        await dataTable.save();
 
-        return res.status(201).json(new_data);
+        res.status(201).json(new_data);
+
+        candidate.date_last_activity = new Date();
+        await candidate.save();
     } catch(e) {
         errorHandler(res, e);
         // throw e;
@@ -200,20 +220,159 @@ module.exports.create_video = async function(req, res) {
 
         let candidate = await Admin.findOne({_id: check.id});
 
+        let dataTable = await MaxNumbers.findOne({table_name: "video"});
+        dataTable.number = dataTable.number + 1;
+
         const new_data = new Video({
             ...req.body.data,
-            date: new Date()
+            date: new Date(),
+            number: dataTable.number,
         });
 
-        candidate.date_last_activity = new Date();
-
-        await candidate.save();
         await new_data.save();
+        await dataTable.save();
 
-        return res.status(201).json(new_data);
+        res.status(201).json(new_data);
+
+        candidate.date_last_activity = new Date();
+        await candidate.save();
     } catch(e) {
         errorHandler(res, e);
         // throw e;
+    }
+}
+
+module.exports.create_map = async function(req, res) {
+    try {
+        const check = await checkAdmin.check(req, res);
+        if (!check.id) {
+            return res.status(401).json('Unauthorized');
+        }
+
+        let candidate = await Admin.findOne({_id: check.id});
+
+        let dataTable = await MaxNumbers.findOne({table_name: "maps"});
+        dataTable.number = dataTable.number + 1;
+
+        const new_data = new Maps({
+            ...req.body.data,
+            number: dataTable.number,
+        });
+
+        await new_data.save();
+        await dataTable.save();
+
+        res.status(201).json(new_data);
+
+        candidate.date_last_activity = new Date();
+        await candidate.save();
+    } catch(e) {
+        errorHandler(res, e);
+        // throw e;
+    }
+}
+
+module.exports.create_test = async function(req, res) {
+    try {
+        const check = await checkAdmin.check(req, res);
+        if (!check.id) {
+            return res.status(401).json('Unauthorized');
+        }
+
+        let candidate = await Admin.findOne({_id: check.id});
+
+        let dataTable = await MaxNumbers.findOne({table_name: "test"});
+        if (dataTable && dataTable.number)
+        dataTable.number = dataTable.number + 1;
+
+        const new_data = new Test({
+            ...req.body.data,
+            number: dataTable?.number,
+            length_questions: req.body.data.questions?.length,
+        });
+
+        // if (req.body.data.questions) {
+        //     let new_lesson;
+        //     for(let i = 0; i < req.body.data.questions.length; i++) {
+        //         new_lesson = new QuestionsTest({
+        //             test_id: new_data._id,
+        //             ...req.body.data.questions[i]
+        //         });
+        //         await new_lesson.save();
+        //     }
+        // }
+        if (req.body.data.questions) {
+            let new_question = null;
+            for(let i = 0; i < req.body.data.questions.length; i++) {
+                new_question = new QuestionsTest({
+                    test_id: new_data._id,
+                    number: i,
+                    length_questions: req.body.data.questions.length,
+                    ...req.body.data.questions[i]
+                });
+                await new_question.save();
+            }
+        }
+
+        await new_data.save();
+        if (dataTable) await dataTable.save();
+
+        res.status(201).json(new_data);
+
+        candidate.date_last_activity = new Date();
+        await candidate.save();
+    } catch(e) {
+        errorHandler(res, e);
+        // throw e;
+    }
+}
+
+module.exports.create_course = async function(req, res) {
+    try {
+        const check = await checkAdmin.check(req, res);
+        if (!check.id) {
+            return res.status(401).json('Unauthorized');
+        }
+
+        let dataTable = await MaxNumbers.findOne({table_name: "courses"});
+        if (dataTable && dataTable.number)
+        dataTable.number = dataTable.number + 1;
+
+        const new_data = new Courses({
+            ...req.body.data,
+            number: dataTable?.number,
+            length_lessons: req.body.data.lessons?.length,
+        });
+
+        await LessonsCourses.deleteMany({course_id: new_data._id});
+
+        if (req.body.data.lessons) {
+            let new_lesson = null;
+            for(let i = 0; i < req.body.data.lessons.length; i++) {
+                let gil = req.body.data.lessons[i];
+                delete gil._id;
+                new_lesson = new LessonsCourses({
+                    course_id: new_data._id,
+                    number: i,
+                    length_lessons: req.body.data.lessons.length,
+                    ...gil
+                });
+                await new_lesson.save();
+            }
+        }
+
+        await new_data.save();
+        if (dataTable)
+        await dataTable.save();
+
+        res.status(201).json(new_data);
+
+        let candidate = await Admin.findOne({_id: check.id});
+        candidate.date_last_activity = new Date();
+        await candidate.save();
+    } catch(e) {
+        errorHandler(res, e);
+        throw e;
     }
 }
 
@@ -289,6 +448,155 @@ module.exports.get_list_video = async function(req, res) {
         }
 
         res.status(201).json({data, page: Number(req.params.page), count_page, end_page: count_page <= page});
+
+        let candidate = await Admin.findOne({_id: check.id});
+        candidate.date_last_activity = new Date();
+        await candidate.save();
+    } catch(e) {
+        errorHandler(res, e);
+        // throw e;
+    }
+}
+
+module.exports.get_list_maps = async function(req, res) {
+    try {
+        const check = await checkAdmin.check(req, res);
+        if (!check.id) {
+            return res.status(401).json('Unauthorized');
+        }
+
+        const page = (Number(req.params.page)) * limitPageDataVeb;
+        const filter = req.params.label ? (req.params.label !== "null" ? {label_: {$elemMatch: {value: {$regex: req.params.label}}}} : {}): {};
+        let data = await Maps.find(filter, null, { skip: page, limit: limitPageDataVeb });
+        const count_page = Math.ceil((await Maps.find(filter).count()) / limitPageDataVeb) - 1;
+
+        res.status(201).json({data, page: Number(req.params.page), count_page, end_page: count_page <= page});
+
+        let candidate = await Admin.findOne({_id: check.id});
+        candidate.date_last_activity = new Date();
+        await candidate.save();
+    } catch(e) {
+        errorHandler(res, e);
+        // throw e;
+    }
+}
+
+module.exports.get_list_test = async function(req, res) {
+    try {
+        const check = await checkAdmin.check(req, res);
+        if (!check.id) {
+            return res.status(401).json('Unauthorized');
+        }
+
+        const page = (Number(req.params.page)) * limitPageDataVeb;
+        const filter = req.params.label ? (req.params.label !== "null" ? {label_: {$elemMatch: {value: {$regex: req.params.label}}}} : {}): {};
+        let data = await Test.find(filter, null, { skip: page, limit: limitPageDataVeb });
+        const count_page = Math.ceil((await Test.find(filter).count()) / limitPageDataVeb) - 1;
+
+        for (let i = 0; i < data.length; i++) {
+            data[i].info_tooltip = await UserTest.find({
+                test_id: data[i]._id,
+                status: true,
+            }, { date_start: 1, user_name: 1, result: 1 });
+        }
+
+        res.status(201).json({data, page: Number(req.params.page), count_page, end_page: count_page <= page});
+
+        let candidate = await Admin.findOne({_id: check.id});
+        candidate.date_last_activity = new Date();
+        await candidate.save();
+    } catch(e) {
+        errorHandler(res, e);
+        // throw e;
+    }
+}
+
+module.exports.get_list_courses = async function(req, res) {
+    try {
+        const check = await checkAdmin.check(req, res);
+        if (!check.id) {
+            return res.status(401).json('Unauthorized');
+        }
+
+        const page = (Number(req.params.page)) * limitPageDataVeb;
+        const filter = req.params.label ? (req.params.label !== "null" ? {label_: {$elemMatch: {value: {$regex: req.params.label}}}} : {}): {};
+        let data = await Courses.find(filter, null, { skip: page, limit: limitPageDataVeb });
+        const count_page = Math.ceil((await Courses.find(filter).count()) / limitPageDataVeb) - 1;
+
+        for (let i = 0; i < data.length; i++) {
+            data[i].info_tooltip = await UserCourse.find({
+                course_id: data[i]._id,
+            }, { date_start: 1, user_name: 1, user_id: 1, proc_lessons: 1 });
+            if (data[i].info_tooltip && data[i].info_tooltip?.length && data[i].length_lessons !== 0) {
+                for (let j = 0; j < data[i].info_tooltip?.length; j++) {
+                    data[i].info_tooltip[j].proc_lessons = await UserLessonCourse.find({
+                        user_course_id: data[i].info_tooltip[j]._id,
+                        user_id: data[i].info_tooltip[j].user_id
+                    }).count() / data[i].length_lessons * 100;
+                }
+            }
+
+            // Отсортировать по дате по убыванию
+        }
+
+        res.status(201).json({data, page: Number(req.params.page), count_page, end_page: count_page <= page});
+
+        let candidate = await Admin.findOne({_id: check.id});
+        candidate.date_last_activity = new Date();
+        await candidate.save();
+    } catch(e) {
+        errorHandler(res, e);
+        // throw e;
+    }
+}
+
+module.exports.get_mini_list_courses = async function(req, res) {
+    try {
+        const check = await checkAdmin.check(req, res);
+        if (!check.id) {
+            return res.status(401).json('Unauthorized');
+        }
+
+        let data = await Courses.find({}, "_id access label");
+        res.status(201).json(data);
+
+        let candidate = await Admin.findOne({_id: check.id});
+        candidate.date_last_activity = new Date();
+        await candidate.save();
+    } catch(e) {
+        errorHandler(res, e);
+        // throw e;
+    }
+}
+
+module.exports.get_lessons_course = async function(req, res) {
+    try {
+        const check = await checkAdmin.check(req, res);
+        if (!check.id) {
+            return res.status(401).json('Unauthorized');
+        }
+
+        let data = await LessonsCourses.find({course_id: req.params.id});
+        res.status(201).json(data);
+
+        let candidate = await Admin.findOne({_id: check.id});
+        candidate.date_last_activity = new Date();
+        await candidate.save();
+    } catch(e) {
+        errorHandler(res, e);
+        // throw e;
+    }
+}
+
+module.exports.get_questions_test = async function(req, res) {
+    try {
+        const check = await checkAdmin.check(req, res);
+        if (!check.id) {
+            return res.status(401).json('Unauthorized');
+        }
+
+        let data = await QuestionsTest.find({test_id: req.params.id});
+        res.status(201).json(data);
 
         let candidate = await Admin.findOne({_id: check.id});
         candidate.date_last_activity = new Date();
@@ -474,6 +782,138 @@ module.exports.re_video = async function(req, res) {
     }
 }
 
+module.exports.re_map = async function(req, res) {
+    try {
+        const check = await checkAdmin.check(req, res);
+        if (!check.id) {
+            return res.status(401).json('Unauthorized');
+        }
+
+        let candidate = await Admin.findOne({_id: check.id});
+
+        let new_data = await Maps.findOne({_id: req.body._id});
+
+        Object.entries(req.body.data).forEach(item => {
+            new_data[item[0]] = item[1]
+        });
+        await new_data.save();
+
+        res.status(201).json(new_data);
+
+        candidate.date_last_activity = new Date();
+        await candidate.save();
+    } catch(e) {
+        errorHandler(res, e);
+        // throw e;
+    }
+}
+
+module.exports.re_test = async function(req, res) {
+    try {
+        const check = await checkAdmin.check(req, res);
+        if (!check.id) {
+            return res.status(401).json('Unauthorized');
+        }
+
+        let new_data = await Test.findOne({_id: req.body._id});
+        await QuestionsTest.deleteMany({test_id: req.body._id});
+
+        Object.entries(req.body.data).forEach(item => {
+            new_data[item[0]] = item[1]
+        });
+        new_data.length_questions = req.body.data.questions?.length;
+        await new_data.save();
+
+        // if (req.body.data.questions) {
+        //     let new_lesson;
+        //     for(let i = 0; i < req.body.data.questions.length; i++) {
+        //         new_lesson = new QuestionsTest({
+        //             test_id: req.body._id,
+        //             ...req.body.data.questions[i]
+        //         });
+        //         await new_lesson.save();
+        //     }
+        // }
+        if (req.body.data.questions) {
+            let new_question = null;
+            for(let i = 0; i < req.body.data.questions.length; i++) {
+                new_question = new QuestionsTest({
+                    test_id: new_data._id,
+                    number: i,
+                    length_questions: req.body.data.questions.length,
+                    ...req.body.data.questions[i]
+                });
+                await new_question.save();
+            }
+        }
+
+        res.status(201).json(new_data);
+
+        let candidate = await Admin.findOne({_id: check.id});
+        candidate.date_last_activity = new Date();
+        await candidate.save();
+    } catch(e) {
+        errorHandler(res, e);
+        // throw e;
+    }
+}
+
+module.exports.re_course = async function(req, res) {
+    try {
+        const check = await checkAdmin.check(req, res);
+        if (!check.id) {
+            return res.status(401).json('Unauthorized');
+        }
+
+        let new_data = await Courses.findOne({_id: req.body._id});
+        await LessonsCourses.deleteMany({course_id: req.body._id});
+
+        Object.entries(req.body.data).forEach(item => {
+            new_data[item[0]] = item[1]
+        });
+        new_data.length_lessons = req.body.data.lessons?.length;
+        await new_data.save();
+
+        // if (req.body.data.lessons) {
+        //     let prev_lesson = null;
+        //     let new_lesson = null;
+        //     for(let i = 0; i < req.body.data.lessons.length; i++) {
+        //         new_lesson = new LessonsCourses({
+        //             course_id: req.body._id,
+        //             prev_id: prev_lesson ? prev_lesson._id : null,
+        //             ...req.body.data.lessons[i]
+        //         });
+        //         if (prev_lesson) {
+        //             prev_lesson.next_id = new_lesson._id;
+        //         }
+        //         prev_lesson = new_lesson;
+        //         await new_lesson.save();
+        //     }
+        // }
+        if (req.body.data.lessons) {
+            let new_lesson = null;
+            for(let i = 0; i < req.body.data.lessons.length; i++) {
+                new_lesson = new LessonsCourses({
+                    course_id: req.body._id,
+                    number: i,
+                    length_lessons: req.body.data.lessons.length,
+                    ...req.body.data.lessons[i],
+                });
+                await new_lesson.save();
+            }
+        }
+
+        res.status(201).json(new_data);
+
+        let candidate = await Admin.findOne({_id: check.id});
+        candidate.date_last_activity = new Date();
+        await candidate.save();
+    } catch(e) {
+        errorHandler(res, e);
+        // throw e;
+    }
+}
+
 module.exports.re_live_sound = async function(req, res) {
     try {
         const check = await checkAdmin.check(req, res);
@@ -588,7 +1028,6 @@ module.exports.delete_video = async function(req, res) {
         if (!check.id) {
             return res.status(401).json('Unauthorized');
         }
-
         let candidate = await Admin.findOne({_id: check.id});
 
         let delete_data = await Video.findOne({_id: req.body._id});
@@ -602,7 +1041,6 @@ module.exports.delete_video = async function(req, res) {
         // }).catch((e) => console.log(e));
 
         await delete_data.delete();
-
         res.status(201).json('OK');
 
         candidate.date_last_activity = new Date();
@@ -611,7 +1049,97 @@ module.exports.delete_video = async function(req, res) {
         errorHandler(res, e);
         // throw e;
     }
+}
 
+module.exports.delete_map = async function(req, res) {
+    try {
+        const check = await checkAdmin.check(req, res);
+        if (!check.id) {
+            return res.status(401).json('Unauthorized');
+        }
+        let candidate = await Admin.findOne({_id: check.id});
+
+        let delete_data = await Maps.findOne({_id: req.body._id});
+
+        // await fs.unlink(`./${delete_data.img}`, (err) => {
+        //     if (err) console.log("no delete!!!!");
+        // }).catch((e) => console.log(e));
+
+        await delete_data.delete();
+        res.status(201).json('OK');
+
+        candidate.date_last_activity = new Date();
+        await candidate.save();
+    } catch(e) {
+        errorHandler(res, e);
+        // throw e;
+    }
+}
+
+module.exports.delete_test = async function(req, res) {
+    try {
+        const check = await checkAdmin.check(req, res);
+        if (!check.id) {
+            return res.status(401).json('Unauthorized');
+        }
+
+        let delete_data = await Test.findOne({_id: req.body._id});
+        let delete_dop = await QuestionsTest.find({test_id: req.body._id});
+
+        await fs.unlink(`./${delete_data.poster}`, (err) => {
+            if (err) console.log("no delete!!!!");
+        });
+
+        for(let i = 0; i < delete_dop?.length; i++) {
+            await fs.unlink(`./${delete_dop[i].img}`, (err) => {
+                if (err) console.log("no delete!!!!");
+            });
+        }
+
+        if (delete_data) await delete_data.delete();
+        if (delete_dop.length) await QuestionsTest.remove({course_id: req.body._id});
+
+        res.status(201).json('OK');
+
+        let candidate = await Admin.findOne({_id: check.id});
+        candidate.date_last_activity = new Date();
+        await candidate.save();
+    } catch(e) {
+        errorHandler(res, e);
+        // throw e;
+    }
+}
+
+module.exports.delete_course = async function(req, res) {
+    try {
+        const check = await checkAdmin.check(req, res);
+        if (!check.id) {
+            return res.status(401).json('Unauthorized');
+        }
+
+        let delete_data = await Courses.findOne({_id: req.body._id});
+        let delete_dop = await LessonsCourses.find({course_id: req.body._id});
+
+        await fs.unlink(`./${delete_data?.poster}`, (err) => {
+            if (err) console.log("no delete!!!!");
+        });
+        for(let i = 0; i < delete_dop?.length; i++) {
+            await fs.unlink(`./${delete_dop[i].video}`, (err) => {
+                if (err) console.log("no delete!!!!");
+            });
+        }
+
+        if (delete_data) await delete_data.delete();
+        if (delete_dop.length) await LessonsCourses.remove({course_id: req.body._id});
+        res.status(201).json('OK');
+
+        let candidate = await Admin.findOne({_id: check.id});
+        candidate.date_last_activity = new Date();
+        await candidate.save();
+    } catch(e) {
+        errorHandler(res, e);
+        // throw e;
+    }
 }
 
 module.exports.test_email = async function(req, res) {
@@ -741,3 +1269,50 @@ module.exports.re_version = async function(req, res) {
     }
 }
 
+module.exports.reordering = async function(req, res) {
+    try {
+        const check = await checkAdmin.check(req, res);
+        if (!check.id) {
+            return res.status(401).json('Unauthorized');
+        }
+
+        let candidate = await Admin.findOne({_id: check.id});
+
+        const {table_name, id_1, id_2} = req.body;
+        let set_number = 0;
+        let data_1 = null;
+        let data_2 = null;
+
+        switch (table_name) {
+            case 'video':
+                data_1 = await Video.findById(id_1);
+                data_2 = await Video.findById(id_2);
+                break;
+            case 'audio':
+                data_1 = await Audio.findById(id_1);
+                data_2 = await Audio.findById(id_2);
+                break;
+            case 'live_sound':
+                data_1 = await LiveSound.findById(id_1);
+                data_2 = await LiveSound.findById(id_2);
+                break;
+        }
+
+        if (data_1 && data_2) {
+            set_number = data_1.number;
+            data_1.number = data_2.number;
+            data_2.number = set_number;
+
+            await data_1.save();
+            await data_2.save();
+        }
+
+        res.status(201).json("OK");
+
+        candidate.date_last_activity = new Date();
+        await candidate.save();
+    } catch(e) {
+        errorHandler(res, e);
+        // throw e;
+    }
+}

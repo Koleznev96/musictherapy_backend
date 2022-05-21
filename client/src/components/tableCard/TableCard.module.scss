@@ -4,6 +4,43 @@
   width: 100%;
 }
 
+.tooltip_test {
+  position: relative;
+  width: 100%;
+  cursor: pointer;
+
+  &:hover {
+    .tooltip {
+      display: block;
+    }
+  }
+}
+
+.tooltip_course {
+  position: relative;
+  width: 100%;
+  cursor: pointer;
+
+  &:hover {
+    .tooltip {
+      display: block;
+    }
+  }
+}
+
+.tooltip {
+  display: none;
+  position: absolute;
+  top: 20px;
+  background-color: #FFFFFF;
+  border-radius: 6px;
+  padding: 4px 6px;
+}
+
+.text_item {
+  font-size: 10px;
+}
+
 .icon_filter {
   opacity: 0.4;
 }
@@ -72,6 +109,32 @@
   background-color: rgba(112, 146, 190, 0.6);
 }
 
+.wrapper_buttons {
+  width: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.default_reordering {
+  width: 26px;
+  height: 20px;
+}
+
+.button_reordering {
+  display: none;
+  width: 26px;
+  height: 20px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100px;
+  opacity: 0.6;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+}
+
 .tr_br {
   width: 100%;
   height: 30px;
@@ -79,6 +142,11 @@
   cursor: pointer;
   &:hover {
     background-color: rgba(112, 146, 190, 0.45);
+
+    // добавить отображение reordering
+    .button_reordering {
+      display: flex;
+    }
   }
 }
 
@@ -88,6 +156,11 @@
   cursor: pointer;
   &:hover {
     background-color: rgba(112, 146, 190, 0.1);
+
+    // добавить отображение reordering
+    .button_reordering {
+      display: flex;
+    }
   }
 }
 

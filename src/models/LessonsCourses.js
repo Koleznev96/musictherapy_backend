@@ -1,42 +1,35 @@
 const {Schema, model} = require('mongoose');
 
-const audioSchema = new Schema({
-    language: [
-        String
-    ],
+const lessonsCoursesSchema = new Schema({
+    course_id: String,
     label: [
         {
             language: String,
             value: String,
         },
     ],
-    category: {
+    poster: {
         type: String,
         required: false,
     },
-    genre: {
+    video: {
         type: String,
         required: false,
     },
-    instruments: [
-        String
+    text: [
+        {
+            language: String,
+            value: String,
+        },
     ],
-    audio: {
-        type: String,
-        required: true,
-    },
-    date: {
-        type: Date,
-        required: false,
-    },
-    like: {
+    number: {
         type: Number,
         required: false,
     },
-    number: {
+    length_lessons: {
         type: Number,
         required: false,
     },
 });
 
-module.exports = model('Audio', audioSchema);
+module.exports = model('LessonsCourses', lessonsCoursesSchema);
