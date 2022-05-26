@@ -183,7 +183,11 @@ export const Form = ({data, option, reload, optionQuestionnaire, optionPassword,
                     ))}
                 </div>
             ) : null}
-            <Scrollbars style={{width: '100%', height: '60vh', marginTop: 18}}>
+            <Scrollbars
+                renderThumbVertical={({style, ...props}) =>
+                    <div {...props} className={s.scrollThumbVertical} style={{...style, width: '6px', borderRadius: '4px', boxShadow: '0 2px 4px 0 rgba(0, 0, 0, 0.16)', backgroundColor: 'rgba(255, 255, 255, 0.8)'}}/>
+                }
+                style={{width: '100%', height: '60vh', marginTop: 18}}>
                 <div className={s.items}>
                     {activeMenu === 0 && (
 

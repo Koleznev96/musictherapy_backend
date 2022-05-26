@@ -305,10 +305,10 @@ module.exports.create_test = async function(req, res) {
             let new_question = null;
             for(let i = 0; i < req.body.data.questions.length; i++) {
                 new_question = new QuestionsTest({
+                    ...req.body.data.questions[i],
                     test_id: new_data._id,
                     number: i,
                     length_questions: req.body.data.questions.length,
-                    ...req.body.data.questions[i]
                 });
                 await new_question.save();
             }
@@ -349,13 +349,11 @@ module.exports.create_course = async function(req, res) {
         if (req.body.data.lessons) {
             let new_lesson = null;
             for(let i = 0; i < req.body.data.lessons.length; i++) {
-                let gil = req.body.data.lessons[i];
-                delete gil._id;
                 new_lesson = new LessonsCourses({
+                    ...req.body.data.lessons[i],
                     course_id: new_data._id,
                     number: i,
                     length_lessons: req.body.data.lessons.length,
-                    ...gil
                 });
                 await new_lesson.save();
             }
@@ -838,10 +836,10 @@ module.exports.re_test = async function(req, res) {
             let new_question = null;
             for(let i = 0; i < req.body.data.questions.length; i++) {
                 new_question = new QuestionsTest({
+                    ...req.body.data.questions[i],
                     test_id: new_data._id,
                     number: i,
                     length_questions: req.body.data.questions.length,
-                    ...req.body.data.questions[i]
                 });
                 await new_question.save();
             }
@@ -894,10 +892,10 @@ module.exports.re_course = async function(req, res) {
             let new_lesson = null;
             for(let i = 0; i < req.body.data.lessons.length; i++) {
                 new_lesson = new LessonsCourses({
+                    ...req.body.data.lessons[i],
                     course_id: req.body._id,
                     number: i,
                     length_lessons: req.body.data.lessons.length,
-                    ...req.body.data.lessons[i],
                 });
                 await new_lesson.save();
             }
