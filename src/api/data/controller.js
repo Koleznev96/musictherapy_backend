@@ -498,7 +498,7 @@ module.exports.test_return_result = async function(req, res) {
         const {id, user_test_id} = req.params;
 
         const test = await Test.findOne({_id: id});
-        let result = await UserTest.findOne({
+        let result = await UserTest.find({
             user_id: check._id,
             test_id: id,
         });
@@ -506,20 +506,20 @@ module.exports.test_return_result = async function(req, res) {
             test_id: id,
         });
 
-        let balls = 0;
-        for(let i = 0; i < questions_list?.length; i++) {
-            questions_list[i].answer = await UserQuestionTest.findOne({
-                user_id: check._id,
-                test_id: id,
-                user_test_id: user_test_id,
-                question_test_id: questions_list[i]._id
-            });
-            if (questions_list[i].answer) {
-                balls += questions_list[i].answer?.balls;
+        let data_list;
+        for (let j = 0; j < result?.length; j++) {
+            data_list = JSON.parse(JSON.stringify(questions_list));
+            for (let i = 0; i < questions_list?.length; i++) {
+                data_list[i].answer = await UserQuestionTest.findOne({
+                    user_id: check._id,
+                    test_id: id,
+                    user_test_id: result[j]._id,
+                    question_test_id: questions_list[i]._id
+                });
             }
+            result[j].data = data_list;
         }
         res.status(201).json({
-            questions_list,
             result,
             test
         });

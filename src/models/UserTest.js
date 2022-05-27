@@ -37,7 +37,11 @@ const userTestSchema = new Schema({
     user_name: {
         type: String,
         required: false,
-    }
+    },
+    data: {
+        type: JSON,
+        required: false,
+    },
 });
 
 module.exports = model('UserTest', userTestSchema);
