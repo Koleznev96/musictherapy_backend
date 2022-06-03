@@ -196,7 +196,7 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
                                                     </div>
                                                     {data_item[field_item.value]?.length ? (
                                                     <div className={s.tooltip}>
-                                                        {data_item[field_item.value]?.map((item, index) => (
+                                                        {data_item[field_item.value]?.reverse()?.map((item, index) => (
                                                             <div className={s.text_item} key={index}>
                                                                 {`${string_date_(item.date_start)} ${item.user_name} - ${item.result?.balls} балов`}
                                                             </div>
@@ -212,7 +212,7 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
                                                         </div>
                                                         {data_item[field_item.value]?.length ? (
                                                         <div className={s.tooltip}>
-                                                            {data_item[field_item.value]?.map((item, index) => (
+                                                            {data_item[field_item.value]?.reverse()?.map((item, index) => (
                                                                 <div className={s.text_item} key={index}>
                                                                     {`${string_date_(item.date_start)} ${item.user_name} - ${item.proc_lessons}%`}
                                                                 </div>

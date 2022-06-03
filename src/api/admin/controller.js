@@ -814,7 +814,9 @@ module.exports.re_test = async function(req, res) {
         }
 
         let new_data = await Test.findOne({_id: req.body._id});
-        await QuestionsTest.deleteMany({test_id: req.body._id});
+        if (req.body.data.questions !== undefined) {
+            await QuestionsTest.deleteMany({test_id: req.body._id});
+        }
 
         Object.entries(req.body.data).forEach(item => {
             new_data[item[0]] = item[1]
@@ -864,7 +866,9 @@ module.exports.re_course = async function(req, res) {
         }
 
         let new_data = await Courses.findOne({_id: req.body._id});
-        await LessonsCourses.deleteMany({course_id: req.body._id});
+        if (req.body.data.lessons !== undefined) {
+            await LessonsCourses.deleteMany({course_id: req.body._id});
+        }
 
         Object.entries(req.body.data).forEach(item => {
             new_data[item[0]] = item[1]
