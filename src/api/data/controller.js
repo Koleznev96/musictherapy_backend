@@ -468,6 +468,8 @@ module.exports.answer_question_lesson = async function(req, res) {
             user_course_id: user_course_id,
         });
 
+        console.log('ok_lesson-', ok_lesson)
+
         if (!ok_lesson) {
             ok_lesson = new UserLessonCourse({
                 user_id: check._id,
@@ -611,7 +613,13 @@ module.exports.complete_course = async function(req, res) {
             user_id: check._id
         });
 
-       const status = count_ok_lessons?.length === course.length_lessons;
+        console.log('count_ok_lessons-', count_ok_lessons);
+        console.log('course-', course);
+        console.log('=====================');
+        console.log('length_count_ok_lessons-', count_ok_lessons?.length);
+        console.log('course_lessons-', course?.length);
+
+        const status = count_ok_lessons?.length === course.length_lessons;
 
         if (!status && !status_return) {
             return res.status(201).json({
