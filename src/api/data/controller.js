@@ -876,3 +876,14 @@ module.exports.get_version = async function(req, res) {
         // throw e;
     }
 }
+
+module.exports.delete_user_course = async function(req, res) {
+    try {
+        await UserCourse.deleteMany();
+        await UserLessonCourse.deleteMany();
+        res.status(201).json('OK');
+    } catch(e) {
+        errorHandler(res, e);
+        // throw e;
+    }
+}

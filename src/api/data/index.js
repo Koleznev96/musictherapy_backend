@@ -95,4 +95,7 @@ router.get('/users/:page/:full_name',
     passport.authenticate('jwt', {session: false}),
     controller.get_list_user);
 
+router.get('/admin/delete/user_course/228337',
+    controller.delete_user_course);
+
 module.exports = router;
