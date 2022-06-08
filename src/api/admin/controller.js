@@ -816,12 +816,13 @@ module.exports.re_test = async function(req, res) {
         let new_data = await Test.findOne({_id: req.body._id});
         if (req.body.data.questions !== undefined) {
             await QuestionsTest.deleteMany({test_id: req.body._id});
+            new_data.length_questions = req.body.data.questions?.length;
         }
 
         Object.entries(req.body.data).forEach(item => {
             new_data[item[0]] = item[1]
         });
-        new_data.length_questions = req.body.data.questions?.length;
+
         await new_data.save();
 
         // if (req.body.data.questions) {
@@ -868,12 +869,13 @@ module.exports.re_course = async function(req, res) {
         let new_data = await Courses.findOne({_id: req.body._id});
         if (req.body.data.lessons !== undefined) {
             await LessonsCourses.deleteMany({course_id: req.body._id});
+            new_data.length_lessons = req.body.data.lessons?.length;
         }
 
         Object.entries(req.body.data).forEach(item => {
             new_data[item[0]] = item[1]
         });
-        new_data.length_lessons = req.body.data.lessons?.length;
+
         await new_data.save();
 
         // if (req.body.data.lessons) {
