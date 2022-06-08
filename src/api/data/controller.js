@@ -399,6 +399,10 @@ module.exports.answer_question_test = async function(req, res) {
             number: number,
         });
 
+        if (!question_data) {
+            return res.status(405).json('ERROR, Not found question');
+        }
+
         let answer_question = await UserQuestionTest.findOne({
             user_id: check._id,
             test_id: id,
@@ -460,6 +464,10 @@ module.exports.answer_question_lesson = async function(req, res) {
             course_id: id,
             number: number,
         });
+
+        if (!lesson_data) {
+            return res.status(405).json('ERROR, Not found lesson');
+        }
 
         let ok_lesson = await UserLessonCourse.findOne({
             user_id: check._id,
