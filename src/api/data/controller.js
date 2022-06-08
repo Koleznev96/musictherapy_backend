@@ -617,7 +617,7 @@ module.exports.complete_course = async function(req, res) {
         console.log('course-', course);
         console.log('=====================');
         console.log('length_count_ok_lessons-', count_ok_lessons?.length);
-        console.log('course_lessons-', course?.length);
+        console.log('course_lessons-', course?.length_lessons);
 
         const status = count_ok_lessons?.length === course.length_lessons;
 
