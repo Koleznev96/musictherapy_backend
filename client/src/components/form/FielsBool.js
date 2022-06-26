@@ -3,10 +3,10 @@ import s from "../tableCard/Form.module.scss";
 import React, {useEffect, useState} from "react";
 
 export const FieldBool = ({label, name, change, value, list_value, st}) => {
-    const [statusField, setStatusField] = useState('classic');
+    const [statusField, setStatusField] = useState(null);
 
     useEffect(() => {
-        if (value && value.length > 0) {
+        if (value && value.toString().length > 0) {
             setStatusField(value);
         }
     }, [value]);
@@ -35,7 +35,7 @@ export const FieldBool = ({label, name, change, value, list_value, st}) => {
                 ) : (
                     <>
                     <div className={s.root_click}>
-                        {list_value?.slice(0, list_value.length/2 + 1).map((item, index) => (
+                        {list_value?.slice(0, ((list_value.length % 2) === 0 && list_value.length !== 2) ? (list_value.length/2) : (list_value.length/2 + 1)).map((item, index) => (
                             <div key={index} className={s.button_input} onClick={() => clickHandler(item.value)}>
                                 <div className={statusField === item.value ? s.clip_active : s.clip}/>
                                 <div className={s.clip_text}>
@@ -45,7 +45,7 @@ export const FieldBool = ({label, name, change, value, list_value, st}) => {
                         ))}
                     </div>
                     <div className={s.root_click}>
-                        {list_value?.slice(list_value.length/2 + 1, list_value.length).map((item, index) => (
+                        {list_value?.slice(((list_value.length % 2) === 0 && list_value.length !== 2) ? (list_value.length/2) : (list_value.length/2 + 1), list_value.length).map((item, index) => (
                             <div key={index} className={s.button_input} onClick={() => clickHandler(item.value)}>
                                 <div className={statusField === item.value ? s.clip_active : s.clip}/>
                                 <div className={s.clip_text}>

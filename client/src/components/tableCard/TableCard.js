@@ -220,7 +220,22 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
                                                         </div>
                                                         ): null}
                                                     </div>
-                                                ) : (
+                                                ) : (field_item.type === 'input_tooltip_like' ? (
+                                                        <div className={s.tooltip_course}>
+                                                            <div className={s.tooltip_course_text}>
+                                                                {data_item[field_item.value]?.length}
+                                                            </div>
+                                                            {data_item[field_item.value]?.length ? (
+                                                                <div className={s.tooltip}>
+                                                                    {data_item[field_item.value]?.reverse()?.map((item, index) => (
+                                                                        <div className={s.text_item} key={index}>
+                                                                            {`${string_date_(item.date)} ${item.user_name}`}
+                                                                        </div>
+                                                                    ))}
+                                                                </div>
+                                                            ): null}
+                                                        </div>
+                                                    ) : (
                                             !data_item[field_item.value] ? '' : (
                                             (field_item.type === 'bool') ? (
                                             field_item.list_value?.find(element => element.value === data_item[field_item.value])?.label
@@ -249,7 +264,7 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
                                                         data_item[field_item.value]
                                                     )
                                         )))
-                                        )))}
+                                        ))))}
                                     </td>
                                     {/*==============Кнопки для переноса=================*/}
                                     {/*{(table_name && counter === 1) ? (*/}
