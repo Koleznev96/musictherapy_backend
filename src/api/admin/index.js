@@ -111,9 +111,6 @@ router.post('/delete_test',
 router.post('/delete_course',
     controller.delete_course);
 
-router.get('/test_email',
-    controller.test_email);
-
 router.post('/delete_user',
     controller.delete_user);
 

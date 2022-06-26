@@ -9,6 +9,14 @@ const likeVideoSchema = new Schema({
         type: String,
         required: false,
     },
+    user_name: {
+        type: String,
+        required: false,
+    },
+    date: {
+        type: Date,
+        required: false,
+    },
 });
 
 module.exports = model('LikeVideo', likeVideoSchema);

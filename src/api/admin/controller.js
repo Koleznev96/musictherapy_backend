@@ -17,11 +17,11 @@ const Courses = require('../../models/Courses');
 const Translation = require('../../models/Translation');
 const Version = require('../../models/Version');
 const MaxNumbers = require('../../models/MaxNumbers');
+const LogData = require("../../models/LogData");
 const checkAdmin = require('./authAdmin');
 const jwt = require('jsonwebtoken');
 const keys = require('../../../config/keys');
 const {limitPageDataVeb} = require("../../utils/dataConst");
-const nodemailer = require("nodemailer");
 var fs = require('fs');
 const UserLessonCourse = require("../../models/UserLessonCourse");
 
@@ -415,7 +415,11 @@ module.exports.get_list_audio = async function(req, res) {
         const count_page = Math.ceil((await Audio.find(filter).count()) / limitPageDataVeb) - 1;
 
         for (let i = 0; i < data?.length; i++) {
-            data[i].like = await LikeAudio.find({id_root: data[i]._id.toString()}).count();
+            // data[i].like = await LikeAudio.find({id_root: data[i]._id.toString()}).count();
+            data[i].counter_start = await LogData.find({id_data: data[i]._id.toString()}).count();
+            data[i].like_tooltip = await LikeAudio.find({id_root: data[i]._id.toString()},
+                { date: 1, user_name: 1 });
+            data[i].like = data[i].like_tooltip?.length;
         }
 
         res.status(201).json({data, page: Number(req.params.page), count_page, end_page: count_page <= page});
@@ -442,7 +446,11 @@ module.exports.get_list_video = async function(req, res) {
         const count_page = Math.ceil((await Video.find(filter).count()) / limitPageDataVeb) - 1;
 
         for (let i = 0; i < data?.length; i++) {
-            data[i].like = await LikeVideo.find({id_root: data[i]._id.toString()}).count();
+            // data[i].like = await LikeVideo.find({id_root: data[i]._id.toString()}).count();
+            data[i].counter_start = await LogData.find({id_data: data[i]._id.toString()}).count();
+            data[i].like_tooltip = await LikeVideo.find({id_root: data[i]._id.toString()},
+                { date: 1, user_name: 1 });
+            data[i].like = data[i].like_tooltip?.length;
         }
 
         res.status(201).json({data, page: Number(req.params.page), count_page, end_page: count_page <= page});
@@ -664,6 +672,8 @@ module.exports.get_list_user = async function(req, res) {
 
         for (let i = 0; i < data.length; i++) {
             data[i].questionnaire = await Questionnaire.findOne({id_user: data[i]._id.toString()});
+            data[i].counter_video = await LogData.find({id_user: data[i]._id.toString(), type: "video"}).count();
+            data[i].counter_audio = await LogData.find({id_user: data[i]._id.toString(), type: "audio"}).count();
         }
 
         res.status(201).json({data, page: Number(req.params.page), count_page, end_page: count_page <= page});
@@ -1144,49 +1154,6 @@ module.exports.delete_course = async function(req, res) {
         errorHandler(res, e);
         // throw e;
     }
-}
-
-module.exports.test_email = async function(req, res) {
-    let testAccount = await nodemailer.createTestAccount();
-    // create reusable transporter object using the default SMTP transport
-    let transporter = nodemailer.createTransport({
-        // host: "musictherapy.by",
-        service: 'postfix',
-        // host: "localhost",
-        host: "admin.musictherapy.by",
-        // port: 465,
-        port: 25,
-        secure: false, // true for 465, false for other ports
-        // auth: {
-        //     user: testAccount.user, // generated ethereal user
-        //     pass: testAccount.pass, // generated ethereal password
-        // },
-        auth: {
-            user: "root", // generated ethereal user
-            pass: "BDA2YJj#tped", // generated ethereal password
-        },
-        tls: {
-            rejectUnauthorized: false
-        },
-    });
-
-    // send mail with defined transport object
-    let info = await transporter.sendMail({
-        from: '"Fred Foo 👻" <businessdevelopermarket@gmail.com>', // sender address
-        to: "fc.fenomen@mail.ru, baz@example.com", // list of receivers
-        subject: "Hello ✔", // Subject line
-        text: "Hello world?", // plain text body
-        html: "<b>Hello world?</b>", // html body
-    });
-
-    console.log("Message sent: %s", info.messageId);
-    // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-
-    // Preview only available when sending through an Ethereal account
-    console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-    // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
-
-    res.status(201).json('OK');
 }
 
 module.exports.get_translation = async function(req, res) {

@@ -712,6 +712,7 @@ module.exports.get_v2_list_audio_ios = async function(req, res) {
         if (!check._id) {
             return res.status(401).json('Unauthorized');
         }
+        let access = check.access ? check.access : "Гость";
         const category = req.params.category;
         const page = Number(req.params.page);
         // let data = await Audio.find({category}, null, { skip: page, limit: limitPageData });
@@ -721,10 +722,30 @@ module.exports.get_v2_list_audio_ios = async function(req, res) {
         let data = await Audio.find(filter);
 
         for (let i = 0; i < data.length; i++) {
+            if (!(!data[i].access || data[i].access.indexOf(access) !== -1)) {
+                if (data[i].access.length === 1 && data[i].access.indexOf("VIP") !== -1) {
+                    data.splice(i, 1);
+                    continue;
+                }
+                if (data[i].access.indexOf("Премиум") !== -1 && data[i].access.indexOf("Без регистрации") === -1
+                    && data[i].access.indexOf("Гость") === -1) {
+                    data[i].dostup = 'premium';
+                } else {
+                    data[i].dostup = 'auth';
+                }
+            } else {
+                data[i].dostup = 'view';
+            }
+
             let status = await LikeAudio.findOne({id_root: data[i]._id.toString(), id_user: check?._id.toString()});
             data[i].like = status ? 1 : 0;
         }
-        res.status(201).json({data, page, count_page: 20, end_page: true});
+
+        for (let i = 0; i < data.length; i++) {
+
+        }
+
+        res.status(201).json({data, page, count_page: 20, end_page: true, access});
 
         // res.status(201).json({data, page, count_page, end_page: count_page <= page + limitPageData});
     } catch(e) {
@@ -743,6 +764,49 @@ module.exports.get_v2_list_classic_ios = async function(req, res) {
         const page = Number(req.params.page);
         let filter = checkLanguage(req, res);
         filter.category = "classic";
+        let data = await Video.find(filter);
+        // let data = await Maps.find(filter, null, { skip: page, limit: limitPageData });
+        // const count_page = (await Maps.find(filter).count());
+
+        for (let i = 0; i < data.length; i++) {
+            if (!(!data[i].access || data[i].access.indexOf(access) !== -1)) {
+                if (data[i].access.length === 1 && data[i].access.indexOf("VIP") !== -1) {
+                    data.splice(i, 1);
+                    continue;
+                }
+                if (data[i].access.indexOf("Премиум") !== -1 && data[i].access.indexOf("Без регистрации") === -1
+                    && data[i].access.indexOf("Гость") === -1) {
+                    data[i].dostup = 'premium';
+                } else {
+                    data[i].dostup = 'auth';
+                }
+            } else {
+                data[i].dostup = 'view';
+            }
+            // data[i].dostup = !!(!data[i].access || data[i].access.indexOf(access));
+            if (check?._id) {
+                let status = await LikeVideo.findOne({id_root: data[i]._id.toString(), id_user: check?._id.toString()});
+                data[i].like = status ? 1 : 0;
+            }
+        }
+
+        res.status(201).json({data, page, count_page: 1, end_page: true, access});
+    } catch(e) {
+        errorHandler(res, e);
+        // throw e;
+    }
+}
+
+module.exports.get_v2_list_fusion_ios = async function(req, res) {
+    try {
+        const check = await checkUser.check(req, res);
+        let access = "Без регистрации";
+        if (check?._id) {
+            access = check.access ? check.access : "Гость";
+        }
+        const page = Number(req.params.page);
+        let filter = checkLanguage(req, res);
+        filter.category = "fusion";
         let data = await Video.find(filter);
         // let data = await Maps.find(filter, null, { skip: page, limit: limitPageData });
         // const count_page = (await Maps.find(filter).count());
@@ -827,7 +891,9 @@ module.exports.video_like = async function(req, res) {
         if (req.params.status === "add" && !like) {
             const new_like = new LikeVideo({
                 id_root: req.body.id.toString(),
-                id_user: check?._id.toString()
+                id_user: check?._id.toString(),
+                user_name: check.fullName + ' ' + check.name,
+                date: new Date(),
             });
             await new_like.save();
         }
@@ -853,7 +919,9 @@ module.exports.audio_like = async function(req, res) {
         if (req.params.status === "add" && !like) {
             const new_like = new LikeAudio({
                 id_root: req.body.id.toString(),
-                id_user: check?._id.toString()
+                id_user: check?._id.toString(),
+                user_name: check.fullName + ' ' + check.name,
+                date: new Date(),
             });
             await new_like.save();
         }
@@ -861,6 +929,20 @@ module.exports.audio_like = async function(req, res) {
             await like.deleteOne();
         }
         res.status(201).json("OK");
+    } catch(e) {
+        errorHandler(res, e);
+        // throw e;
+    }
+}
+
+module.exports.get_access = async function(req, res) {
+    try {
+        const check = await checkUser.check(req, res);
+        if (!check?._id) {
+            return res.status(401).json('Unauthorized');
+        }
+        const access = check.access ? check.access : "Гость";
+        res.status(201).json(access);
     } catch(e) {
         errorHandler(res, e);
         // throw e;

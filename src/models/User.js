@@ -52,6 +52,18 @@ const userSchema = new Schema({
             end_date: Date,
         }
     ],
+    amount_activity: {
+        type: Number,
+        required: false,
+    },
+    counter_video: {
+        type: Number,
+        required: false,
+    },
+    counter_audio: {
+        type: Number,
+        required: false,
+    },
 });
 
 module.exports = model('User', userSchema);

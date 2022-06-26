@@ -76,6 +76,9 @@ router.get('/v2/meditation/ios/:page',
 router.get('/v2/classic/ios/:page',
     controller.get_v2_list_classic_ios);
 
+router.get('/v2/fusion/ios/:page',
+    controller.get_v2_list_fusion_ios);
+
 router.get('/v2/tool/ios/:page',
     controller.get_list_tool_ios);
 
@@ -87,6 +90,9 @@ router.post('/video/like/:status',
 
 router.post('/audio/like/:status',
     controller.audio_like);
+
+router.get('/access',
+    controller.get_access);
 
 router.get('/version',
     controller.get_version);
