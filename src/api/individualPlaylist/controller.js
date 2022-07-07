@@ -90,8 +90,8 @@ const algorithm_free = async (instruments, filter, id_user) => {
 }
 
 const algorithm_four = async (instruments, filter) => {
-    let data1 = await algorithm_one_two(instruments, {...filter, category: 'Активация'});
-    let data2 = await algorithm_one_two(instruments, {...filter, category: 'Релакс'});
+    let data1 = await algorithm_filter(instruments, {...filter, category: 'Активация'});
+    let data2 = await algorithm_filter(instruments, {...filter, category: 'Релакс'});
 
     let audios = alternation_elements(data1, data2);
 
