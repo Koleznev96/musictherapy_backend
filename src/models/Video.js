@@ -53,12 +53,31 @@ const videoSchema = new Schema({
         type: Number,
         required: false,
     },
+    instruments: [
+        String
+    ],
+    level: {
+        type: Number,
+        required: false,
+    },
+    style: {
+        type: String,
+        required: false,
+    },
     dostup: {
         type: String,
         required: false,
     },
     number: {
         type: Number,
+        required: false,
+    },
+    counter_start: {
+        type: Number,
+        required: false,
+    },
+    like_tooltip: {
+        type: JSON,
         required: false,
     },
 });

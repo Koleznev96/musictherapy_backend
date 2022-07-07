@@ -18,9 +18,20 @@ const audioSchema = new Schema({
         type: String,
         required: false,
     },
+    access: [
+        String,
+    ],
     instruments: [
         String
     ],
+    level: {
+        type: Number,
+        required: false,
+    },
+    style: {
+        type: String,
+        required: false,
+    },
     audio: {
         type: String,
         required: true,
@@ -35,6 +46,18 @@ const audioSchema = new Schema({
     },
     number: {
         type: Number,
+        required: false,
+    },
+    dostup: {
+        type: String,
+        required: false,
+    },
+    counter_start: {
+        type: Number,
+        required: false,
+    },
+    like_tooltip: {
+        type: JSON,
         required: false,
     },
 });

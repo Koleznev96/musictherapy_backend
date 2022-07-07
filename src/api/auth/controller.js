@@ -1,9 +1,25 @@
 const errorHandler = require('../../utils/errorHandler');
 const jwt = require('jsonwebtoken');
 const keys = require('../../../config/keys');
+const emailTransport = require('../../middleware/emailTransport');
 
 const User = require('../../models/User');
 const Code = require('../../models/Code');
+
+
+const sendEmail = async function(email, message, res) {
+    const mailOptions={
+        to : email,
+        subject : "Please confirm your Email account",
+        html : message,
+    }
+    await emailTransport.sendMail(mailOptions, function(error, response){
+        if(error){
+            console.log('emailTransport-', error);
+            res.end("error");
+        }
+    });
+}
 
 
 module.exports.login = async function(req, res) {
@@ -45,8 +61,8 @@ module.exports.register = async function(req, res) {
         });
     } else {
         const tokenCode = req.body.email + '-' + new Date();
-        // const code = Math.floor(Math.random() * (999999 - 100000)) + 100000;
-        const code = '111111';
+        await Code.deleteMany({tokenCode: tokenCode});
+        const code = Math.floor(Math.random() * (999999 - 100000)) + 100000;
 
         const code_entry = new Code({
             tokenCode: tokenCode,
@@ -54,6 +70,34 @@ module.exports.register = async function(req, res) {
         });
 
         // Отправляем Письмо с кодом
+        const message = "Ваш код: " + code;
+        await sendEmail(req.body.email, message, res);
+
+        try {
+            await code_entry.save();
+            res.status(201).json({tokenCode});
+        } catch(e) {
+            errorHandler(res, e);
+            // throw e;
+        }
+    }
+}
+
+module.exports.register_old = async function(req, res) {
+    const candidate = await User.findOne({email: req.body.email});
+    if (candidate) {
+        res.status(409).json({
+            errors: [['email', 'Такой e-mail уже занят.']]
+        });
+    } else {
+        const tokenCode = req.body.email + '-' + new Date();
+        await Code.deleteMany({tokenCode: tokenCode});
+        const code = '111111';
+
+        const code_entry = new Code({
+            tokenCode: tokenCode,
+            code: code.toString(),
+        });
 
         try {
             await code_entry.save();
@@ -67,9 +111,9 @@ module.exports.register = async function(req, res) {
 
 module.exports.code_check = async function(req, res) {
     try {
-        const code_table = await Code.findOne({tokenCode: req.body.tokenCode});
+        const code_table = await Code.find({tokenCode: req.body.tokenCode}).sort({$natural:-1}).limit(1);
 
-        if (!code_table || (code_table.code.toString() != req.body.code.toString())) {
+        if (!code_table.length || (code_table[0].code.toString() != req.body.code.toString())) {
             return res.status(409).json({
                 errors: [['code', 'Неверный код, попробуйте снова']]
             });
@@ -88,7 +132,7 @@ module.exports.code_check = async function(req, res) {
             access: "Гость"
         });
 
-        await code_table.delete();
+        await Code.deleteMany({tokenCode: req.body.tokenCode});
         // const token = jwt.sign({
         //     email: req.body.email,
         //     userId: user._id,
@@ -118,6 +162,8 @@ module.exports.help_password = async function(req, res) {
         }
 
         // Отправляем Письмо с паролем
+        const message = "Ваш пароль: " + candidate.password;
+        await sendEmail(req.body.email, message, res);
 
         res.status(201).json('OK');
     } catch(e) {

@@ -9,6 +9,14 @@ const likeAudioSchema = new Schema({
         type: String,
         required: false,
     },
+    user_name: {
+        type: String,
+        required: false,
+    },
+    date: {
+        type: Date,
+        required: false,
+    },
 });
 
 module.exports = model('LikeAudio', likeAudioSchema);

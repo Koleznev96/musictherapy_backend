@@ -71,8 +71,11 @@ export const Form = ({data, option, reload, optionQuestionnaire, optionPassword,
     }, [option, popupForm.isOpen]);
 
     const changeRoot = (data) => {
+        console.log('data-', data)
         let new_data = {...value};
+        console.log('new_data-', new_data)
         new_data[data.name] = data.value;
+        console.log('new_data-', new_data)
         setValue(new_data);
     }
 

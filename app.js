@@ -9,6 +9,8 @@ const profileRoute = require('./src/api/profile');
 const dataRoute = require('./src/api/data');
 const adminRoute = require('./src/api/admin');
 const uploadRoute = require('./src/api/upload');
+const logRoute = require('./src/api/log');
+const individualPlaylistRoute = require('./src/api/individualPlaylist');
 
 const keys = require('./config/keys');
 const http = require("http");
@@ -33,6 +35,8 @@ app.use('/api/profile', profileRoute);
 app.use('/api/data', dataRoute);
 app.use('/api/admin_panel', adminRoute);
 app.use('/api/upload', uploadRoute);
+app.use('/api/log', logRoute);
+app.use('/api/individual_playlist', individualPlaylistRoute);
 
 app.use('/', express.static(path.join(__dirname, 'client', 'build')));
 
