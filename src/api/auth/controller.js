@@ -10,7 +10,7 @@ const Code = require('../../models/Code');
 const sendEmail = async function(email, message, res) {
     const mailOptions={
         to : email,
-        subject : "Please confirm your Email account",
+        subject : "Активация аккаунта Музыкотерапия",
         html : message,
     }
     await emailTransport.sendMail(mailOptions, function(error, response){
@@ -70,7 +70,12 @@ module.exports.register = async function(req, res) {
         });
 
         // Отправляем Письмо с кодом
-        const message = "Ваш код: " + code;
+        const message = `${req.body.name}, подтверждаем вашу регистрацию в приложении «Музыкотерапия». 
+        \n\nКод активации: ${code} 
+        \n\nПриятного использования! 
+        \n\n По всем вопросам Вы можете обращаться в службу поддержки – info@musictherapy.by или по телефону/вайбер/телеграм +375(44)464-73-47. 
+        \n-- 
+        \nwww.MusicTherapy.by`;
         await sendEmail(req.body.email, message, res);
 
         try {
