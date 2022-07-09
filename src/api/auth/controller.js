@@ -70,11 +70,13 @@ module.exports.register = async function(req, res) {
         });
 
         // Отправляем Письмо с кодом
-        const message = req.body.name + ", подтверждаем вашу регистрацию в приложении «Музыкотерапия». \r\n\r\nКод активации: " + code.toString() +
-        "<br><br>Приятного использования! " +
-        "<br><br>По всем вопросам Вы можете обращаться в службу поддержки – info@musictherapy.by или по телефону/вайбер/телеграм +375(44)464-73-47. " +
-        "<br>-- " +
-        "<br>www.MusicTherapy.by";
+        const message = req.body.name +
+            ", подтверждаем вашу регистрацию в приложении «Музыкотерапия»." +
+            "<br><br>Код активации: " + code.toString() +
+            "<br><br>Приятного использования!" +
+            "<br><br>По всем вопросам Вы можете обращаться в службу поддержки – info@musictherapy.by или по телефону/вайбер/телеграм +375(44)464-73-47." +
+            "<br>--" +
+            "<br>www.MusicTherapy.by";
         await sendEmail(req.body.email, message, res);
 
         try {
