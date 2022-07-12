@@ -13,6 +13,14 @@ const logDataSchema = new Schema({
         type: String,
         required: true,
     },
+    user_name: {
+        type: String,
+        required: false,
+    },
+    date: {
+        type: Date,
+        required: false,
+    }
 });
 
 module.exports = model('LogData', logDataSchema);

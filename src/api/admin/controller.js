@@ -416,6 +416,7 @@ module.exports.get_list_audio = async function(req, res) {
 
         for (let i = 0; i < data?.length; i++) {
             // data[i].like = await LikeAudio.find({id_root: data[i]._id.toString()}).count();
+            // data[i].counter_start = await LogData.find({id_data: data[i]._id.toString()}, { date: 1, user_name: 1 });
             data[i].counter_start = await LogData.find({id_data: data[i]._id.toString()}).count();
             data[i].like_tooltip = await LikeAudio.find({id_root: data[i]._id.toString()},
                 { date: 1, user_name: 1 });
@@ -447,6 +448,7 @@ module.exports.get_list_video = async function(req, res) {
 
         for (let i = 0; i < data?.length; i++) {
             // data[i].like = await LikeVideo.find({id_root: data[i]._id.toString()}).count();
+            // data[i].counter_start = await LogData.find({id_data: data[i]._id.toString()}, { date: 1, user_name: 1 });
             data[i].counter_start = await LogData.find({id_data: data[i]._id.toString()}).count();
             data[i].like_tooltip = await LikeVideo.find({id_root: data[i]._id.toString()},
                 { date: 1, user_name: 1 });

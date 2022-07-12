@@ -27,6 +27,8 @@ module.exports.log_play_data = async function(req, res) {
             id_user: check?._id ? check?._id : null,
             id_data: id,
             type,
+            date: new Date(),
+            user_name: check?._id ? check.fullName + ' ' + check.name : 'undefined',
         });
         await new_launcher.save();
         res.status(201).json("OK");
