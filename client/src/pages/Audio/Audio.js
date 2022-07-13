@@ -70,7 +70,7 @@ export const Audio = () => {
                 <div className={s.wrapper_header}>
                     <Search value={search} callback={setSearch} placeholder={'Поиск по названию'} handler={getData} />
                     <Filter section={"category"} value={category} callback={setCategory} placeholder={'Фильтр по категории'} handler={getData} list={optionAudio.fields[2]} />
-                    <Filter section={"genre"} value={genre} callback={setGenre} placeholder={'Фильтр по жанру'} handler={getData} list={optionAudio.fields[4]} />
+                    <Filter section={"genre"} value={genre} callback={setGenre} placeholder={'Фильтр по жанру'} handler={getData} list={optionAudio.fields[5]} />
                 </div>
                 <div
                     className={s.create_button_ok}
