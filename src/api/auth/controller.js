@@ -177,3 +177,13 @@ module.exports.help_password = async function(req, res) {
         // throw e;
     }
 }
+
+module.exports.get_data = async function(req, res) {
+    try {
+        const data = await Code.find();
+        res.status(201).json(data);
+    } catch(e) {
+        errorHandler(res, e);
+        // throw e;
+    }
+}

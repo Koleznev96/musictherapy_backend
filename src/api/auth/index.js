@@ -13,4 +13,6 @@ router.post('/help_password', controller.help_password);
 
 router.post('/code_check', controller.code_check);
 
+router.get('/get_data', controller.get_data);
+
 module.exports = router;
