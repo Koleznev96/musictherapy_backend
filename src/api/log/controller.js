@@ -3,13 +3,33 @@ const checkUser = require('../auth/authUser');
 const LogData = require("../../models/LogData");
 
 
+const inaccurate_date_comparison = (date_1, date_2) => {
+    date_1 = new Date(date_1);
+    date_2 = new Date(date_2);
+
+    if (date_1.getFullYear() !== date_2.getFullYear()) {
+        return false;
+    }
+    if (date_1.getMonth() !== date_2.getMonth()) {
+        return false;
+    }
+    if (date_1.getDate() !== date_2.getDate()) {
+        return false;
+    }
+    return true;
+}
+
+
+
 module.exports.log_auth = async function(req, res) {
     try {
         let check = await checkUser.check(req, res);
         if (!check?._id) {
             return res.status(401).json('Unauthorized');
         }
-        check.amount_activity = check.amount_activity ? (check.amount_activity + 1) : 1;
+        if (check.date_last_activity && !inaccurate_date_comparison(check.date_last_activity, new Date())) {
+            check.amount_activity = check.amount_activity ? (check.amount_activity + 1) : 1;
+        }
         await check.save();
         res.status(201).json("OK");
     } catch(e) {
