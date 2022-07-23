@@ -53,7 +53,7 @@ export const FieldVideo = ({label, name, change, value}) => {
     }
 
     return (
-        <>
+        <div className={s.jin}>
             <div className={GlobalStyle.CustomFontRegular + ' ' + s.placeholder}>
                 {label}
             </div>
@@ -80,6 +80,6 @@ export const FieldVideo = ({label, name, change, value}) => {
                     )}
                 </div>
             </div>
-        </>
+        </div>
     )
 }

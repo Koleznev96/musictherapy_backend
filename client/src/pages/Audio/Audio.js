@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
 import s from './Video.module.scss';
 import {useHttp} from "../../hooks/http.hook";
 import {Search} from "../../components/search/Search";
@@ -12,6 +12,8 @@ import {ColorsStyles} from "../../constants/ColorsStyles";
 import GlobalStyle from "../../components/GlobalStyle.module.scss";
 import {usePopupForm} from "../../hooks/usePopupForm";
 import {Form} from "../../components/tableCard/Forml";
+import {TextCounter} from "../../components/textCounter/TextCounter";
+import {httpServer} from "../../const";
 
 
 export const Audio = () => {
@@ -26,6 +28,7 @@ export const Audio = () => {
     const [category, setCategory] = useState("");
     const [genre, setGenre] = useState("");
     const [newData, setNewData] = useState(null);
+    const [data_length, set_data_length] = useState(0);
 
     const filtersData = (new_data) => {
         setData([...new_data]);
@@ -33,9 +36,9 @@ export const Audio = () => {
 
     const getData = async (page, rel, data_search) => {
         page = page ? page : 0;
-        let search_ = data_search?.search ? data_search.search : (search?.length > 0 ? search : "null");
-        let category_ = data_search?.category ? data_search.category : (category?.length > 0 ? category : "null");
-        let genre_ = data_search?.genre ? data_search.genre : (genre?.length > 0 ? genre : "null");
+        let search_ = data_search?.search ? data_search.search : "null";
+        let category_ = data_search?.category ? data_search.category : "null";
+        let genre_ = data_search?.genre ? data_search.genre : "null";
         if (rel === "null") {
             search_ = "null";
             category_ = "null";
@@ -51,6 +54,7 @@ export const Audio = () => {
             setPage(page);
             setEndPage(answer.count_page);
             setData(sortNumberFunction(answer.data));
+            set_data_length(answer.count_data);
         } catch (e){}
     }
 
@@ -64,13 +68,38 @@ export const Audio = () => {
         popupForm.openHandler(<Form data={null} option={optionCreateAudio} reload={getData} optionEdit={optionAudio} setNewData={setNewData}/>);
     }
 
+    // const httpFetch = async () => {
+    //     console.log('aaaaaaaaaaaaaa!!!!!!!!!!!')
+    //     let url = 'https://fdgdfgfsdfg.com';
+    //     let method = 'POST';
+    //     let headers = {};
+    //     let body = {};
+    //
+    //     // body = JSON.stringify(body);
+    //     // headers['Content-Type'] = 'application/json';
+    //     //
+    //     // const response = await fetch( url, {method, body, headers});
+    //     // const data = await response.json();
+    // }
+    //
+    // useEffect(() => {
+    //     const link_interval = setInterval(async () => {
+    //         await httpFetch();
+    //     }, 1000);
+    //
+    //     return () => {
+    //         clearInterval(link_interval);
+    //     }
+    // }, []);
+
     return (
         <div className={s.root}>
             <div className={s.header}>
                 <div className={s.wrapper_header}>
                     <Search value={search} callback={setSearch} placeholder={'Поиск по названию'} handler={getData} />
-                    <Filter section={"category"} value={category} callback={setCategory} placeholder={'Фильтр по категории'} handler={getData} list={optionAudio.fields[2]} />
-                    <Filter section={"genre"} value={genre} callback={setGenre} placeholder={'Фильтр по жанру'} handler={getData} list={optionAudio.fields[5]} />
+                    <Filter width={280} section={"category"} value={category} callback={setCategory} placeholder={'Фильтр по категории'} handler={getData} list={optionAudio.fields[2]} />
+                    <Filter width={280} section={"genre"} value={genre} callback={setGenre} placeholder={'Фильтр по жанру'} handler={getData} list={optionAudio.fields[5]} />
+                    <TextCounter value={data_length}/>
                 </div>
                 <div
                     className={s.create_button_ok}

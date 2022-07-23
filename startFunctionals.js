@@ -1,4 +1,4 @@
-const Admin = require('./src/models/Admin');
+const User = require('./src/models/User');
 const Version = require('./src/models/Version');
 const MaxNumbers = require('./src/models/MaxNumbers');
 const Video = require('./src/models/Video');
@@ -6,22 +6,22 @@ const Audio = require('./src/models/Audio');
 const LiveSound = require('./src/models/LiveSound');
 
 module.exports.startServerCheckAdmin = async () => {
-    const count = await Admin.find().count();
-    if (count >= 1) return;
-
-    const date = new Date();
-
-    let admin = new Admin({
-        email: 'admin@admin.com',
-        password: 'admin',
-        name: 'admin',
-        fullName: 'admin',
-        telephone: '+79999999999',
-        date_last_activity: date,
-        registration_date: date,
-    });
-
-    await admin.save();
+    // const count = await Admin.find().count();
+    // if (count >= 1) return;
+    //
+    // const date = new Date();
+    //
+    // let admin = new Admin({
+    //     email: 'admin@admin.com',
+    //     password: 'admin',
+    //     name: 'admin',
+    //     fullName: 'admin',
+    //     telephone: '+79999999999',
+    //     date_last_activity: date,
+    //     registration_date: date,
+    // });
+    //
+    // await admin.save();
 }
 
 module.exports.startServerCheckVersion = async () => {
@@ -76,4 +76,35 @@ module.exports.startServerCheckTables = async () => {
         number: answer.maxCounter,
     });
     await table_3.save();
+}
+
+module.exports.startServerIsAdminTables = async () => {
+    let data_list = await User.find();
+
+    for (let i = 0; i < data_list.length; i++) {
+        let new_data = await User.findOne({_id: data_list[i]._id});
+        if (typeof new_data.is_admin !== 'boolean') {
+            new_data.is_admin = false;
+            await new_data.save();
+        }
+    }
+
+    const count = await User.find({is_admin: true}).count();
+    if (count >= 1) return;
+
+    let admin = new User({
+        language: 'ru',
+        email: 'admin@admin.com',
+        password: 'admin',
+        name: 'admin',
+        fullName: 'admin',
+        telephone: '+79999999999',
+        date_last_activity: new Date(),
+        registration_date: new Date(),
+        is_admin: true,
+        access: "Гость",
+        codeCheck: '',
+        isNoCheck: false,
+    });
+    await admin.save();
 }

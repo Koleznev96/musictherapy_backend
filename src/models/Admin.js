@@ -33,6 +33,10 @@ const adminSchema = new Schema({
         type: Date,
         required: false,
     },
+    is_admin: {
+        type: Boolean,
+        required: false,
+    },
 });
 
 module.exports = model('Admin', adminSchema);

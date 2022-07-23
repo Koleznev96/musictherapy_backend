@@ -97,6 +97,9 @@ router.get('/access',
 router.get('/version',
     controller.get_version);
 
+router.get('/tools',
+    controller.get_tools);
+
 router.get('/users/:page/:full_name',
     passport.authenticate('jwt', {session: false}),
     controller.get_list_user);

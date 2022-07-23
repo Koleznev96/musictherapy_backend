@@ -18,6 +18,9 @@ router.post('/re_password',
 router.post('/re_email',
     controller.update_email);
 
+router.post('/create_user',
+    controller.create_user);
+
 router.post('/create_live_sound',
     controller.create_live_sound);
 
@@ -69,7 +72,7 @@ router.get('/meditation/:page/:label',
 router.get('/classic/:page/:label',
     controller.get_list_classic);
 
-router.get('/users/:page/:full_name',
+router.get('/users/:page/:full_name/:is_admin/:access/:language',
     controller.get_list_user);
 
 router.post('/re_live_sound',

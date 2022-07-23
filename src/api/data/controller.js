@@ -18,7 +18,7 @@ const UserQuestionTest = require('../../models/UserQuestionTest');
 const UserLessonCourse = require('../../models/UserLessonCourse');
 
 const {checkLanguage} = require("./detectionLanguage");
-
+const {Tools} = require("../../middleware/tools");
 
 module.exports.get_list_live_sound_ios = async function(req, res) {
     try {
@@ -709,10 +709,10 @@ module.exports.get_v2_list_meditation_ios = async function(req, res) {
 module.exports.get_v2_list_audio_ios = async function(req, res) {
     try {
         const check = await checkUser.check(req, res);
-        if (!check._id) {
-            return res.status(401).json('Unauthorized');
-        }
-        let access = check.access ? check.access : "Гость";
+        // if (!check._id) {
+        //     return res.status(401).json('Unauthorized');
+        // }
+        let access = (check._id && check.access) ? check.access : "Без регистрации";
         const category = req.params.category;
         const page = Number(req.params.page);
         // let data = await Audio.find({category}, null, { skip: page, limit: limitPageData });
@@ -723,27 +723,32 @@ module.exports.get_v2_list_audio_ios = async function(req, res) {
 
         for (let i = 0; i < data.length; i++) {
             if (!(!data[i].access || data[i].access.indexOf(access) !== -1)) {
-                if (data[i].access.length === 1 && data[i].access.indexOf("VIP") !== -1) {
-                    data.splice(i, 1);
-                    continue;
-                }
-                if (data[i].access.indexOf("Премиум") !== -1 && data[i].access.indexOf("Без регистрации") === -1
-                    && data[i].access.indexOf("Гость") === -1) {
-                    data[i].dostup = 'premium';
-                } else {
-                    data[i].dostup = 'auth';
-                }
+                data.splice(i, 1);
+                continue;
+                // if (data[i].access.length === 1 && data[i].access.indexOf("VIP") !== -1) {
+                //     data.splice(i, 1);
+                //     continue;
+                // }
+                // if (data[i].access.indexOf("Премиум") !== -1 && data[i].access.indexOf("Без регистрации") === -1
+                //     && data[i].access.indexOf("Гость") === -1) {
+                //     data[i].dostup = 'premium';
+                // } else {
+                //     data[i].dostup = 'auth';
+                // }
             } else {
                 data[i].dostup = 'view';
             }
 
-            let status = await LikeAudio.findOne({id_root: data[i]._id.toString(), id_user: check?._id.toString()});
-            data[i].like = status ? 1 : 0;
+            if (check._id) {
+                let status = await LikeAudio.findOne({id_root: data[i]._id.toString(), id_user: check?._id.toString()});
+                data[i].like = status ? 1 : 0;
+            }
+
         }
 
-        for (let i = 0; i < data.length; i++) {
-
-        }
+        // for (let i = 0; i < data.length; i++) {
+        //
+        // }
 
         res.status(201).json({data, page, count_page: 20, end_page: true, access});
 
@@ -953,6 +958,15 @@ module.exports.get_version = async function(req, res) {
     try {
         const version = await Version.findOne({root: 0});
         res.status(201).json({version});
+    } catch(e) {
+        errorHandler(res, e);
+        // throw e;
+    }
+}
+
+module.exports.get_tools = async function(req, res) {
+    try {
+        res.status(201).json(Tools);
     } catch(e) {
         errorHandler(res, e);
         // throw e;

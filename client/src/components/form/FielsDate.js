@@ -6,7 +6,7 @@ import TextField from "@mui/material/TextField";
 
 export const FieldDate = ({label, name, change, value}) => {
     return (
-        <>
+        <div className={s.jin}>
             <div className={GlobalStyle.CustomFontRegular + ' ' + s.placeholder}>
                 {label}
             </div>
@@ -42,6 +42,6 @@ export const FieldDate = ({label, name, change, value}) => {
                     />
                 }
             />
-        </>
+        </div>
     )
 }

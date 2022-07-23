@@ -5,9 +5,41 @@ const LogData = require("../../models/LogData");
 const LikeAudio = require("../../models/LikeAudio");
 const {checkLanguage} = require("../data/detectionLanguage");
 
-function shuffle(array) {
+const filter_st = (data, styles, levels) => {
+    let new_data = [];
+    if ((styles && styles?.length > 0) && (!levels || levels?.length === 0)) {
+        for (let i = 0; i < data.length; i++) {
+            if (styles.indexOf(data[i].style) !== -1) {
+                new_data.push(data[i]);
+                continue;
+            }
+        }
+        return new_data;
+    }
+    if ((levels && levels?.length > 0) && (!styles || styles?.length === 0)) {
+        for (let i = 0; i < data.length; i++) {
+            if (levels.indexOf(data[i].level) !== -1) {
+                new_data.push(data[i]);
+                continue;
+            }
+        }
+        return new_data;
+    }
+    if ((levels && levels?.length > 0) && (styles && styles?.length > 0)) {
+        for (let i = 0; i < data.length; i++) {
+            if (levels.indexOf(data[i].level) !== -1 && styles.indexOf(data[i].style) !== -1) {
+                new_data.push(data[i]);
+                continue;
+            }
+        }
+        return new_data;
+    }
+    return data
+}
+
+function shuffle(array, styles, levels) {
     // Перемешивание масива
-    return array.sort(() => Math.random() - 0.5);
+    return filter_st(array.sort(() => Math.random() - 0.5), styles, levels);
 }
 
 function exact_comparison(array1, array2) {
@@ -39,6 +71,8 @@ function weak_comparison(array1, array2) {
     return status
 }
 
+
+
 const algorithm_instrument = (data, instruments) => {
     if (!instruments || instruments?.length === 0) return data;
 
@@ -63,7 +97,7 @@ const algorithm_instrument = (data, instruments) => {
 }
 
 function alternation_elements(data1, data2) {
-    let s = Math.max(data1.length, data2.length)  *2;
+    let s = Math.max(data1.length, data2.length) * 2;
     let d =  [data1, data2];
     let answer = [];
 
@@ -75,13 +109,13 @@ function alternation_elements(data1, data2) {
     return answer;
 }
 
-const algorithm_filter = async (instruments, filter) => {
-    let data = shuffle(await Audio.find(filter));
-    return algorithm_instrument(data, instruments);
+const algorithm_filter = async (instruments, filter, styles, levels) => {
+    let data = shuffle(await Audio.find(filter), styles, levels);
+    return algorithm_instrument(data, instruments, styles, levels);
 }
 
-const algorithm_free = async (instruments, filter, id_user) => {
-    let data = shuffle(await LikeAudio.find({id_user}));
+const algorithm_free = async (instruments, filter, styles, levels, id_user) => {
+    let data = shuffle(await LikeAudio.find({id_user}), styles, levels);
     let audios = [];
     for (let i = 0; i < data.length; i++) {
         audios.push(await Audio.findOne({_id: data[i].id_root}));
@@ -89,17 +123,17 @@ const algorithm_free = async (instruments, filter, id_user) => {
     return algorithm_instrument(audios, instruments);
 }
 
-const algorithm_four = async (instruments, filter) => {
-    let data1 = await algorithm_filter(instruments, {...filter, category: 'Активация'});
-    let data2 = await algorithm_filter(instruments, {...filter, category: 'Релакс'});
+const algorithm_four = async (instruments, filter, styles, levels) => {
+    let data1 = await algorithm_filter(instruments, {...filter, category: 'Активация'}, styles, levels);
+    let data2 = await algorithm_filter(instruments, {...filter, category: 'Релакс'}, styles, levels);
 
     let audios = alternation_elements(data1, data2);
 
     return algorithm_instrument(audios, instruments);
 }
 
-const algorithm_five = async (instruments, filter, id_user) => {
-    let data = shuffle(await Audio.find(filter));
+const algorithm_five = async (instruments, filter, styles, levels, id_user) => {
+    let data = shuffle(await Audio.find(filter), styles, levels);
 
     let data1 = [];
     let data2 = [];
@@ -123,30 +157,30 @@ module.exports.init = async function(req, res) {
         if (!check._id) {
             return res.status(401).json('Unauthorized');
         }
-        const {goal, instruments} = req.body;
+        const {goal, instruments, styles, levels} = req.body;
         let filter = checkLanguage(req, res);
         let audios = [];
         switch (goal) {
             case 1:
                 filter.category = 'Релакс';
-                audios = await algorithm_filter(instruments, filter);
+                audios = await algorithm_filter(instruments, filter, styles, levels);
                 break;
             case 2:
                 filter.category = 'Активация';
-                audios = await algorithm_filter(instruments, filter);
+                audios = await algorithm_filter(instruments, filter, styles, levels);
                 break;
             case 3:
                 filter.category = 'Релакс';
-                audios = await algorithm_free(instruments, filter, check._id);
+                audios = await algorithm_free(instruments, filter, styles, levels, check._id);
                 break;
             case 4:
-                audios = await algorithm_four(instruments, filter);
+                audios = await algorithm_four(instruments, filter, styles, levels);
                 break;
             case 5:
-                audios = await algorithm_five(instruments, filter, check._id);
+                audios = await algorithm_five(instruments, filter, styles, levels, check._id);
                 break;
             default:
-                audios = await algorithm_filter(instruments, filter);
+                audios = await algorithm_filter(instruments, filter, styles, levels);
         }
 
         for (let i = 0; i < audios.length; i++) {

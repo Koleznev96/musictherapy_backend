@@ -59,7 +59,7 @@ export const FieldTemporaryAccessData = ({label, name, change, value, url_get_da
     }
 
     return (
-        <>
+        <div className={s.jin}>
             <div className={GlobalStyle.CustomFontRegular + ' ' + s.placeholder}>
                 {label}
             </div>
@@ -158,6 +158,6 @@ export const FieldTemporaryAccessData = ({label, name, change, value, url_get_da
                     })}
                 </div>
             </div>
-        </>
+        </div>
     )
 }

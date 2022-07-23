@@ -51,7 +51,7 @@ export const Courses = () => {
     useEffect(() => {getData(0, "null")}, []);
 
     const creteHandler = () => {
-        popupForm.openHandler(<Form data={null} option={optionCreateCourses} reload={getData} optionEdit={optionCreateCourses}/>);
+        popupForm.openHandler(<Form data={null} option={optionCreateCourses} reload={getData} optionEdit={optionCreateCourses} wigth_panel={850}/>);
     }
 
     return (
@@ -75,6 +75,7 @@ export const Courses = () => {
                 reload={getData}
                 setData={filtersData}
                 table_name={"live_sound"}
+                wigth_panel={850}
             />
             <div className={s.footer}>
                 <PaginationTable page={page} endPage={endPage} startPage={startPage} getData={getData} search={search} />

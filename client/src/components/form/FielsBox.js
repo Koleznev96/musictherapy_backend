@@ -26,7 +26,7 @@ export const FieldBox = ({label, name, change, value, list_value, st}) => {
     }
 
     return (
-        <>
+        <div className={s.jin}>
             <div className={GlobalStyle.CustomFontRegular + ' ' + s.placeholder}>
                 {label}
             </div>
@@ -97,6 +97,6 @@ export const FieldBox = ({label, name, change, value, list_value, st}) => {
             {/*    </div>*/}
             {/*    </div>*/}
             {/*</div>*/}
-        </>
+        </div>
     )
 }

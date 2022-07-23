@@ -81,7 +81,7 @@ export const FieldFileTranslation = ({label, name, change, value, languages}) =>
     }
 
     return (
-        <>
+        <div className={s.jin}>
             <div className={s.wrpper_field_header}>
                 <div className={GlobalStyle.CustomFontRegular + ' ' + s.placeholder}>
                     {label}
@@ -121,6 +121,6 @@ export const FieldFileTranslation = ({label, name, change, value, languages}) =>
                     )}
                 </div>
             </div>
-        </>
+        </div>
     )
 }

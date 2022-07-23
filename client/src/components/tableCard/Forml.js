@@ -13,7 +13,7 @@ import {listField, optionLanguages} from "../../constants/OptionsTable";
 import cloneDeep from 'lodash/cloneDeep';
 
 
-export const Form = ({data, option, reload, optionQuestionnaire, optionPassword, optionEdit, optionSettings}) => {
+export const Form = ({data, option, reload, optionQuestionnaire, optionPassword, optionEdit, optionSettings, wigth_panel}) => {
     const popupForm = usePopupForm();
     const auth = useContext(AuthContext);
     const {request, error, clearError, loading} = useHttp();
@@ -54,12 +54,12 @@ export const Form = ({data, option, reload, optionQuestionnaire, optionPassword,
         if (optionQuestionnaire) {
             let fieldQuestionnaire = {};
             optionQuestionnaire?.fields?.forEach(item => {
-                fieldQuestionnaire[item.value] = data?.questionnaire ? data.questionnaire[item.value] : item.default;
+                fieldQuestionnaire[item.value] = data?.questionnaire ? data?.questionnaire[item.value] : item.default;
             });
             setQuestionnaire(fieldQuestionnaire);
         }
         if (optionPassword) {
-            setPassword({password: data.password});
+            setPassword({password: data?.password ? data.password : ''});
         }
         if (optionSettings) {
             let fieldSettings = {};
@@ -71,11 +71,8 @@ export const Form = ({data, option, reload, optionQuestionnaire, optionPassword,
     }, [option, popupForm.isOpen]);
 
     const changeRoot = (data) => {
-        console.log('data-', data)
         let new_data = {...value};
-        console.log('new_data-', new_data)
         new_data[data.name] = data.value;
-        console.log('new_data-', new_data)
         setValue(new_data);
     }
 
@@ -149,7 +146,10 @@ export const Form = ({data, option, reload, optionQuestionnaire, optionPassword,
     }
 
     return (
-        <div className={s.root_popup}>
+        <div
+            // className={s.root_popup}
+            style={{width: wigth_panel ? wigth_panel : 400}}
+        >
             <div className={s.popup_header}>
                 <div className={GlobalStyle.BellotaFontRegular + ' ' + s.popup_label}>
                     Редактирование

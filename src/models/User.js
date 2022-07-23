@@ -64,6 +64,18 @@ const userSchema = new Schema({
         type: Number,
         required: false,
     },
+    is_admin: {
+        type: Boolean,
+        required: false,
+    },
+    codeCheck: {
+        type: String,
+        required: false,
+    },
+    isNoCheck: {
+        type: Boolean,
+        required: false,
+    }
 });
 
 module.exports = model('User', userSchema);

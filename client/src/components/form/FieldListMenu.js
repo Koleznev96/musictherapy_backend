@@ -4,7 +4,6 @@ import React, {useState} from "react";
 import {listField, optionLanguages} from "../../constants/OptionsTable";
 
 export const FieldListMenu = ({labels, list_menu_fields, change, value, id_data}) => {
-    // console.log('-----', {labels, list_menu_fields, change, value})
     const [itemMenu, setItemMenu] = useState(0);
     return (
         <>

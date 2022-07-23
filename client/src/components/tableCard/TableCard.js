@@ -28,7 +28,7 @@ const string_date_ = (string) => {
     return day + '.' + month + '.' + year;
 }
 
-export const TableCard = ({option, data, loading, reload, setData, optionQuestionnaire, optionPassword, optionSettings, optionEdit, table_name}) => {
+export const TableCard = ({option, data, loading, reload, setData, optionQuestionnaire, optionPassword, optionSettings, optionEdit, table_name, wigth_panel}) => {
     const popupForm = usePopupForm();
     const auth = useContext(AuthContext);
     const {request, error, clearError} = useHttp();
@@ -44,6 +44,7 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
                 optionQuestionnaire={optionQuestionnaire}
                 optionPassword={optionPassword}
                 optionSettings={optionSettings}
+                wigth_panel={wigth_panel}
             />
         );
     }
@@ -69,10 +70,8 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
         if (statusFilter) {
             new_data.reverse();
             setStatusFilter(false);
-            console.log('1111111')
         } else {
             setStatusFilter(true);
-            console.log('22222')
         }
         setData([...new_data]);
         setStatus(item.value);
@@ -245,7 +244,10 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
                                                             ): null}
                                                         </div>
                                                     ) : (
-                                            !data_item[field_item.value] ? '' : (
+                                            !data_item[field_item.value] ? (
+                                                (field_item.value === 'is_admin') ?
+                                                    'Клиент' : ''
+                                            ) : (
                                             (field_item.type === 'bool') ? (
                                             field_item.list_value?.find(element => element.value === data_item[field_item.value])?.label
                                             // data_item[field_item.value] === 'meditation' ? 'Медитация' : (data_item[field_item.value] === 'classic' ? 'Классика HD' : 'Инструменты')

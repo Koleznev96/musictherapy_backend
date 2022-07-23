@@ -38,7 +38,6 @@ export const FieldListAdditionalFunctionality = ({label, name, change, value, ur
             changeRootMain(answer ? answer : [])
             // setList_value(answer ? answer : []);
         } catch (e){
-            console.log('errr-', e)
         }
     }
 

@@ -29,7 +29,7 @@ export const FieldInputEditTranslation = ({label, name, change, value, languages
     }
 
     return (
-        <>
+        <div className={s.jin}>
             <div className={s.wrpper_field_header}>
                 <div className={GlobalStyle.CustomFontRegular + ' ' + s.placeholder}>
                     {label}
@@ -72,6 +72,6 @@ export const FieldInputEditTranslation = ({label, name, change, value, languages
             {/*    className={s.input}*/}
             {/*    onChange={(value) => editFiled(value.target.value)}*/}
             {/*/>*/}
-        </>
+        </div>
     )
 }

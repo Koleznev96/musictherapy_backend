@@ -17,6 +17,8 @@ import {FieldListAdditionalFunctionality} from "../components/form/FieldListAddi
 import {FieldInputEditTranslation} from "../components/form/FieldInputEditTranslation";
 import {FieldIntervalBallTextTranslation} from "../components/form/FieldIntervalBallTextTranslation";
 import {FieldListAnswerBall} from "../components/form/FieldListAnswerBall";
+import {Tools} from "../tools";
+import {FieldFileOpen} from "../components/form/FieldFileOpen";
 
 export const listField = ({item, change, value, optionLanguages, st, id_data}) => {
     // console.log('pppp--------------------------', {item, change, value, optionLanguages, st})
@@ -38,6 +40,7 @@ export const listField = ({item, change, value, optionLanguages, st, id_data}) =
     if (item.type === 'input_edit_translation') return <FieldInputEditTranslation label={item.label} name={item.value} change={change} value={value[item.value]} languages={optionLanguages} />;
     if (item.type === 'list_interval_ball_text_translation') return <FieldIntervalBallTextTranslation labels={item.labels} name={item.value} change={change} value={value[item.value]} languages={optionLanguages} add_data={item.add_data} title_add={item.title_add}/>;
     if (item.type === 'list_answer_ball') return <FieldListAnswerBall name={item.value} change={change} value={value[item.value]} languages={optionLanguages} add_data={item.add_data} title_add={item.title_add}/>;
+    if (item.type === 'file_open') return <FieldFileOpen label={item.label} name={item.value} change={change} value={value[item.value]} />;
     return null;
 }
 
@@ -80,6 +83,20 @@ export const optionUserView = {
             type: "input",
             filter: false,
             default: '',
+        },
+        {
+            label: 'Роль',
+            value: 'is_admin',
+            type: "bool",
+            default: '',
+            list_value: [{label: 'Администратор', value: true}, {label: 'Клиент', value: false}],
+        },
+        {
+            label: 'Уровень',
+            value: 'access',
+            type: "bool",
+            default: '',
+            list_value: [{label: 'Гость', value: 'Гость'}, {label: 'Премиум', value: 'Премиум'}, {label: 'VIP', value: 'VIP'}],
         },
         {
             label: 'Дата регистрации',
@@ -182,6 +199,62 @@ export const optionUser = {
     ],
 }
 
+export const optionUserCreate = {
+    delete_url: '/delete_user',
+    url: '/create_user',
+    fields: [
+        {
+            label: 'Фамилия',
+            value: 'fullName',
+            type: "input",
+            filter: true,
+            default: '',
+        },
+        {
+            label: 'Имя',
+            value: 'name',
+            type: "input",
+            filter: true,
+            default: '',
+        },
+        {
+            label: 'Телефон',
+            value: 'telephone',
+            type: "input",
+            filter: false,
+            default: '',
+        },
+        {
+            label: 'E-mail',
+            value: 'email',
+            type: "input",
+            filter: false,
+            default: '',
+        },
+        {
+            label: 'Дата регистрации',
+            value: 'registration_date',
+            type: "date",
+            filter: true,
+            default: '',
+        },
+        {
+            label: 'Дата последнего входа',
+            value: 'date_last_activity',
+            type: "date",
+            filter: true,
+            default: '',
+        },
+        {
+            label: 'Статус',
+            value: 'status',
+            type: "status",
+            filter: false,
+            default: '',
+        },
+    ],
+}
+
 export const optionLanguages = [
     {
         label: "рус",
@@ -219,14 +292,14 @@ export const optionTranslation = {
         {
             label: 'Русский (json файл)',
             value: 'ru',
-            type: "video",
+            type: "file_open",
             filter: false,
             default: '',
         },
         {
             label: 'Английский (json файл)',
             value: 'com',
-            type: "video",
+            type: "file_open",
             filter: false,
             default: '',
         },
@@ -252,6 +325,13 @@ export const optionSettings = {
             type: "bool",
             default: '',
             list_value: [{label: 'ру', value: 'ru'}, {label: 'eng', value: 'com'}],
+        },
+        {
+            label: 'Роль пользователя',
+            value: 'is_admin',
+            type: "bool",
+            default: '',
+            list_value: [{label: 'Администратор', value: true}, {label: 'Клиент', value: false}],
         },
         {
             label: 'Уровень пользователя',
@@ -1089,12 +1169,7 @@ export const optionEditVideo = {
             type: "box",
             filter: true,
             default: [],
-            list_value: [{label: 'Рояль', value: 'Рояль'}, {label: 'Флейта', value: 'Флейта'}, {label: 'Виолончель', value: 'Виолончель'}, {label: 'Скрипка', value: 'Скрипка'},
-                {label: 'Вокал', value: 'Вокал'}, {label: 'Арфа', value: 'Арфа'}, {label: 'Клавесин', value: 'Клавесин'}, {label: 'Орган', value: 'Орган'},
-                {label: 'Гонг', value: 'Гонг'}, {label: 'Тибетские поющие чаши', value: 'Тибетские поющие чаши'}, {label: 'Караталы', value: 'Караталы'}, {label: 'Чакрофоны', value: 'Чакрофоны'},
-                {label: 'Шум дождя', value: 'Шум дождя'}, {label: 'Шум ручья', value: 'Шум ручья'}, {label: 'Шум океана', value: 'Шум океана'}, {label: 'Калимба', value: 'Калимба'},
-                {label: 'Глюкофон', value: 'Глюкофон'}, {label: 'Барчаймс', value: 'Барчаймс'}, {label: 'Колокольчики Коши', value: 'Колокольчики Коши'}, {label: 'Колокольчики Нада', value: 'Колокольчики Нада'},
-                {label: 'Валдайские колокольчики', value: 'Валдайские колокольчики'}, {label: 'Этническая погремушка', value: 'Этническая погремушка'}, {label: 'Гитара', value: 'Гитара'}, {label: 'Контрабас', value: 'Контрабас'}],
+            list_value: Tools,
         },
     ],
 }
@@ -1182,12 +1257,7 @@ export const optionVideo = {
             type: "box",
             filter: true,
             default: [],
-            list_value: [{label: 'Рояль', value: 'Рояль'}, {label: 'Флейта', value: 'Флейта'}, {label: 'Виолончель', value: 'Виолончель'}, {label: 'Скрипка', value: 'Скрипка'},
-                {label: 'Вокал', value: 'Вокал'}, {label: 'Арфа', value: 'Арфа'}, {label: 'Клавесин', value: 'Клавесин'}, {label: 'Орган', value: 'Орган'},
-                {label: 'Гонг', value: 'Гонг'}, {label: 'Тибетские поющие чаши', value: 'Тибетские поющие чаши'}, {label: 'Караталы', value: 'Караталы'}, {label: 'Чакрофоны', value: 'Чакрофоны'},
-                {label: 'Шум дождя', value: 'Шум дождя'}, {label: 'Шум ручья', value: 'Шум ручья'}, {label: 'Шум океана', value: 'Шум океана'}, {label: 'Калимба', value: 'Калимба'},
-                {label: 'Глюкофон', value: 'Глюкофон'}, {label: 'Барчаймс', value: 'Барчаймс'}, {label: 'Колокольчики Коши', value: 'Колокольчики Коши'}, {label: 'Колокольчики Нада', value: 'Колокольчики Нада'},
-                {label: 'Валдайские колокольчики', value: 'Валдайские колокольчики'}, {label: 'Этническая погремушка', value: 'Этническая погремушка'}, {label: 'Гитара', value: 'Гитара'}],
+            list_value: Tools,
         },
     ],
 }
@@ -1271,12 +1341,7 @@ export const optionEditAudio = {
             type: "box",
             filter: true,
             default: [],
-            list_value: [{label: 'Рояль', value: 'Рояль'}, {label: 'Флейта', value: 'Флейта'}, {label: 'Виолончель', value: 'Виолончель'}, {label: 'Скрипка', value: 'Скрипка'},
-                {label: 'Вокал', value: 'Вокал'}, {label: 'Арфа', value: 'Арфа'}, {label: 'Клавесин', value: 'Клавесин'}, {label: 'Орган', value: 'Орган'},
-                {label: 'Гонг', value: 'Гонг'}, {label: 'Тибетские поющие чаши', value: 'Тибетские поющие чаши'}, {label: 'Караталы', value: 'Караталы'}, {label: 'Чакрофоны', value: 'Чакрофоны'},
-                {label: 'Шум дождя', value: 'Шум дождя'}, {label: 'Шум ручья', value: 'Шум ручья'}, {label: 'Шум океана', value: 'Шум океана'}, {label: 'Калимба', value: 'Калимба'},
-                {label: 'Глюкофон', value: 'Глюкофон'}, {label: 'Барчаймс', value: 'Барчаймс'}, {label: 'Колокольчики Коши', value: 'Колокольчики Коши'}, {label: 'Колокольчики Нада', value: 'Колокольчики Нада'},
-                {label: 'Валдайские колокольчики', value: 'Валдайские колокольчики'}, {label: 'Этническая погремушка', value: 'Этническая погремушка'}, {label: 'Гитара', value: 'Гитара'}, {label: 'Контрабас', value: 'Контрабас'}, {label: 'Симфонический оркестр', value: 'Симфонический оркестр'}],
+            list_value: Tools,
         },
         {
             label: 'Аудио',
@@ -1347,12 +1412,7 @@ export const optionAudio = {
             type: "box",
             filter: true,
             default: [],
-            list_value: [{label: 'Рояль', value: 'Рояль'}, {label: 'Флейта', value: 'Флейта'}, {label: 'Виолончель', value: 'Виолончель'}, {label: 'Скрипка', value: 'Скрипка'},
-                {label: 'Вокал', value: 'Вокал'}, {label: 'Арфа', value: 'Арфа'}, {label: 'Клавесин', value: 'Клавесин'}, {label: 'Орган', value: 'Орган'},
-                {label: 'Гонг', value: 'Гонг'}, {label: 'Тибетские поющие чаши', value: 'Тибетские поющие чаши'}, {label: 'Караталы', value: 'Караталы'}, {label: 'Чакрофоны', value: 'Чакрофоны'},
-                {label: 'Шум дождя', value: 'Шум дождя'}, {label: 'Шум ручья', value: 'Шум ручья'}, {label: 'Шум океана', value: 'Шум океана'}, {label: 'Калимба', value: 'Калимба'},
-                {label: 'Глюкофон', value: 'Глюкофон'}, {label: 'Барчаймс', value: 'Барчаймс'}, {label: 'Колокольчики Коши', value: 'Колокольчики Коши'}, {label: 'Колокольчики Нада', value: 'Колокольчики Нада'},
-                {label: 'Валдайские колокольчики', value: 'Валдайские колокольчики'}, {label: 'Этническая погремушка', value: 'Этническая погремушка'}, {label: 'Гитара', value: 'Гитара'}, {label: 'Симфонический оркестр', value: 'Симфонический оркестр'}],
+            list_value: Tools,
         },
         {
             label: 'Аудио',
@@ -1450,12 +1510,7 @@ export const optionCreateVideo = {
             type: "box",
             filter: true,
             default: [],
-            list_value: [{label: 'Рояль', value: 'Рояль'}, {label: 'Флейта', value: 'Флейта'}, {label: 'Виолончель', value: 'Виолончель'}, {label: 'Скрипка', value: 'Скрипка'},
-                {label: 'Вокал', value: 'Вокал'}, {label: 'Арфа', value: 'Арфа'}, {label: 'Клавесин', value: 'Клавесин'}, {label: 'Орган', value: 'Орган'},
-                {label: 'Гонг', value: 'Гонг'}, {label: 'Тибетские поющие чаши', value: 'Тибетские поющие чаши'}, {label: 'Караталы', value: 'Караталы'}, {label: 'Чакрофоны', value: 'Чакрофоны'},
-                {label: 'Шум дождя', value: 'Шум дождя'}, {label: 'Шум ручья', value: 'Шум ручья'}, {label: 'Шум океана', value: 'Шум океана'}, {label: 'Калимба', value: 'Калимба'},
-                {label: 'Глюкофон', value: 'Глюкофон'}, {label: 'Барчаймс', value: 'Барчаймс'}, {label: 'Колокольчики Коши', value: 'Колокольчики Коши'}, {label: 'Колокольчики Нада', value: 'Колокольчики Нада'},
-                {label: 'Валдайские колокольчики', value: 'Валдайские колокольчики'}, {label: 'Этническая погремушка', value: 'Этническая погремушка'}, {label: 'Гитара', value: 'Гитара'}, {label: 'Контрабас', value: 'Контрабас'}],
+            list_value: Tools,
         },
     ],
 }
@@ -1532,12 +1587,7 @@ export const optionCreateAudio = {
             type: "box",
             filter: true,
             default: [],
-            list_value: [{label: 'Рояль', value: 'Рояль'}, {label: 'Флейта', value: 'Флейта'}, {label: 'Виолончель', value: 'Виолончель'}, {label: 'Скрипка', value: 'Скрипка'},
-                {label: 'Вокал', value: 'Вокал'}, {label: 'Арфа', value: 'Арфа'}, {label: 'Клавесин', value: 'Клавесин'}, {label: 'Орган', value: 'Орган'},
-                {label: 'Гонг', value: 'Гонг'}, {label: 'Тибетские поющие чаши', value: 'Тибетские поющие чаши'}, {label: 'Караталы', value: 'Караталы'}, {label: 'Чакрофоны', value: 'Чакрофоны'},
-                {label: 'Шум дождя', value: 'Шум дождя'}, {label: 'Шум ручья', value: 'Шум ручья'}, {label: 'Шум океана', value: 'Шум океана'}, {label: 'Калимба', value: 'Калимба'},
-                {label: 'Глюкофон', value: 'Глюкофон'}, {label: 'Барчаймс', value: 'Барчаймс'}, {label: 'Колокольчики Коши', value: 'Колокольчики Коши'}, {label: 'Колокольчики Нада', value: 'Колокольчики Нада'},
-                {label: 'Валдайские колокольчики', value: 'Валдайские колокольчики'}, {label: 'Этническая погремушка', value: 'Этническая погремушка'}, {label: 'Гитара', value: 'Гитара'}, {label: 'Контрабас', value: 'Контрабас'}, {label: 'Симфонический оркестр', value: 'Симфонический оркестр'}],
+            list_value: Tools,
         },
         {
             label: 'Аудио',

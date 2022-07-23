@@ -56,18 +56,50 @@ module.exports.login = async function(req, res) {
 module.exports.register = async function(req, res) {
     const candidate = await User.findOne({email: req.body.email});
     if (candidate) {
-        res.status(409).json({
-            errors: [['email', 'Такой e-mail уже занят.']]
-        });
+        if (!candidate.isNoCheck) {
+            res.status(409).json({
+                errors: [['email', 'Пользователь с таким e-mail зарегестрирован, попробуйте востановить пароль.']]
+            });
+        } else {
+            // Отправляем Письмо с кодом
+            const message_ = req.body.name +
+                ", подтверждаем вашу регистрацию в приложении «Музыкотерапия»." +
+                "<br><br>Код активации: " + candidate.codeCheck.toString() +
+                "<br><br>Приятного использования!" +
+                "<br><br>По всем вопросам Вы можете обращаться в службу поддержки – info@musictherapy.by или по телефону/вайбер/телеграм +375(44)464-73-47." +
+                "<br>--" +
+                "<br>www.MusicTherapy.by";
+            await sendEmail(req.body.email, message_, res);
+            res.status(201).json({tokenCode: req.body.email});
+            // res.status(409).json({
+            //     errors: [['no_check', 'Такой e-mail уже занят.']]
+            // });
+        }
     } else {
-        const tokenCode = req.body.email + '-' + new Date();
-        await Code.deleteMany({tokenCode: tokenCode});
+        // const tokenCode = req.body.email + '-' + new Date();
+        // await Code.deleteMany({tokenCode: tokenCode});
         const code = Math.floor(Math.random() * (999999 - 100000)) + 100000;
 
-        const code_entry = new Code({
-            tokenCode: tokenCode,
-            code: code.toString(),
+        const date = new Date();
+        const user = new User({
+            email: req.body.email,
+            language: req.body.language ? req.body.language : 'ru',
+            password: req.body.password,
+            name: req.body.name,
+            fullName: req.body.fullName,
+            telephone: req.body.telephone,
+            date_last_activity: date,
+            registration_date: date,
+            access: "Гость",
+            codeCheck: code,
+            isNoCheck: true,
+            is_admin: false,
         });
+
+        // const code_entry = new Code({
+        //     tokenCode: tokenCode,
+        //     code: code.toString(),
+        // });
 
         // Отправляем Письмо с кодом
         const message = req.body.name +
@@ -80,8 +112,8 @@ module.exports.register = async function(req, res) {
         await sendEmail(req.body.email, message, res);
 
         try {
-            await code_entry.save();
-            res.status(201).json({tokenCode});
+            await user.save();
+            res.status(201).json({tokenCode: req.body.email});
         } catch(e) {
             errorHandler(res, e);
             // throw e;
@@ -91,39 +123,12 @@ module.exports.register = async function(req, res) {
 
 module.exports.register_old = async function(req, res) {
     const candidate = await User.findOne({email: req.body.email});
-    if (candidate) {
+    if (candidate && !candidate.isNoCheck) {
         res.status(409).json({
             errors: [['email', 'Такой e-mail уже занят.']]
         });
     } else {
-        const tokenCode = req.body.email + '-' + new Date();
-        await Code.deleteMany({tokenCode: tokenCode});
         const code = '111111';
-
-        const code_entry = new Code({
-            tokenCode: tokenCode,
-            code: code.toString(),
-        });
-
-        try {
-            await code_entry.save();
-            res.status(201).json({tokenCode});
-        } catch(e) {
-            errorHandler(res, e);
-            // throw e;
-        }
-    }
-}
-
-module.exports.code_check = async function(req, res) {
-    try {
-        const code_table = await Code.find({tokenCode: req.body.tokenCode}).sort({$natural:-1}).limit(1);
-
-        if (!code_table.length || (code_table[0].code.toString() != req.body.code.toString())) {
-            return res.status(409).json({
-                errors: [['code', 'Неверный код, попробуйте снова']]
-            });
-        }
 
         const date = new Date();
         const user = new User({
@@ -135,18 +140,54 @@ module.exports.code_check = async function(req, res) {
             telephone: req.body.telephone,
             date_last_activity: date,
             registration_date: date,
-            access: "Гость"
+            access: "Гость",
+            codeCheck: code,
+            isNoCheck: true,
+            is_admin: false,
         });
 
-        await Code.deleteMany({tokenCode: req.body.tokenCode});
+        try {
+            await user.save();
+            res.status(201).json({tokenCode: req.body.email});
+        } catch(e) {
+            errorHandler(res, e);
+            // throw e;
+        }
+    }
+}
+
+module.exports.code_check = async function(req, res) {
+    try {
+        let candidate = await User.findOne({email: req.body.email});
+        if (!candidate.codeCheck.length || (candidate.codeCheck.toString() !== req.body.code.toString())) {
+            return res.status(409).json({
+                errors: [['code', 'Неверный код, попробуйте снова']]
+            });
+        }
+
+        // const date = new Date();
+        // const user = new User({
+        //     email: req.body.email,
+        //     language: req.body.language ? req.body.language : 'ru',
+        //     password: req.body.password,
+        //     name: req.body.name,
+        //     fullName: req.body.fullName,
+        //     telephone: req.body.telephone,
+        //     date_last_activity: date,
+        //     registration_date: date,
+        //     access: "Гость"
+        // });
+
+        candidate.codeCheck = "";
+        candidate.isNoCheck = false;
         // const token = jwt.sign({
         //     email: req.body.email,
         //     userId: user._id,
         // }, keys.jwt, {expiresIn: 60000 * 60000});
-        const token = 'sdfgsdgf456fdgs' + user._id;
+        const token = 'sdfgsdgf456fdgs' + candidate._id;
 
-        user.token = `Bearer ${token}`;
-        await user.save();
+        candidate.token = `Bearer ${token}`;
+        await candidate.save();
 
         res.status(201).json({
             token: `Bearer ${token}`

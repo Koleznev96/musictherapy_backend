@@ -6,7 +6,7 @@ export const FieldBool = ({label, name, change, value, list_value, st}) => {
     const [statusField, setStatusField] = useState(null);
 
     useEffect(() => {
-        if (value && value.toString().length > 0) {
+        if ((typeof value !== "boolean" && value && value.toString().length > 0) || value === true || value === false) {
             setStatusField(value);
         }
     }, [value]);
@@ -16,7 +16,7 @@ export const FieldBool = ({label, name, change, value, list_value, st}) => {
     }
 
     return (
-        <>
+        <div className={s.jin}>
             <div className={GlobalStyle.CustomFontRegular + ' ' + s.placeholder}>
                 {label}
             </div>
@@ -57,6 +57,6 @@ export const FieldBool = ({label, name, change, value, list_value, st}) => {
                     </>
                 )}
             </div>
-        </>
+        </div>
     )
 }

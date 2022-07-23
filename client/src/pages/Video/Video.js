@@ -11,6 +11,7 @@ import {ColorsStyles} from "../../constants/ColorsStyles";
 import GlobalStyle from "../../components/GlobalStyle.module.scss";
 import {usePopupForm} from "../../hooks/usePopupForm";
 import {Form} from "../../components/tableCard/Forml";
+import {TextCounter} from "../../components/textCounter/TextCounter";
 
 
 export const Video = () => {
@@ -22,6 +23,7 @@ export const Video = () => {
     const [startPage, setStartPage] = useState(0);
     const {request, error, clearError, loading} = useHttp();
     const [search, setSearch] = useState("null");
+    const [data_length, set_data_length] = useState(0);
 
     const filtersData = (new_data) => {
         setData([...new_data]);
@@ -42,6 +44,7 @@ export const Video = () => {
             setPage(page);
             setEndPage(answer?.count_page);
             setData(sortNumberFunction(answer?.data));
+            set_data_length(answer.count_data);
         } catch (e){}
     }
 
@@ -54,7 +57,10 @@ export const Video = () => {
     return (
         <div className={s.root}>
             <div className={s.header}>
-                <Search value={search} callback={setSearch} placeholder={'Поиск по названию'} handler={getData}/>
+                <div className={s.wrapper_header}>
+                    <Search value={search} callback={setSearch} placeholder={'Поиск по названию'} handler={getData}/>
+                    <TextCounter value={data_length}/>
+                </div>
                 <div
                     className={s.create_button_ok}
                     onClick={() => creteHandler()}

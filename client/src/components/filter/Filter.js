@@ -90,7 +90,7 @@ const Modal = ({section, value, callback, handler, list, exitHandler, placeholde
 }
 
 
-export const Filter = ({section, value, callback, placeholder, handler, list}) => {
+export const Filter = ({width, section, value, callback, placeholder, handler, list}) => {
     const popupForm = usePopupForm();
 
     const exitHandler = () => {
@@ -102,7 +102,7 @@ export const Filter = ({section, value, callback, placeholder, handler, list}) =
     }
 
     return (
-        <div className={s.root} onClick={() => openModal()}>
+        <div style={{width: width ? width : 350}} className={s.root} onClick={() => openModal()}>
             <div className={s.input}>
                 <div className={GlobalStyle.CustomFontRegular + ' ' + (value ? s.value : s.placeholder)}>
                 {value ? value : placeholder}

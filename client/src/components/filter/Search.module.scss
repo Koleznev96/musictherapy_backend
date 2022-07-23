@@ -1,13 +1,12 @@
 @import '../../constants/ColorsStyles';
 
 .root {
-  width: 350px;
   height: 38px;
   border-radius: 12px;
   border: 2px solid $colorButton;
   aligin-items: center;
   display: flex;
-  margin-right: 15px;
+  margin-right: 12px;
 }
 
 .value {
@@ -23,7 +22,7 @@
 .input {
   width: 100%;
   display: block;
-  padding: 8px 18px;
+  padding: 8px 12px;
   color: #212529;
   background-clip: padding-box;
   border: 0;

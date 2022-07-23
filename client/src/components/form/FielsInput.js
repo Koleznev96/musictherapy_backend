@@ -4,7 +4,7 @@ import React from "react";
 
 export const FieldInput = ({label, name, change, value}) => {
     return (
-        <>
+        <div className={s.jin}>
             <div className={GlobalStyle.CustomFontRegular + ' ' + s.placeholder}>
                 {label}
             </div>
@@ -14,6 +14,6 @@ export const FieldInput = ({label, name, change, value}) => {
                 className={s.input}
                 onChange={(value) => change({name, value: value.target.value})}
             />
-        </>
+        </div>
     )
 }

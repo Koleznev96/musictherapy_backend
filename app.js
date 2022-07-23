@@ -33,6 +33,7 @@ app.use(require('cors')());
 app.use('/api/auth', authRoute);
 app.use('/api/profile', profileRoute);
 app.use('/api/data', dataRoute);
+
 app.use('/api/admin_panel', adminRoute);
 app.use('/api/upload', uploadRoute);
 app.use('/api/log', logRoute);
