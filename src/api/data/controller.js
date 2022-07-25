@@ -243,6 +243,7 @@ module.exports.get_list_course = async function(req, res) {
             }
 
             // Проверка на доступ по профилю
+            console.log('check.available_courses-', check.available_courses)
             avalibel = check.available_courses.find((item) => {
                 return String(item.course_id) === String(data[i]._id)
             });
