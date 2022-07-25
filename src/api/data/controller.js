@@ -243,16 +243,16 @@ module.exports.get_list_course = async function(req, res) {
             }
 
             // Проверка на доступ по профилю
-            console.log('check-', check);
-            console.log('check.available_courses-', check.available_courses);
-            avalibel = check.available_courses.find((item) => {
-                return String(item.course_id) === String(data[i]._id)
-            });
-            data[i].avalibel = avalibel !== undefined && avalibel.end_date >= new Date();
-            if (avalibel)
-            data[i].object_date = {
-                end_date: avalibel.end_date,
-                start_date: avalibel.start_date,
+            if (check.available_course) {
+                avalibel = check.available_courses.find((item) => {
+                    return String(item.course_id) === String(data[i]._id)
+                });
+                data[i].avalibel = avalibel !== undefined && avalibel.end_date >= new Date();
+                if (avalibel)
+                    data[i].object_date = {
+                        end_date: avalibel.end_date,
+                        start_date: avalibel.start_date,
+                    }
             }
 
             // if (check?._id && avalibel !== undefined && avalibel.end_date < new Date()) {
