@@ -241,22 +241,22 @@ module.exports.get_list_course = async function(req, res) {
             } else {
                 // data[i].dostup = 'view';
             }
-            console.log('check-', check)
+            // console.log('check-', check)
             // Проверка на доступ по профилю
-            if (check.available_course) {
-                console.log('check.available_course-', check.available_course)
+            if (check.available_courses) {
+                // console.log('check.available_course-', check.available_courses)
                 avalibel = check.available_courses.find((item) => {
                     return String(item.course_id) === String(data[i]._id)
                 });
-                console.log('avalibel-', avalibel)
+                // console.log('avalibel-', avalibel)
                 data[i].avalibel = avalibel !== undefined && avalibel.end_date >= new Date();
-                console.log('data[i].avalibel-', data[i].avalibel)
+                // console.log('data[i].avalibel-', data[i].avalibel)
                 if (avalibel)
                     data[i].object_date = {
                         end_date: avalibel.end_date,
                         start_date: avalibel.start_date,
                     }
-                console.log('data[i].object_date-', data[i].object_date)
+                // console.log('data[i].object_date-', data[i].object_date)
             }
 
             // if (check?._id && avalibel !== undefined && avalibel.end_date < new Date()) {
