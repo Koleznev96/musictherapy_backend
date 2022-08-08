@@ -78,7 +78,7 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
         }
 
         // reload(null, 0, null, true, item, statusSort);
-        // setData([...new_data]);
+        setData([...new_data]);
         setStatus(item.value);
     }
 
