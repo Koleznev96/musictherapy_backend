@@ -706,6 +706,41 @@ module.exports.get_list_classic = async function(req, res) {
     }
 }
 
+module.exports.users_sort = async function(req, res) {
+    try {
+        const check = await checkAdmin.check(req, res);
+        if (!check.id) {
+            return res.status(401).json('Unauthorized');
+        }
+
+        const page = (Number(req.body.data.page)) * limitPageDataVeb;
+        let filter = req.body.data.full_name ? (req.body.data.full_name !== "null" ? {fullName: {$regex: req.body.data.full_name}} : {}): {};
+
+        if (req.body.data.is_admin && req.body.data.is_admin !== "null") filter.is_admin = req.body.data.is_admin === "true";
+        if (req.body.data.access && req.body.data.access !== "null") filter.access = req.body.data.access;
+        if (req.body.data.language && req.body.data.language !== "null") filter.language = req.body.data.language;
+
+        let data = await User.find(filter, null, { skip: page, limit: limitPageDataVeb }).sort({ [req.body.sortData.value]: req.body.status ? 1 : -1 });
+        const count_page = Math.ceil((await User.find(filter).count()) / limitPageDataVeb) - 1;
+        const count_data = await User.find().count();
+
+        for (let i = 0; i < data.length; i++) {
+            data[i].questionnaire = await Questionnaire.findOne({id_user: data[i]._id.toString()});
+            data[i].counter_video = await LogData.find({id_user: data[i]._id.toString(), type: "video"}).count();
+            data[i].counter_audio = await LogData.find({id_user: data[i]._id.toString(), type: "audio"}).count();
+        }
+
+        res.status(201).json({data, page: Number(req.body.data.page), count_page, end_page: count_page <= page, count_data});
+
+        let candidate = await User.findOne({_id: check.id});
+        candidate.date_last_activity = new Date();
+        await candidate.save();
+    } catch(e) {
+        errorHandler(res, e);
+        // throw e;
+    }
+}
+
 module.exports.get_list_user = async function(req, res) {
     try {
         const check = await checkAdmin.check(req, res);

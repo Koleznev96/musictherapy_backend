@@ -19,6 +19,7 @@ import {Form} from "../../components/tableCard/Forml";
 import {usePopupForm} from "../../hooks/usePopupForm";
 import {Filter} from "../../components/filter/Filter";
 import {TextCounter} from "../../components/textCounter/TextCounter";
+import {sortRoot} from "../../components/tableCard/functional";
 
 
 export const Users = () => {
@@ -39,8 +40,8 @@ export const Users = () => {
         setData([...new_data]);
     }
 
-    const getData = async (page, rel, data_search) => {
-        page = page ? page : 0;
+    const getData = async (page_, rel, data_search, sort, sortData, sortStatus) => {
+        page_ = page_ ? page_ : (page ? page : 0);
         // let search_ = search?.length > 0 ? search : "null";
         // if (rel === "null") {
         //     search_ = "null";
@@ -59,9 +60,27 @@ export const Users = () => {
             setAccess("");
             setLanguage("");
         }
+
         // setSearch(search ? (search?.length > 0 ? search : "null") : "null");
         try {
-            const answer = await request(`/api/admin_panel/users/${page}/${search_}/${is_admin_}/${access_}/${language_}`, 'GET', null, {
+            let answer;
+            if (sort) {
+                answer  = await sortRoot(
+                    `/api/admin_panel/users/sort`,
+                    {
+                        page: page_,
+                        full_name: search_,
+                        is_admin: is_admin_,
+                        access: access_,
+                        language: language_,
+                    },
+                    sortData,
+                    sortStatus,
+                    request,
+                    auth
+                )
+            } else
+            answer = await request(`/api/admin_panel/users/${page_}/${search_}/${is_admin_}/${access_}/${language_}`, 'GET', null, {
                 Authorization: auth.token
             });
             setPage(page);

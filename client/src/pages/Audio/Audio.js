@@ -14,6 +14,7 @@ import {usePopupForm} from "../../hooks/usePopupForm";
 import {Form} from "../../components/tableCard/Forml";
 import {TextCounter} from "../../components/textCounter/TextCounter";
 import {httpServer} from "../../const";
+import {sortRoot} from "../../components/tableCard/functional";
 
 
 export const Audio = () => {
@@ -34,9 +35,10 @@ export const Audio = () => {
         setData([...new_data]);
     }
 
-    const getData = async (page, rel, data_search) => {
+
+    const getData = async (page, rel, data_search, sort, sortData, sortStatus) => {
         page = page ? page : 0;
-        let search_ = data_search?.search ? data_search.search : "null";
+        let search_ = data_search?.search ? data_search.search : (search?.length > 0 ? search : "null");
         let category_ = data_search?.category ? data_search.category : "null";
         let genre_ = data_search?.genre ? data_search.genre : "null";
         if (rel === "null") {
@@ -48,7 +50,23 @@ export const Audio = () => {
             setGenre("");
         }
         try {
-            const answer = await request(`/api/admin_panel/audio/${page}/${search_}/${category_}/${genre_}`, 'GET', null, {
+            let answer;
+            if (sort) {
+                answer  = await sortRoot(
+                    `/api/admin_panel/audio/sort`,
+                    {
+                        page,
+                        search: search_,
+                        category: category_,
+                        genre: genre_,
+                    },
+                    sortData,
+                    sortStatus,
+                    request,
+                    auth
+                )
+            } else
+            answer = await request(`/api/admin_panel/audio/${page}/${search_}/${category_}/${genre_}`, 'GET', null, {
                 Authorization: auth.token
             });
             setPage(page);

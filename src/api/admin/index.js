@@ -129,4 +129,13 @@ router.post('/re_version',
 router.post('/reordering',
     controller.reordering);
 
+router.post('/users/sort',
+    controller.users_sort);
+
+// router.post('/video/sort',
+//     controller.video_sort);
+//
+// router.post('/audio/sort',
+//     controller.audio_sort);
+
 module.exports = router;

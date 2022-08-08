@@ -50,30 +50,35 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
     }
 
     const settingFieldHandler = (item) => {
-        let new_data = [...data];
-        if (item.type === 'date' || item.type === 'date_full') {
-            new_data.sort(function(a, b) {
-                return new Date(b[item.value]) - new Date(a[item.value]);
-            });
-        }
-        else {
-            // отредачить, непонятно почему так
-            new_data.sort((prev, next) => {
-                // console.log('prev-', prev[item.value])
-                if (next[item.value] === undefined || next[item.value] === null) return statusFilter ? 1 : -1;
-                if (prev[item.value] === undefined || prev[item.value] === null) return statusFilter ? -1 : 1;
-                if ( prev[item.value] < next[item.value] ) return -1;
-                if ( prev[item.value] > next[item.value] ) return 1;
-                return 0;
-            });
-        }
+        // let new_data = [...data];
+        // if (item.type === 'date' || item.type === 'date_full') {
+        //     new_data.sort(function(a, b) {
+        //         return new Date(b[item.value]) - new Date(a[item.value]);
+        //     });
+        // }
+        // else {
+        //     // отредачить, непонятно почему так
+        //     new_data.sort((prev, next) => {
+        //         // console.log('prev-', prev[item.value])
+        //         if (next[item.value] === undefined || next[item.value] === null) return statusFilter ? 1 : -1;
+        //         if (prev[item.value] === undefined || prev[item.value] === null) return statusFilter ? -1 : 1;
+        //         if ( prev[item.value] < next[item.value] ) return -1;
+        //         if ( prev[item.value] > next[item.value] ) return 1;
+        //         return 0;
+        //     });
+        // }
+        let statusSort;
         if (statusFilter) {
-            new_data.reverse();
+            // new_data.reverse();
+            statusSort = false;
             setStatusFilter(false);
         } else {
+            statusSort = true;
             setStatusFilter(true);
         }
-        setData([...new_data]);
+
+        reload(null, 0, null, true, item, statusSort);
+        // setData([...new_data]);
         setStatus(item.value);
     }
 
@@ -136,7 +141,7 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
                 return (
                     <>
                     <td key={index} className={GlobalStyle.CustomFontBold + ' ' + s.table_td}
-                        onClick={() => settingFieldHandler(item)}>
+                        onClick={() => item.filter ? settingFieldHandler(item) : null}>
                         <div className={s.table_td_block}>
                             <div className={GlobalStyle.CustomFontBold + ' ' + s.table_td_label}>
                                 {item.label}

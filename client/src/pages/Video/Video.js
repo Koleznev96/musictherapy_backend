@@ -12,6 +12,7 @@ import GlobalStyle from "../../components/GlobalStyle.module.scss";
 import {usePopupForm} from "../../hooks/usePopupForm";
 import {Form} from "../../components/tableCard/Forml";
 import {TextCounter} from "../../components/textCounter/TextCounter";
+import {sortRoot} from "../../components/tableCard/functional";
 
 
 export const Video = () => {
@@ -29,7 +30,7 @@ export const Video = () => {
         setData([...new_data]);
     }
 
-    const getData = async (page, rel) => {
+    const getData = async (page, rel, data_search, sort, sortData, sortStatus) => {
         page = page ? page : 0;
         let search_ = search?.length > 0 ? search : "null";
         if (rel === "null") {
@@ -37,7 +38,21 @@ export const Video = () => {
             setSearch("");
         }
         try {
-            const answer = await request(`/api/admin_panel/video/${page}/${search_}`, 'GET', null, {
+            let answer;
+            if (sort) {
+                answer  = await sortRoot(
+                    `/api/admin_panel/video/sort`,
+                    {
+                        page,
+                        search: search_,
+                    },
+                    sortData,
+                    sortStatus,
+                    request,
+                    auth
+                )
+            } else
+            answer = await request(`/api/admin_panel/video/${page}/${search_}`, 'GET', null, {
                 Authorization: auth.token
             });
             // Выполнить сортировку по полю number
