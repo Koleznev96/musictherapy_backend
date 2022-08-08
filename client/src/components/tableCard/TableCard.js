@@ -67,7 +67,7 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
                 return 0;
             });
         }
-        let statusSort;
+        // let statusSort;
         if (statusFilter) {
             new_data.reverse();
             // statusSort = false;
@@ -77,7 +77,7 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
             setStatusFilter(true);
         }
 
-        reload(null, 0, null, true, item, statusSort);
+        // reload(null, 0, null, true, item, statusSort);
         // setData([...new_data]);
         setStatus(item.value);
     }
