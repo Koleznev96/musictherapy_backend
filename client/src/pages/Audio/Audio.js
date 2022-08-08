@@ -136,6 +136,7 @@ export const Audio = () => {
                 setData={filtersData}
                 optionEdit={optionEditAudio}
                 table_name={"audio"}
+                page={page}
             />
             <div className={s.footer}>
                 <PaginationTable page={page} endPage={endPage} startPage={startPage} getData={getData} />

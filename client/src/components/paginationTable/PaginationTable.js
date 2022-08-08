@@ -8,7 +8,7 @@ import {AuthContext} from "../../context/authContext";
 import {GlobalSvgSelector} from "../../assets/icons/global/GlobalSvgSelector";
 
 
-export const PaginationTable = ({page, endPage, startPage, getData}) => {
+export const PaginationTable = ({page, endPage, startPage, getData, setPage}) => {
 
     return (
         <div className={s.root}>

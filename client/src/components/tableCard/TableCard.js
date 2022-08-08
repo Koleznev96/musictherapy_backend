@@ -28,7 +28,7 @@ const string_date_ = (string) => {
     return day + '.' + month + '.' + year;
 }
 
-export const TableCard = ({option, data, loading, reload, setData, optionQuestionnaire, optionPassword, optionSettings, optionEdit, table_name, wigth_panel}) => {
+export const TableCard = ({option, data, loading, reload, setData, optionQuestionnaire, optionPassword, optionSettings, optionEdit, table_name, wigth_panel, page}) => {
     const popupForm = usePopupForm();
     const auth = useContext(AuthContext);
     const {request, error, clearError} = useHttp();
@@ -50,30 +50,30 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
     }
 
     const settingFieldHandler = (item) => {
-        // let new_data = [...data];
-        // if (item.type === 'date' || item.type === 'date_full') {
-        //     new_data.sort(function(a, b) {
-        //         return new Date(b[item.value]) - new Date(a[item.value]);
-        //     });
-        // }
-        // else {
-        //     // отредачить, непонятно почему так
-        //     new_data.sort((prev, next) => {
-        //         // console.log('prev-', prev[item.value])
-        //         if (next[item.value] === undefined || next[item.value] === null) return statusFilter ? 1 : -1;
-        //         if (prev[item.value] === undefined || prev[item.value] === null) return statusFilter ? -1 : 1;
-        //         if ( prev[item.value] < next[item.value] ) return -1;
-        //         if ( prev[item.value] > next[item.value] ) return 1;
-        //         return 0;
-        //     });
-        // }
+        let new_data = [...data];
+        if (item.type === 'date' || item.type === 'date_full') {
+            new_data.sort(function(a, b) {
+                return new Date(b[item.value]) - new Date(a[item.value]);
+            });
+        }
+        else {
+            // отредачить, непонятно почему так
+            new_data.sort((prev, next) => {
+                // console.log('prev-', prev[item.value])
+                if (next[item.value] === undefined || next[item.value] === null) return statusFilter ? 1 : -1;
+                if (prev[item.value] === undefined || prev[item.value] === null) return statusFilter ? -1 : 1;
+                if ( prev[item.value] < next[item.value] ) return -1;
+                if ( prev[item.value] > next[item.value] ) return 1;
+                return 0;
+            });
+        }
         let statusSort;
         if (statusFilter) {
-            // new_data.reverse();
-            statusSort = false;
+            new_data.reverse();
+            // statusSort = false;
             setStatusFilter(false);
         } else {
-            statusSort = true;
+            // statusSort = true;
             setStatusFilter(true);
         }
 
@@ -131,6 +131,8 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
             setData([...new_data]);
         }
     }
+
+    console.log('page-', page)
 
     return (
         <table className={s.table} cellSpacing="0">
@@ -194,7 +196,7 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
                     </tr>
                     </>
                 ) : (
-                    data?.map((data_item, index) => (
+                    data.slice(page * 100, (page + 1) * 100)?.map((data_item, index) => (
                         <tr key={index} className={index % 2 === 0 ? s.tr_br : s.tr} onClick={() => itemHandler(data_item)}>
                         {option?.fields?.map((field_item, counter) => {
                             if (!field_item.not_see)

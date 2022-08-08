@@ -93,6 +93,7 @@ export const Video = () => {
                 setData={filtersData}
                 optionEdit={optionEditVideo}
                 table_name={"video"}
+                page={page}
             />
             <div className={s.footer}>
                 <PaginationTable page={page} endPage={endPage} startPage={startPage} getData={getData} search={search} />

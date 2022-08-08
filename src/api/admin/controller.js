@@ -756,7 +756,8 @@ module.exports.get_list_user = async function(req, res) {
         if (req.params.access && req.params.access !== "null") filter.access = req.params.access;
         if (req.params.language && req.params.language !== "null") filter.language = req.params.language;
 
-        let data = await User.find(filter, null, { skip: page, limit: limitPageDataVeb });
+        // let data = await User.find(filter, null, { skip: page, limit: limitPageDataVeb });
+        let data = await User.find(filter);
         const count_page = Math.ceil((await User.find(filter).count()) / limitPageDataVeb) - 1;
         const count_data = await User.find().count();
 
