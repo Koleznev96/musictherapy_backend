@@ -139,7 +139,7 @@ export const Audio = () => {
                 page={page}
             />
             <div className={s.footer}>
-                <PaginationTable page={page} endPage={endPage} startPage={startPage} getData={getData} />
+                <PaginationTable page={page} endPage={endPage} startPage={startPage} getData={setPage} />
             </div>
         </div>
     );

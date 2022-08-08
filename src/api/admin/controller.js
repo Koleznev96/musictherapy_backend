@@ -456,7 +456,8 @@ module.exports.get_list_audio = async function(req, res) {
         if (req.params.label && req.params.label !== "null") filter.label = {$elemMatch: {value: {$regex: req.params.label}}};
         if (req.params.category && req.params.category !== "null") filter.category = req.params.category;
         if (req.params.genre && req.params.genre !== "null") filter.genre = req.params.genre;
-        const data = await Audio.find(filter, null, { skip: page, limit: limitPageDataVeb });
+        // const data = await Audio.find(filter, null, { skip: page, limit: limitPageDataVeb });
+        const data = await Audio.find(filter);
         const count_page = Math.ceil((await Audio.find(filter).count()) / limitPageDataVeb) - 1;
         const count_data = await Audio.find().count();
 
@@ -489,7 +490,8 @@ module.exports.get_list_video = async function(req, res) {
 
         const page = (Number(req.params.page)) * limitPageDataVeb;
         const filter = req.params.label ? (req.params.label !== "null" ? {label_: {$elemMatch: {value: {$regex: req.params.label}}}} : {}): {};
-        let data = await Video.find(filter, null, { skip: page, limit: limitPageDataVeb });
+        // let data = await Video.find(filter, null, { skip: page, limit: limitPageDataVeb });
+        let data = await Video.find(filter);
         const count_page = Math.ceil((await Video.find(filter).count()) / limitPageDataVeb) - 1;
         const count_data = await Video.find().count();
 
