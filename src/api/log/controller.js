@@ -30,6 +30,7 @@ module.exports.log_auth = async function(req, res) {
         if (check.date_last_activity && !inaccurate_date_comparison(check.date_last_activity, new Date())) {
             check.amount_activity = check.amount_activity ? (check.amount_activity + 1) : 1;
         }
+        check.date_last_activity = new Date();
         await check.save();
         res.status(201).json("OK");
     } catch(e) {
