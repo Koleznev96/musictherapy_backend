@@ -68,6 +68,7 @@ export const Poster = () => {
                 reload={getData}
                 setData={filtersData}
                 table_name={"live_sound"}
+                page={page}
             />
             <div className={s.footer}>
                 <PaginationTable page={page} endPage={endPage} startPage={startPage} getData={setPage} search={search} />

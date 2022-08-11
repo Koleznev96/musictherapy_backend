@@ -79,6 +79,7 @@ export const Maps = () => {
                 setData={filtersData}
                 optionEdit={optionEditMaps}
                 table_name={"maps"}
+                page={page}
             />
             <div className={s.footer}>
                 <PaginationTable page={page} endPage={endPage} startPage={startPage} getData={setPage} search={search} />

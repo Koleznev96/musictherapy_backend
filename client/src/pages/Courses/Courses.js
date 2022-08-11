@@ -76,6 +76,7 @@ export const Courses = () => {
                 setData={filtersData}
                 table_name={"live_sound"}
                 wigth_panel={850}
+                page={page}
             />
             <div className={s.footer}>
                 <PaginationTable page={page} endPage={endPage} startPage={startPage} getData={setPage} search={search} />
