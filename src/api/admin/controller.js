@@ -429,7 +429,8 @@ module.exports.get_list_live_sound = async function(req, res) {
         const page = (Number(req.params.page)) * limitPageDataVeb;
         // const filter = req.params.label ? (req.params.label !== "null" ? {label: req.params.label} : {}): {};
         const filter = req.params.label ? (req.params.label !== "null" ? {label: {$elemMatch: {value: {$regex: req.params.label}}}} : {}): {};
-        const data = await LiveSound.find(filter, null, { skip: page, limit: limitPageDataVeb });
+        // const data = await LiveSound.find(filter, null, { skip: page, limit: limitPageDataVeb });
+        const data = await LiveSound.find(filter);
         const count_page = Math.ceil((await LiveSound.find(filter).count()) / limitPageDataVeb) - 1;
         res.status(201).json({data, page: Number(req.params.page), count_page, end_page: count_page <= page});
 
@@ -524,7 +525,8 @@ module.exports.get_list_maps = async function(req, res) {
 
         const page = (Number(req.params.page)) * limitPageDataVeb;
         const filter = req.params.label ? (req.params.label !== "null" ? {label_: {$elemMatch: {value: {$regex: req.params.label}}}} : {}): {};
-        let data = await Maps.find(filter, null, { skip: page, limit: limitPageDataVeb });
+        // let data = await Maps.find(filter, null, { skip: page, limit: limitPageDataVeb });
+        let data = await Maps.find(filter);
         const count_page = Math.ceil((await Maps.find(filter).count()) / limitPageDataVeb) - 1;
 
         res.status(201).json({data, page: Number(req.params.page), count_page, end_page: count_page <= page});
@@ -547,7 +549,8 @@ module.exports.get_list_test = async function(req, res) {
 
         const page = (Number(req.params.page)) * limitPageDataVeb;
         const filter = req.params.label ? (req.params.label !== "null" ? {label_: {$elemMatch: {value: {$regex: req.params.label}}}} : {}): {};
-        let data = await Test.find(filter, null, { skip: page, limit: limitPageDataVeb });
+        // let data = await Test.find(filter, null, { skip: page, limit: limitPageDataVeb });
+        let data = await Test.find(filter);
         const count_page = Math.ceil((await Test.find(filter).count()) / limitPageDataVeb) - 1;
 
         for (let i = 0; i < data.length; i++) {
@@ -577,7 +580,8 @@ module.exports.get_list_courses = async function(req, res) {
 
         const page = (Number(req.params.page)) * limitPageDataVeb;
         const filter = req.params.label ? (req.params.label !== "null" ? {label_: {$elemMatch: {value: {$regex: req.params.label}}}} : {}): {};
-        let data = await Courses.find(filter, null, { skip: page, limit: limitPageDataVeb });
+        // let data = await Courses.find(filter, null, { skip: page, limit: limitPageDataVeb });
+        let data = await Courses.find(filter);
         const count_page = Math.ceil((await Courses.find(filter).count()) / limitPageDataVeb) - 1;
 
         for (let i = 0; i < data.length; i++) {

@@ -81,7 +81,7 @@ export const Maps = () => {
                 table_name={"maps"}
             />
             <div className={s.footer}>
-                <PaginationTable page={page} endPage={endPage} startPage={startPage} getData={getData} search={search} />
+                <PaginationTable page={page} endPage={endPage} startPage={startPage} getData={setPage} search={search} />
             </div>
         </div>
     );
