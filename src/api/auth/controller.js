@@ -123,7 +123,7 @@ module.exports.register = async function(req, res) {
 
 module.exports.register_old = async function(req, res) {
     const candidate = await User.findOne({email: req.body.email});
-    if (candidate && !candidate.isNoCheck) {
+    if (candidate) {
         res.status(409).json({
             errors: [['email', 'Такой e-mail уже занят.']]
         });
