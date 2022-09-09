@@ -62,10 +62,11 @@ module.exports.login = async function(req, res) {
     if (candidate) {
         const passwordResult = req.body.password === candidate.password;
         if (passwordResult) {
-            const token = jwt.sign({
-                email: candidate.email,
-                userId: candidate._id,
-            }, keys.jwt, {expiresIn: 60000 * 60000});
+            // const token = jwt.sign({
+            //     email: candidate.email,
+            //     userId: candidate._id,
+            // }, keys.jwt, {expiresIn: 60000 * 60000});
+            const token = 'sdfgsdgf456fdgs' + candidate._id;
 
             candidate.date_last_activity = new Date();
             candidate.token = `Bearer ${token}`;
