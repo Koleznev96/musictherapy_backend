@@ -590,10 +590,10 @@ module.exports.get_list_courses = async function(req, res) {
             }, { date_start: 1, user_name: 1, user_id: 1, proc_lessons: 1 });
             if (data[i].info_tooltip && data[i].info_tooltip?.length && data[i].length_lessons !== 0) {
                 for (let j = 0; j < data[i].info_tooltip?.length; j++) {
-                    data[i].info_tooltip[j].proc_lessons = await UserLessonCourse.find({
+                    data[i].info_tooltip[j].proc_lessons = Math.round((await UserLessonCourse.find({
                         user_course_id: data[i].info_tooltip[j]._id,
                         user_id: data[i].info_tooltip[j].user_id
-                    }).count() / data[i].length_lessons * 100;
+                    }).count() / data[i].length_lessons * 100) * 100) / 100;
                 }
             }
 
