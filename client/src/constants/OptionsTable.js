@@ -159,6 +159,223 @@ export const optionUserView = {
     ],
 }
 
+export const optionUserFin = {
+    delete_url: '/delete_user',
+    url: '/re_user',
+
+    fields: [
+        {
+            type: "list_menu",
+            labels: ["Информация", "Анкета", "Пароль", "Настройки", "Статистика", "Заметки"],
+            list_menu_fields: [
+                // Информация
+                [
+                    {
+                        label: 'Фамилия',
+                        value: 'fullName',
+                        type: "input",
+                        filter: true,
+                        default: '',
+                    },
+                    {
+                        label: 'Имя',
+                        value: 'name',
+                        type: "input",
+                        filter: true,
+                        default: '',
+                    },
+                    {
+                        label: 'Телефон',
+                        value: 'telephone',
+                        type: "input",
+                        filter: false,
+                        default: '',
+                    },
+                    {
+                        label: 'E-mail',
+                        value: 'email',
+                        type: "input",
+                        filter: false,
+                        default: '',
+                    },
+                    {
+                        label: 'Дата регистрации',
+                        value: 'registration_date',
+                        type: "date",
+                        filter: true,
+                        default: '',
+                    },
+                    {
+                        label: 'Дата последнего входа',
+                        value: 'date_last_activity',
+                        type: "date",
+                        filter: true,
+                        default: '',
+                    },
+                    {
+                        label: 'Статус',
+                        value: 'status',
+                        type: "status",
+                        filter: false,
+                        default: '',
+                    },
+                ],
+                // Анкета
+                [
+                    {
+                        value: 'questionnaire',
+                        type: "empty_props",
+                        default: {},
+                        additional_functionality: [
+                            {
+                                label: 'Дата рождения',
+                                value: 'date_birth',
+                                type: "date_full",
+                                default: '',
+                            },
+                            {
+                                label: 'Пол',
+                                value: 'gender',
+                                type: "bool",
+                                default: '',
+                                list_value: [{label: 'Мужской', value: 'Мужской'}, {
+                                    label: 'Женский',
+                                    value: 'Женский'
+                                }, {label: 'Не указано', value: 'Не указано'}],
+                            },
+                            {
+                                label: 'Страна рождения',
+                                value: 'country_birth',
+                                type: "input",
+                                default: '',
+                            },
+                            {
+                                label: 'Страна проживания',
+                                value: 'country_residence',
+                                type: "input",
+                                default: '',
+                            },
+                            {
+                                label: 'Город проживания',
+                                value: 'city_residence',
+                                type: "input",
+                                default: '',
+                            },
+                            {
+                                label: 'Какую музыку любите слушать?',
+                                value: 'music',
+                                type: "box",
+                                default: '',
+                                list_value: [{label: 'Классика', value: 'Классика'}, {
+                                    label: 'Рок',
+                                    value: 'Рок'
+                                }, {label: 'Поп', value: 'Поп'},
+                                    {label: 'Джаз', value: 'Джаз'}, {label: 'Рэп', value: 'Рэп'}, {
+                                        label: 'Фольк',
+                                        value: 'Фольк'
+                                    },
+                                    {label: 'Иное', value: 'Иное'}],
+                            },
+                            {
+                                label: 'Кто вы по натуре?',
+                                value: 'nature',
+                                type: "bool",
+                                default: '',
+                                list_value: [{label: 'Интраверт', value: 'Интраверт'}, {
+                                    label: 'Экстраверт',
+                                    value: 'Экстраверт'
+                                }, {label: 'Не знаю', value: 'Не знаю'}],
+                            },
+                            {
+                                label: 'Ваш уровень знакомства с классикой',
+                                value: 'level',
+                                type: "bool",
+                                default: '',
+                                list_value: [{
+                                    label: 'Не слушаю и не понимаю, или слушаю редко и мало',
+                                    value: '0'
+                                }, {label: 'Люблю популярную классику', value: '1'}
+                                    , {
+                                        label: 'Слушаю разную музыку разных эпох, разбираюсь в них',
+                                        value: '2'
+                                    }, {label: 'Имею академическое музыкальное образование', value: '3'}
+                                    , {
+                                        label: 'Хорошо разбираюсь в классической музыке, люблю слушать сложную музыку',
+                                        value: '4'
+                                    }],
+                            },
+                            {
+                                label: 'Насколько активная у вас жизнь?',
+                                value: 'active_life',
+                                type: "bool",
+                                default: '',
+                                list_value: [{label: 'Очень активная', value: 'Очень активная'}, {
+                                    label: 'Активная',
+                                    value: 'Активная'
+                                }, {label: 'Средняя', value: 'Средняя'},
+                                    {label: 'Пассивная', value: 'Пассивная'}, {
+                                        label: 'Очень пассивная',
+                                        value: 'Очень пассивная'
+                                    }],
+                            },
+                        ],
+                    }
+                ],
+                // Статистика
+                [
+                    {
+                        label: '',
+                        type: "statistics",
+                        url_get_data: "/get_statistics_test/",
+                    },
+                ],
+                // Заметки
+                [
+                    {
+                        label: undefined,
+                        labelFunc: (data) => `${dateToString(data.date)} ${data.label}`,
+                        placeholder: 'note_writer_name',
+                        value: 'notes',
+                        type: "list_additional_functionality",
+                        filter: false,
+                        default: [],
+                        title_add: "добавить заметки",
+                        url_get_data: "/get_notes/",
+                        add_data: {
+                            date: "",
+                            label: "",
+                            text: "",
+                        },
+                        additional_functionality: [
+                            {
+                                label: 'Дата',
+                                value: 'date',
+                                type: "date_full",
+                                default: '',
+                                isNowDate: true,
+                            },
+                            {
+                                label: 'Тема',
+                                value: 'label',
+                                type: "input",
+                                default: '',
+                            },
+                            {
+                                translation: false,
+                                label: 'Детали',
+                                value: 'text',
+                                type: "input_edit_translation",
+                                filter: true,
+                                default: '',
+                            },
+                        ]
+                    }
+                ],
+            ],
+        },
+    ],
+}
+
 export const optionUser = {
     delete_url: '/delete_user',
     url: '/re_user',

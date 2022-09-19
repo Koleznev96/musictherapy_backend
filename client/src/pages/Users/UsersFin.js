@@ -3,7 +3,7 @@ import s from './Users.module.scss';
 import {useHttp} from "../../hooks/http.hook";
 import {Search} from "../../components/search/Search";
 import {
-    optionUser,
+    optionUser, optionUserFin,
     optionUserView
 } from "../../constants/OptionsTable";
 import {TableCard} from "../../components/tableCard/TableCard";
@@ -99,7 +99,7 @@ export const UsersFin = () => {
             </div>
             <TableCard
                 option={optionUserView}
-                optionEdit={optionUser}
+                optionEdit={optionUserFin}
                 data={data}
                 loading={loading}
                 reload={getData}
