@@ -9,6 +9,7 @@ import GlobalStyle from "../../components/GlobalStyle.module.scss";
 import {HeaderAuth} from "../../components/headerAuth/HeaderAuth";
 import {ColorsStyles} from "../../constants/ColorsStyles";
 import ClipLoader from "react-spinners/ClipLoader";
+import {checkLanguageConst} from "../../hooks/translashion";
 
 
 export const Auth = () => {
@@ -53,7 +54,7 @@ export const Auth = () => {
             if (data.errors) {
                 setErrorField({...errorField, [data.errors[0][0]]: data.errors[0][1]});
             } else {
-                auth.login(data.token, email);
+                auth.login(data.token, email, data.type_admin, data.name);
             }
         } catch (e) {}
     };
@@ -73,18 +74,19 @@ export const Auth = () => {
             <div className={s.root}>
                 <HeaderAuth />
                 <div className={GlobalStyle.CustomFontRegular + ' '+ s.text_foot}>
-                    Введите ваши данные
+                     {checkLanguageConst('Введите ваши данные', auth.translations)}
                 </div>
                 <div className={s.block}>
-                    <InputFull data={{value: email, change: setEmail, placeholder: 'E-mail', error: errorField.email, secret: "email"}} />
+                    <InputFull translations={auth.translations} data={{value: email, change: setEmail, placeholder: 'E-mail', error: errorField.email, secret: "email"}}/>
                     <div className={s.top_input} />
-                    <InputFull data={{value: password, change: setPassword, placeholder: 'Пароль', error: errorField.password, secret: "password"}} />
+                    <InputFull translations={auth.translations} data={{value: password, change: setPassword, placeholder: 'Пароль', error: errorField.password, secret: "password"}} />
                     <div className={s.top} />
-                    <ButtonFull data={{value: 'Войти в аккаунт', change: AuthHandler, loading: loading}} />
+                    <ButtonFull data={{value: 'Войти в аккаунт', change: AuthHandler, loading: loading}} translations={auth.translations} />
                     <div className={s.footer}>
                         {!loader ? (status ? (
                             <div className={GlobalStyle.CustomFontRegular + ' ' + s.button_footer_text}>
-                                На вашу почту был отправлен пароль
+
+                                {checkLanguageConst('На вашу почту был отправлен пароль', auth.translations)}
                             </div>
                         ) : (
                             <div
@@ -92,7 +94,8 @@ export const Auth = () => {
                                 onClick={() => helpHandler()}
                             >
                                 <div className={GlobalStyle.CustomFontRegular + ' ' + s.button_footer_text}>
-                                    Забыли пароль?
+
+                                    {checkLanguageConst('Забыли пароль?', auth.translations)}
                                 </div>
                             </div>
                         )) : (

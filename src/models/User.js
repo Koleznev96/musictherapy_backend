@@ -68,6 +68,11 @@ const userSchema = new Schema({
         type: Boolean,
         required: false,
     },
+    // Делаю из Boolean в String
+    type_admin: {
+        type: String,
+        required: false,
+    },
     codeCheck: {
         type: String,
         required: false,
@@ -75,7 +80,15 @@ const userSchema = new Schema({
     isNoCheck: {
         type: Boolean,
         required: false,
-    }
+    },
+    status: {
+        type: Boolean,
+        required: false,
+    },
+    musicTherapy: {
+        id: String,
+        name: String,
+    },
 });
 
 module.exports = model('User', userSchema);

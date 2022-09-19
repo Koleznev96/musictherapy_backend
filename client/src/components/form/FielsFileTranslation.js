@@ -7,8 +7,9 @@ import {useHttp} from "../../hooks/http.hook";
 import {ColorsStyles} from "../../constants/ColorsStyles";
 import ClipLoader from "react-spinners/ClipLoader";
 import {PostService} from "../../services/PostService";
+import {checkLanguageConst} from "../../hooks/translashion";
 
-export const FieldFileTranslation = ({label, name, change, value, languages}) => {
+export const FieldFileTranslation = ({label, name, change, value, languages, translations}) => {
     const auth = useContext(AuthContext);
     const {request, error, clearError, loading} = useHttp();
     const [status, setStatus] = useState('upload');
@@ -84,12 +85,12 @@ export const FieldFileTranslation = ({label, name, change, value, languages}) =>
         <div className={s.jin}>
             <div className={s.wrpper_field_header}>
                 <div className={GlobalStyle.CustomFontRegular + ' ' + s.placeholder}>
-                    {label}
+                    {checkLanguageConst(label, translations)}
                 </div>
                 <div className={s.box_translation}>
                     <div className={s.wrapper_language_label} onClick={() => newLanguage()}>
                         <div className={GlobalStyle.CustomFontRegular + ' ' + s.language_label}>
-                            {languages[itemMenu].label}
+                            {checkLanguageConst(languages[itemMenu].label, translations)}
                         </div>
                         <GlobalSvgSelector id="arrow_mini" />
                     </div>
@@ -97,9 +98,6 @@ export const FieldFileTranslation = ({label, name, change, value, languages}) =>
             </div>
             <div className={s.root_file}>
                 <input
-                    //
-                    // onChange={(value) => editFiled(value.target.value, itemMenu)}
-                    //
                     value={boxField[itemMenu]?.value}
                     type='text'
                     className={s.input_file}

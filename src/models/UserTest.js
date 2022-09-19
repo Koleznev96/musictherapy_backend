@@ -25,6 +25,7 @@ const userTestSchema = new Schema({
             },
         ],
         balls: Number,
+        // color: String,
     },
     date_start: {
         type: Date,
@@ -42,6 +43,10 @@ const userTestSchema = new Schema({
         type: JSON,
         required: false,
     },
+    test: {
+        type: JSON,
+        required: false,
+    }
 });
 
 module.exports = model('UserTest', userTestSchema);

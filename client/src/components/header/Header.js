@@ -7,9 +7,11 @@ import {NavLink} from "react-router-dom";
 import {AuthContext} from "../../context/authContext";
 import {FormReEmail} from "./FormReEmail";
 import {FormRePassword} from "./FormRePassword";
-import {optionTranslation, optionVersion} from "../../constants/OptionsTable";
+import {optionTranslation, optionTranslationAdmin, optionVersion} from "../../constants/OptionsTable";
 import {useHttp} from "../../hooks/http.hook";
 import {FormReTranslation} from "./FormReTranslation";
+import {checkLanguageConst} from "../../hooks/translashion";
+import {FormReTranslationAdmin} from "./FormReTranslationAdmin";
 
 const label_menu = [
     {
@@ -46,20 +48,33 @@ const label_menu = [
     // },
 ];
 
+const label_menu_fin = [
+    {
+        label: 'Пользователи',
+        url: '/admin_panel/users_fin'
+    },
+];
+
 export const Header = () => {
     const popupForm = usePopupForm();
     const auth = useContext(AuthContext);
     const {request, error, clearError, loading} = useHttp();
     const [status, setStatus] = useState(false);
     const [dataTranslation, setDataTranslation] = useState(null);
+    const [dataTranslationAdmin, setDataTranslationAdmin] = useState(null);
     const [version, setVersion] = useState(null);
+    const [active_list_menu, set_active_list_menu] = useState(label_menu_fin);
 
     const getTranslation = async () => {
         try {
             const answer = await request(`/api/admin_panel/translation`, 'GET', null, {
                 Authorization: auth.token
             });
+            const answerAdmin = await request(`/api/admin_panel/translation_admin`, 'GET', null, {
+                Authorization: auth.token
+            });
             setDataTranslation(answer);
+            setDataTranslationAdmin(answerAdmin);
         } catch (e){}
     }
 
@@ -71,6 +86,12 @@ export const Header = () => {
             setVersion(answer.version);
         } catch (e){}
     }
+
+    useEffect(() => {
+        if (auth.type_admin === 'Администратор') {
+            set_active_list_menu(label_menu);
+        }
+    }, [auth.type_admin])
 
     useEffect(() => {
         getTranslation();
@@ -103,6 +124,13 @@ export const Header = () => {
         );
     }
 
+    const translationAdminHandler = () => {
+        profileHandler();
+        popupForm.openHandler(
+            <FormReTranslationAdmin data={dataTranslationAdmin} option={optionTranslationAdmin} reload={getTranslation} status={true} />
+        );
+    }
+
     const versionHandler = () => {
         profileHandler();
         popupForm.openHandler(<FormReTranslation data={version} option={optionVersion} reload={getVersion} status={false} />);
@@ -115,23 +143,39 @@ export const Header = () => {
                 <img src={logo} alt="Logo" style={s.logo}/>
 
                 <div className={GlobalStyle.BellotaFontRegular + ' ' + s.label}>
-                    Музыкотерапия
+
+                    {checkLanguageConst('Музыкотерапия', auth.translations)}
                 </div>
 
                 <div className={s.menu}>
-                    {label_menu.map((item, index) => (
+                    {active_list_menu.map((item, index) => (
                         <NavLink
                             to={item.url} key={item.label}
                             className={s.button_item}
                             activeClassName={s.button_item_active}
                         >
                             <div className={GlobalStyle.CustomFontRegular + ' ' + s.item_label}>
-                                {item.label}
+                                {checkLanguageConst(item.label, auth.translations)}
                             </div>
                         </NavLink >
                     ))}
                 </div>
             </div>
+            <div className={s.lines}>
+                <div className={s.lang}>
+                    <div
+                        onClick={() => auth.newLanguage('ru')}
+                        className={GlobalStyle.CustomFontMedium + ' ' + (auth.language === 'ru' ? s.lang_item_active : s.lang_item)}
+                    >
+                        {checkLanguageConst('рус', auth.translations)}
+                    </div>
+                    <div
+                        onClick={() => auth.newLanguage('com')}
+                        className={GlobalStyle.CustomFontMedium + ' ' + (auth.language === 'com' ? s.lang_item_active : s.lang_item)}
+                    >
+                        {checkLanguageConst('eng', auth.translations)}
+                    </div>
+                </div>
             <div className={status ? s.block_profile_active : s.block_profile}>
                 <div className={s.block_profile_header} onClick={() => profileHandler()}>
                     {status ? (
@@ -147,33 +191,49 @@ export const Header = () => {
                 </div>
                 {status ? (
                     <div className={s.list_button}>
-                        <div className={s.button_profile_item} onClick={() => versionHandler()}>
-                            <div className={GlobalStyle.CustomFontMedium + ' ' + s.button_profile_item_text}>
-                                Версия приложения
-                            </div>
-                        </div>
-                        <div className={s.button_profile_item} onClick={() => translationHandler()}>
-                            <div className={GlobalStyle.CustomFontMedium + ' ' + s.button_profile_item_text}>
-                                Переводы
-                            </div>
-                        </div>
+                        {auth.type_admin === 'Администратор' ? (
+                            <>
+                                <div className={s.button_profile_item} onClick={() => versionHandler()}>
+                                    <div className={GlobalStyle.CustomFontMedium + ' ' + s.button_profile_item_text}>
+
+                                        {checkLanguageConst('Версия приложения', auth.translations)}
+                                    </div>
+                                </div>
+                                <div className={s.button_profile_item} onClick={() => translationHandler()}>
+                                    <div className={GlobalStyle.CustomFontMedium + ' ' + s.button_profile_item_text}>
+
+                                        {checkLanguageConst('Переводы приложения', auth.translations)}
+                                    </div>
+                                </div>
+                                <div className={s.button_profile_item} onClick={() => translationAdminHandler()}>
+                                    <div className={GlobalStyle.CustomFontMedium + ' ' + s.button_profile_item_text}>
+
+                                        {checkLanguageConst('Переводы админки', auth.translations)}
+                                    </div>
+                                </div>
+                            </>
+                        ) : null}
                         <div className={s.button_profile_item} onClick={() => rePasswordHandler()}>
                             <div className={GlobalStyle.CustomFontMedium + ' ' + s.button_profile_item_text}>
-                                Изменить пароль
+
+                                {checkLanguageConst('Изменить пароль', auth.translations)}
                             </div>
                         </div>
                         <div className={s.button_profile_item} onClick={() => reEmailHandler()}>
                             <div className={GlobalStyle.CustomFontMedium + ' ' + s.button_profile_item_text}>
-                                Изменить e-mail
+
+                                {checkLanguageConst('Изменить e-mail', auth.translations)}
                             </div>
                         </div>
                         <div className={s.button_profile_item} onClick={() => logoutHandler()}>
                             <div className={GlobalStyle.CustomFontMedium + ' ' + s.button_profile_item_text}>
-                                Выйти
+
+                                {checkLanguageConst('Выйти', auth.translations)}
                             </div>
                         </div>
                     </div>
                 ): null}
+            </div>
             </div>
         </div>
         </>

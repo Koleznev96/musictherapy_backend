@@ -12,6 +12,41 @@
   margin-bottom: 50px;
 }
 
+.lines {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.lang {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.lang_item_active {
+  font-size: 16px;
+  color: #FFFFFF;
+  margin-right: 20px;
+  border-bottom: 1px solid #FFFFFF;
+  //text-decoration: underline;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.lang_item {
+  font-size: 16px;
+  color: #FFFFFF;
+  margin-right: 20px;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
 .popup_label {
   color: #fff;
   font-size: 24px;

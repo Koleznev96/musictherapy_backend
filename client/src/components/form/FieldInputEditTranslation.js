@@ -4,17 +4,17 @@ import React, {useEffect, useState} from "react";
 import {GlobalSvgSelector} from "../../assets/icons/global/GlobalSvgSelector";
 import MDEditor from '@uiw/react-md-editor';
 import MarkdownEditor from '@uiw/react-markdown-editor';
+import {checkLanguageConst} from "../../hooks/translashion";
 
-export const FieldInputEditTranslation = ({label, name, change, value, languages}) => {
-    const [boxField, setBoxField] = useState([{language: 'ru', value: ''}, {language: 'com', value: ''}]);
+export const FieldInputEditTranslation = ({label, name, change, value, languages, translation, translations}) => {
+    const [boxField, setBoxField] = useState(translation ? [{language: 'ru', value: ''}, {language: 'com', value: ''}] : '');
     const [itemMenu, setItemMenu] = useState(0);
-    // const [status, setStatus] = useState(false);
 
     useEffect(() => {
         if (value && value.length > 0) {
             setBoxField(value);
         } else {
-            setBoxField([{language: 'ru', value: ''}, {language: 'com', value: ''}]);
+            setBoxField(translation ? [{language: 'ru', value: ''}, {language: 'com', value: ''}] : '');
         }
     }, [value]);
 
@@ -23,55 +23,39 @@ export const FieldInputEditTranslation = ({label, name, change, value, languages
     }
 
     const editFiled = (value) => {
-        let new_boxField = boxField;
-        new_boxField[itemMenu].value = value;
-        change({name, value: new_boxField});
+        if (translation) {
+            let new_boxField = boxField;
+            new_boxField[itemMenu].value = value;
+            change({name, value: new_boxField});
+        } else {
+            change({name, value});
+        }
     }
 
     return (
         <div className={s.jin}>
             <div className={s.wrpper_field_header}>
                 <div className={GlobalStyle.CustomFontRegular + ' ' + s.placeholder}>
-                    {label}
+                    {checkLanguageConst(label, translations)}
                 </div>
+                {translation ? (
                 <div className={s.box_translation}>
                     <div className={s.wrapper_language_label} onClick={() => newLanguage()}>
                         <div className={GlobalStyle.CustomFontRegular + ' ' + s.language_label}>
-                            {languages[itemMenu].label}
+                            {checkLanguageConst(languages[itemMenu].label, translations)}
                         </div>
                         <GlobalSvgSelector id="arrow_mini" />
                     </div>
                 </div>
+                ): null}
             </div>
-            {/*<MDEditor*/}
-            {/*    value={boxField[itemMenu]?.value}*/}
-            {/*    onChange={editFiled}*/}
-            {/*/>*/}
-
-
             <MDEditor
-                value={boxField[itemMenu]?.value}
+                value={translation ? boxField[itemMenu]?.value : boxField}
                 onChange={editFiled}
                 preview={'edit'}
                 className={s.markdown}
                 height={220}
             />
-
-
-            {/*<MarkdownEditor*/}
-            {/*    value={boxField[itemMenu]?.value}*/}
-            {/*    onChange={(editor, data, value) => editFiled(value)}*/}
-            {/*    height={200}*/}
-            {/*    className={s.markdown}*/}
-            {/*/>*/}
-
-
-            {/*<input*/}
-            {/*    value={boxField[itemMenu]?.value}*/}
-            {/*    type="email"*/}
-            {/*    className={s.input}*/}
-            {/*    onChange={(value) => editFiled(value.target.value)}*/}
-            {/*/>*/}
         </div>
     )
 }

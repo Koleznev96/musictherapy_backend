@@ -7,8 +7,9 @@ import MobileDateTimePicker from "@mui/lab/MobileDateTimePicker";
 import TextField from "@mui/material/TextField";
 import {ColorsStyles} from "../../constants/ColorsStyles";
 import ClipLoader from "react-spinners/ClipLoader";
+import {checkLanguageConst} from "../../hooks/translashion";
 
-export const FieldTemporaryAccessData = ({label, name, change, value, url_get_data}) => {
+export const FieldTemporaryAccessData = ({label, name, change, value, url_get_data, translations}) => {
     const auth = useContext(AuthContext);
     const [boxField, setBoxField] = useState([]);
     const [list_value, setList_value] = useState([]);
@@ -61,7 +62,7 @@ export const FieldTemporaryAccessData = ({label, name, change, value, url_get_da
     return (
         <div className={s.jin}>
             <div className={GlobalStyle.CustomFontRegular + ' ' + s.placeholder}>
-                {label}
+                {checkLanguageConst(label, translations)}
             </div>
             <div className={s.wrapper_bool}>
                 <div className={s.root_click_}>
@@ -82,7 +83,7 @@ export const FieldTemporaryAccessData = ({label, name, change, value, url_get_da
                                 {indexElement !== -1 ? (
                                     <div className={s.wrapper_date}>
                                         <div className={GlobalStyle.CustomFontRegular + ' ' + s.st_date}>
-                                            с
+                                            {checkLanguageConst('с', translations)}
                                         </div>
                                         <MobileDateTimePicker
                                             value={boxField[indexElement].start_date}
@@ -117,7 +118,7 @@ export const FieldTemporaryAccessData = ({label, name, change, value, url_get_da
                                             }
                                         />
                                         <div className={GlobalStyle.CustomFontRegular + ' ' + s.st_date}>
-                                            по
+                                            {checkLanguageConst('по', translations)}
                                         </div>
                                         <MobileDateTimePicker
                                             value={boxField[indexElement].end_date}

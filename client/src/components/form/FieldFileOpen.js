@@ -8,9 +8,10 @@ import {ColorsStyles} from "../../constants/ColorsStyles";
 import ClipLoader from "react-spinners/ClipLoader";
 import {PostService} from "../../services/PostService";
 import {httpServer} from "../../const";
+import {checkLanguageConst} from "../../hooks/translashion";
 
 
-export const FieldFileOpen = ({label, name, change, value}) => {
+export const FieldFileOpen = ({label, name, change, value, translations}) => {
     const auth = useContext(AuthContext);
     const {request, error, clearError, loading} = useHttp();
     const [status, setStatus] = useState('upload');
@@ -57,11 +58,11 @@ export const FieldFileOpen = ({label, name, change, value}) => {
         <div className={s.jin}>
             <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
                 <div className={GlobalStyle.CustomFontRegular + ' ' + s.placeholder}>
-                    {label}
+                    {checkLanguageConst(label, translations)}
                 </div>
                 <a className={s.button_open} href={`${httpServer}/${value}`} target="_blank">
                     <div className={GlobalStyle.CustomFontRegular + ' ' + s.placeholder}>
-                        Открыть
+                        {checkLanguageConst('Открыть', translations)}
                     </div>
                 </a>
             </div>

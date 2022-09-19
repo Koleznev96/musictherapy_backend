@@ -1,22 +1,26 @@
 const {Schema, model} = require('mongoose');
 
-const translationSchema = new Schema({
-    ru: {
+const notesSchema = new Schema({
+    id_user: {
         type: String,
         required: true,
     },
-    com: {
+    note_writer_name: {
         type: String,
         required: false,
     },
-    root: {
-        type: Number,
+    date: {
+        type: Date,
         required: false,
     },
-    status: {
+    label: {
         type: String,
         required: false,
-    }
+    },
+    text: {
+        type: String,
+        required: false,
+    },
 });
 
-module.exports = model('Translation', translationSchema);
+module.exports = model('Notes', notesSchema);

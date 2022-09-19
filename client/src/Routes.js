@@ -9,10 +9,12 @@ import {Audio} from "./pages/Audio/Audio";
 // import {Maps} from "./pages/Maps/Maps";
 import {Tests} from "./pages/Tests/Tests";
 import {Courses} from "./pages/Courses/Courses";
+import {UsersFin} from "./pages/Users/UsersFin";
 
 
-export const useRoutes = (isAuthenticated) => {
+export const useRoutes = (isAuthenticated, isAdmin) => {
     if (isAuthenticated) {
+        if (isAdmin)
         return (
             <>
                 <Header />
@@ -42,6 +44,17 @@ export const useRoutes = (isAuthenticated) => {
                     {/*    <Test />*/}
                     {/*</Route>*/}
                     <Redirect to="/admin_panel/users" />
+                </Switch>
+            </>
+        );
+        return (
+            <>
+                <Header />
+                <Switch>
+                    <Route path="/admin_panel/users_fin" exact>
+                        <UsersFin/>
+                    </Route>
+                    <Redirect to="/admin_panel/users_fin" />
                 </Switch>
             </>
         );

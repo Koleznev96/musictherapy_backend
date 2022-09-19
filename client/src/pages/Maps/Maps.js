@@ -18,6 +18,7 @@ import {ColorsStyles} from "../../constants/ColorsStyles";
 import GlobalStyle from "../../components/GlobalStyle.module.scss";
 import {usePopupForm} from "../../hooks/usePopupForm";
 import {Form} from "../../components/tableCard/Forml";
+import {checkLanguageConst} from "../../hooks/translashion";
 
 
 export const Maps = () => {
@@ -61,13 +62,13 @@ export const Maps = () => {
     return (
         <div className={s.root}>
             <div className={s.header}>
-                <Search value={search} callback={setSearch} placeholder={'Поиск по названию'} handler={getData}/>
+                <Search translations={auth.translations} value={search} callback={setSearch} placeholder={'Поиск по названию'} handler={getData}/>
                 <div
                     className={s.create_button_ok}
                     onClick={() => creteHandler()}
                 >
                     <div className={GlobalStyle.CustomFontRegular + ' ' + s.create_button_ok_text}>
-                        Добавить новую карту
+                        {checkLanguageConst('Добавить новую карту', auth.translations)}
                     </div>
                 </div>
             </div>

@@ -14,7 +14,7 @@ import {listField, optionLanguages} from "../../constants/OptionsTable";
 import {checkLanguageConst} from "../../hooks/translashion";
 
 
-export const FormReTranslation = ({data, option, reload, status}) => {
+export const FormReTranslationAdmin = ({data, option, reload, status}) => {
     const popupForm = usePopupForm();
     const auth = useContext(AuthContext);
     const {request, error, clearError, loading} = useHttp();
@@ -93,7 +93,7 @@ export const FormReTranslation = ({data, option, reload, status}) => {
             <Scrollbars style={{width: '100%', height: '60vh', marginTop: 18}}>
                 <div className={s.items}>
                     {status ? (
-                    <a className={s.button_upload} href={httpServer + "/translations/sample_translation.json"} target="_blank">
+                    <a className={s.button_upload} href={httpServer + "/translations/sample_translation_admin.json"} target="_blank">
                         <div
                             className={GlobalStyle.CustomFontRegular + s.button_upload_text}
                             onClick={() => sampleTranslationHandler()}

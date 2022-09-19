@@ -11,6 +11,7 @@ import {PushInfo} from "../pushInfo/PushInfo";
 import Scrollbars from "react-custom-scrollbars-2";
 import {listField, optionLanguages} from "../../constants/OptionsTable";
 import cloneDeep from 'lodash/cloneDeep';
+import {checkLanguageConst} from "../../hooks/translashion";
 
 
 export const Form = ({data, option, reload, optionQuestionnaire, optionPassword, optionEdit, optionSettings, wigth_panel}) => {
@@ -124,7 +125,6 @@ export const Form = ({data, option, reload, optionQuestionnaire, optionPassword,
                     option={optionEdit}
                     reload={reload}
                 />)
-                // setNewData(newData);
             }
         } catch (e) {
             setPopupError(data ? 'Ошибка.' : 'Заполните все поля.');
@@ -138,7 +138,7 @@ export const Form = ({data, option, reload, optionQuestionnaire, optionPassword,
                 Authorization: `${auth.token}`
             });
             popupForm.exitHandler()
-            popupForm.openHandler(<PushInfo value={'Запись удалена'} />);
+            popupForm.openHandler(<PushInfo value={'Запись удалена'} translations={auth.translations}/>);
             reload(0, "null");
         } catch (e) {
             setPopupError(data ? 'Ошибка.' : 'Ошибка.');
@@ -147,12 +147,11 @@ export const Form = ({data, option, reload, optionQuestionnaire, optionPassword,
 
     return (
         <div
-            // className={s.root_popup}
             style={{width: wigth_panel ? wigth_panel : 400}}
         >
             <div className={s.popup_header}>
                 <div className={GlobalStyle.BellotaFontRegular + ' ' + s.popup_label}>
-                    Редактирование
+                    {checkLanguageConst('Редактирование', auth.translations)}
                 </div>
                 {option.delete_url ? (
                     <div className={s.block_buttons}>
@@ -161,7 +160,7 @@ export const Form = ({data, option, reload, optionQuestionnaire, optionPassword,
                         onClick={() => deleteHandler()}
                     >
                         <div className={GlobalStyle.CustomFontRegular + ' ' + s.popup_button_exit_text}>
-                            Удалить
+                            {checkLanguageConst('Удалить', auth.translations)}
                         </div>
                     </div>
                     <div className={s.button_close} onClick={() => popupForm.exitHandler()}>
@@ -181,7 +180,7 @@ export const Form = ({data, option, reload, optionQuestionnaire, optionPassword,
                             onClick={() => itemMenuHandler(index)}
                             className={s.liner_menu_item + (activeMenu === index ? (' ' + s.liner_menu_item_active): '')}
                         >
-                            {item}
+                            {checkLanguageConst(item, auth.translations)}
                         </div>
                     ))}
                 </div>
@@ -193,30 +192,29 @@ export const Form = ({data, option, reload, optionQuestionnaire, optionPassword,
                 style={{width: '100%', height: '60vh', marginTop: 18}}>
                 <div className={s.items}>
                     {activeMenu === 0 && (
-
                         option?.fields?.map(item => {
-                            return listField({item: item, change: changeRoot, value: value, optionLanguages: optionLanguages, id_data: data?._id})
+                            return listField({translations: auth.translations, item: item, change: changeRoot, value: value, optionLanguages: optionLanguages, id_data: data?._id})
                         })
                     )}
                     {activeMenu === 1 && (
                         optionQuestionnaire?.fields?.map(item => {
-                            return listField({item: item, change: changeQuestionnaire, value: questionnaire, optionLanguages: optionLanguages})
+                            return listField({translations: auth.translations, item: item, change: changeQuestionnaire, value: questionnaire, optionLanguages: optionLanguages})
                         })
                     )}
                     {activeMenu === 2 && (
                         optionPassword?.fields?.map(item => {
-                            return listField({item: item, change: changePassword,value:  password, optionLanguages: optionLanguages})
+                            return listField({translations: auth.translations, item: item, change: changePassword,value:  password, optionLanguages: optionLanguages})
                         })
                     )}
                     {activeMenu === 3 && (
                         optionSettings?.fields?.map(item => {
-                            return listField({item: item, change: changeSettings, value: settings, optionLanguages: optionLanguages})
+                            return listField({translations: auth.translations, item: item, change: changeSettings, value: settings, optionLanguages: optionLanguages})
                         })
                     )}
                 </div>
             </Scrollbars>
             <div className={GlobalStyle.CustomFontRegular + ' ' + (popupOk.length !== 0 ? s.popup_ok : s.popup_error)}>
-                {popupOk || popupError}
+                {checkLanguageConst(popupOk || popupError, auth.translations)}
             </div>
             <div className={s.popup_liner_button}>
                 <div
@@ -229,28 +227,18 @@ export const Form = ({data, option, reload, optionQuestionnaire, optionPassword,
                         </div>
                     ) : (
                         <div className={GlobalStyle.CustomFontRegular + ' ' + s.popup_button_ok_text}>
-                            {data ? "Сохранить" : "Добавить"}
+                            {checkLanguageConst(data ? "Сохранить" : "Добавить", auth.translations)}
                         </div>
                     )}
                 </div>
-                {/*<div className={s.blcok_buttons}>*/}
-                {/*<div*/}
-                {/*    className={s.popup_button_delete}*/}
-                {/*    onClick={() => popupForm.exitHandler()}*/}
-                {/*>*/}
-                {/*    <div className={GlobalStyle.CustomFontRegular + ' ' + s.popup_button_exit_text}>*/}
-                {/*        Удалить*/}
-                {/*    </div>*/}
-                {/*</div>*/}
                 <div
                     className={s.popup_button_exit}
                     onClick={() => popupForm.exitHandler()}
                 >
                     <div className={GlobalStyle.CustomFontRegular + ' ' + s.popup_button_exit_text}>
-                        Отмена
+                        {checkLanguageConst('Отмена', auth.translations)}
                     </div>
                 </div>
-                {/*</div>*/}
             </div>
         </div>
     );

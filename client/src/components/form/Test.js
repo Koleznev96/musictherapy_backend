@@ -1,8 +1,9 @@
 import GlobalStyle from "../GlobalStyle.module.scss";
 import s from "../tableCard/Form.module.scss";
 import React, {useEffect, useState} from "react";
+import {checkLanguageConst} from "../../hooks/translashion";
 
-export const FieldBool = ({label, name, change, value, name_two, value_two, label_two}) => {
+export const FieldBool = ({label, name, change, value, name_two, value_two, label_two, translations}) => {
     const [statusField, setStatusField] = useState('classic');
     const [boxField, setBoxField] = useState([]);
 
@@ -41,56 +42,56 @@ export const FieldBool = ({label, name, change, value, name_two, value_two, labe
         <div className={s.wrapper_box}>
             <div className={s.block_root}>
                 <div className={GlobalStyle.CustomFontRegular + ' ' + s.placeholder}>
-                    {label}
+                    {checkLanguageConst(label, translations)}
                 </div>
                 <div className={s.root_click}>
                     <div className={s.button_input} onClick={() => clickHandler('classic')}>
                         <div className={statusField === 'classic' ? s.clip_active : s.clip}/>
                         <div className={s.clip_text}>
-                            Классика HD
+                            {checkLanguageConst('Классика HD', translations)}
                         </div>
                     </div>
                     <div className={s.button_input} onClick={() => clickHandler('meditation')}>
                         <div className={statusField === 'meditation' ? s.clip_active : s.clip}  />
                         <div className={s.clip_text}>
-                            Медитация
+                            {checkLanguageConst('Медитация', translations)}
                         </div>
                     </div>
                     <div className={s.button_input} onClick={() => clickHandler('tool')}>
                         <div className={statusField === 'tool' ? s.clip_active : s.clip}  />
                         <div className={s.clip_text}>
-                            Инструменты
+                            {checkLanguageConst('Инструменты', translations)}
                         </div>
                     </div>
                 </div>
             </div>
             <div className={s.block_root}>
                 <div className={GlobalStyle.CustomFontRegular + ' ' + s.placeholder}>
-                    {label_two}
+                    {checkLanguageConst(label_two, translations)}
                 </div>
                 <div className={s.root_click}>
                     <div className={s.button_input} onClick={() => boxHandler('Без регистрации')}>
                         <div className={boxField.indexOf('Без регистрации') !== -1 ? s.box_active : s.box}/>
                         <div className={s.clip_text}>
-                            Без регистрации
+                            {checkLanguageConst('Без регистрации', translations)}
                         </div>
                     </div>
                     <div className={s.button_input} onClick={() => boxHandler('Гость')}>
                         <div className={boxField.indexOf('Гость') !== -1 ? s.box_active : s.box}  />
                         <div className={s.clip_text}>
-                            Гость
+                            {checkLanguageConst('Гость', translations)}
                         </div>
                     </div>
                     <div className={s.button_input} onClick={() => boxHandler('Премиум')}>
                         <div className={boxField.indexOf('Премиум') !== -1 ? s.box_active : s.box}  />
                         <div className={s.clip_text}>
-                            Премиум
+                            {checkLanguageConst('Премиум', translations)}
                         </div>
                     </div>
                     <div className={s.button_input} onClick={() => boxHandler('VIP')}>
                         <div className={boxField.indexOf('VIP') !== -1 ? s.box_active : s.box}  />
                         <div className={s.clip_text}>
-                            VIP
+                            {checkLanguageConst('VIP', translations)}
                         </div>
                     </div>
                 </div>

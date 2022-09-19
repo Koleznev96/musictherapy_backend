@@ -9,4 +9,9 @@ export const AuthContext = createContext({
   isAuthenticated: false,
   email: null,
   newEmail: null,
+  type_admin: null,
+  name: null,
+  language: null,
+  newLanguage: noop,
+  translations: null,
 });

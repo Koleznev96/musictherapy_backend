@@ -29,30 +29,6 @@ export const PaginationTable = ({page, endPage, startPage, getData, setPage}) =>
             <div className={page !== endPage ? s.next_button_active : s.next_button} onClick={() => page !== endPage ? getData(page+1) : false}>
                 <GlobalSvgSelector id='arrow-right' />
             </div>
-
-            {/*{page !== endPage ? (*/}
-            {/*<>*/}
-            {/*    <div className={s.item} onClick={() => getData(startPage, search)}>*/}
-            {/*        {startPage + 1}*/}
-            {/*    </div>*/}
-            {/*    <div className={s.next_button} onClick={() => getData(page-1, search)}>*/}
-            {/*        <GlobalSvgSelector id='arrow-left' />*/}
-            {/*    </div>*/}
-            {/*</>*/}
-            {/*): null}*/}
-            {/*<div className={s.current}>*/}
-            {/*    {page + 1}*/}
-            {/*</div>*/}
-            {/*{page !== endPage ? (*/}
-            {/*<>*/}
-            {/*    <div className={s.next_button} onClick={() => getData(page+1, search)}>*/}
-            {/*        <GlobalSvgSelector id='arrow-right' />*/}
-            {/*    </div>*/}
-            {/*    <div className={s.item} onClick={() => getData(endPage, search)}>*/}
-            {/*        {endPage + 1}*/}
-            {/*    </div>*/}
-            {/*</>*/}
-            {/*): null}*/}
         </div>
     );
 };

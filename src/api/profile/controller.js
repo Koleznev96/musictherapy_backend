@@ -64,6 +64,22 @@ module.exports.re_data = async function(req, res) {
     }
 }
 
+module.exports.delete_account = async function(req, res) {
+    try {
+        let check = await checkUser.check(req, res);
+        if (!check._id) {
+            return res.status(401).json('Unauthorized');
+        }
+        check.status = true;
+        check.date_last_activity = new Date();
+        await check.save();
+        res.status(201).json('OK');
+    } catch(e) {
+        errorHandler(res, e);
+        // throw e;
+    }
+}
+
 module.exports.translation = async function(req, res) {
     try {
         const language = req.params.language;

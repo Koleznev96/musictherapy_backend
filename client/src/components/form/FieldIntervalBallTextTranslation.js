@@ -3,9 +3,11 @@ import s from "../tableCard/Form.module.scss";
 import React, {useEffect, useState} from "react";
 import {GlobalSvgSelector} from "../../assets/icons/global/GlobalSvgSelector";
 import cloneDeep from 'lodash/cloneDeep';
+import {FieldInput} from "./FielsInput";
+import {checkLanguageConst} from "../../hooks/translashion";
 
 
-export const FieldIntervalBallTextTranslation = ({labels, name, change, value, languages, add_data, title_add}) => {
+export const FieldIntervalBallTextTranslation = ({labels, name, change, value, languages, add_data, title_add, translations}) => {
     const [field, setField] = useState([]);
     const [itemMenu, setItemMenu] = useState([]);
 
@@ -69,7 +71,7 @@ export const FieldIntervalBallTextTranslation = ({labels, name, change, value, l
                 <>
                 <div className={s.wrapper_st}>
                     <div className={GlobalStyle.CustomFontRegular + ' ' + s.placeholder}>
-                        {`${index + 1}. ${labels[0]}`}
+                        {`${index + 1}. ${checkLanguageConst(labels[0], translations)}`}
                     </div>
                     <div
                         className={s.button_delet_}
@@ -97,12 +99,12 @@ export const FieldIntervalBallTextTranslation = ({labels, name, change, value, l
                 </div>
                 <div className={s.wrpper_field_header}>
                     <div className={GlobalStyle.CustomFontRegular + ' ' + s.placeholder}>
-                        {labels[1]}
+                        {checkLanguageConst(labels[1], translations)}
                     </div>
                     <div className={s.box_translation}>
                         <div className={s.wrapper_language_label} onClick={() => newLanguage(index)}>
                             <div className={GlobalStyle.CustomFontRegular + ' ' + s.language_label}>
-                                {languages[itemMenu[index]].label}
+                                {checkLanguageConst(languages[itemMenu[index]].label, translations)}
                             </div>
                             <GlobalSvgSelector id="arrow_mini" />
                         </div>
@@ -115,13 +117,22 @@ export const FieldIntervalBallTextTranslation = ({labels, name, change, value, l
                     className={s.inputarrea}
                     onChange={(value) => editText(value.target.value, index)}
                 />
+                <div className={GlobalStyle.CustomFontRegular + ' ' + s.placeholder}>
+                    {checkLanguageConst(labels[2], translations)}
+                </div>
+                <input
+                    value={item.color}
+                    type="text"
+                    className={s.input}
+                    onChange={(value) => editBall(value.target.value, index, "color")}
+                />
                 </>
             ))}
             <div
                 onClick={() => addData()}
                 className={GlobalStyle.CustomFontRegular + ' ' + s.button_add_function}
             >
-                {title_add}
+                {checkLanguageConst(title_add, translations)}
             </div>
         </>
     )

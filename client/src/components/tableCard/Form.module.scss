@@ -46,6 +46,82 @@
   justify-content: center;
 }
 
+.dropList {
+  width: 100%;
+  height: 150px;
+  background-color: #E0E6F1;
+  border-radius: 10px;
+  padding: 0 5px 0 0;
+}
+
+.statisctics_view_label {
+  margin-left: 12px;
+  font-size: 16px;
+  color: #fff;
+}
+
+.statisctics_label {
+  margin-left: 12px;
+  font-size: 14px;
+  color: #fff;
+}
+
+.diagramma {
+  margin: 25px 0;
+}
+
+.statisctics_item {
+  margin-bottom: 12px;
+}
+
+.statisctics_item_text {
+  font-size: 13px;
+  color: #fff;
+}
+
+.root_statistics {
+  width: 100%;
+  padding: 20px 0;
+}
+
+.statisctics_block {
+  margin-bottom: 10px;
+}
+
+.statisctics_view {
+  margin-bottom: 16px;
+}
+
+.statisctics_view_active {
+  margin-left: 24px;
+}
+
+.root_statistics_item_active {
+  margin-top: 12px;
+  margin-left: 24px;
+}
+
+.statisctics_result {
+  width: 100%;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.dropListItem {
+  width: 100%;
+  padding: 12px 8px;
+  color: #0d1117;
+  font-size: 15px;
+  cursor: pointer;
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+}
 
 .root_file {
   margin-top: 5px;
@@ -55,6 +131,14 @@
   aligin-items: center;
   display: flex;
   background-color: #fff;
+}
+
+.marginBottom {
+  margin-bottom: 20px;
+}
+
+.drop {
+  margin-bottom: 4px;
 }
 
 .button_add_function {
@@ -353,6 +437,13 @@
   margin-right: 15px;
   margin-top: 10px;
   border-bottom: 1px solid #FFFFFF;
+}
+
+.additional_item_placeholder {
+  margin-left: 15px;
+  color: #e0e0e0;
+  font-size: 14px;
+  margin-top: 10px;
 }
 
 .button_delet {

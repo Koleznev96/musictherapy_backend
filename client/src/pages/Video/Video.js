@@ -13,6 +13,7 @@ import {usePopupForm} from "../../hooks/usePopupForm";
 import {Form} from "../../components/tableCard/Forml";
 import {TextCounter} from "../../components/textCounter/TextCounter";
 import {sortRoot} from "../../components/tableCard/functional";
+import {checkLanguageConst} from "../../hooks/translashion";
 
 
 export const Video = () => {
@@ -73,15 +74,15 @@ export const Video = () => {
         <div className={s.root}>
             <div className={s.header}>
                 <div className={s.wrapper_header}>
-                    <Search value={search} callback={setSearch} placeholder={'Поиск по названию'} handler={getData}/>
-                    <TextCounter value={data_length}/>
+                    <Search translations={auth.translations} value={search} callback={setSearch} placeholder={'Поиск по названию'} handler={getData}/>
+                    <TextCounter translations={auth.translations} value={data_length}/>
                 </div>
                 <div
                     className={s.create_button_ok}
                     onClick={() => creteHandler()}
                 >
                     <div className={GlobalStyle.CustomFontRegular + ' ' + s.create_button_ok_text}>
-                        Добавить новое видео
+                        {checkLanguageConst('Добавить новое видео', auth.translations)}
                     </div>
                 </div>
             </div>

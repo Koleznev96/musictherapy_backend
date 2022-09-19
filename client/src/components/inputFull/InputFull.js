@@ -3,9 +3,10 @@ import {AuthContext} from "../../context/authContext";
 import {useHttp} from "../../hooks/http.hook";
 import s from "./InputFull.module.scss";
 import GlobalStyle from "../GlobalStyle.module.scss";
+import {checkLanguageConst} from "../../hooks/translashion";
 
 
-export const InputFull = ({ data }) => {
+export const InputFull = ({ data, translations }) => {
     return (
         <>
             <input
@@ -13,12 +14,12 @@ export const InputFull = ({ data }) => {
                 value={data.value}
                 // placeholderTextColor={'#F3F3F3'}
                 className={s.input + ' ' + (data?.styles ? data.styles : '')}
-                placeholder={data.placeholder}
+                placeholder={checkLanguageConst(data.placeholder, translations)}
                 onChange={(value) => data.change(value.target.value)}
             />
             {data.error?.length ?
             <div className={GlobalStyle.CustomFontLite + ' ' + s.error_text}>
-                    {data.error}
+                {checkLanguageConst(data.error, translations)}
             </div>: null}
         </>
     );

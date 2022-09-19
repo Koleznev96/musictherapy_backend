@@ -3,9 +3,10 @@ import s from "../tableCard/Form.module.scss";
 import React, {useEffect, useState} from "react";
 import {GlobalSvgSelector} from "../../assets/icons/global/GlobalSvgSelector";
 import cloneDeep from 'lodash/cloneDeep';
+import {checkLanguageConst} from "../../hooks/translashion";
 
 
-export const FieldListAnswerBall = ({name, change, value, add_data, title_add}) => {
+export const FieldListAnswerBall = ({name, change, value, add_data, title_add, translations}) => {
     const [field, setField] = useState([]);
 
     useEffect(() => {
@@ -57,7 +58,8 @@ export const FieldListAnswerBall = ({name, change, value, add_data, title_add}) 
                     <div>
                         <div className={s.wrapper_st}>
                             <div className={GlobalStyle.CustomFontRegular + ' ' + s.placeholder}>
-                                {`Ответ ${index + 1}`}
+                                {`${checkLanguageConst('Ответ', translations)} ${index + 1}`}
+                                {}
                             </div>
                             <div
                                 className={s.button_delet_}
@@ -75,7 +77,7 @@ export const FieldListAnswerBall = ({name, change, value, add_data, title_add}) 
                     </div>
                     <div className={s.lin_b}>
                         <div className={GlobalStyle.CustomFontRegular + ' ' + s.placeholder}>
-                            {`Баллы`}
+                            {checkLanguageConst('Баллы', translations)}
                         </div>
                         <input
                             value={item.balls}
@@ -86,7 +88,7 @@ export const FieldListAnswerBall = ({name, change, value, add_data, title_add}) 
                     </div>
                     <div className={s.lin_b}>
                         <div className={GlobalStyle.CustomFontRegular + ' ' + s.placeholder}>
-                            {`Правильный?`}
+                            {checkLanguageConst('Правильный', translations)}?
                         </div>
                         <div className={s.button_input_b_} onClick={() => editBox(index)}>
                             <div className={item.is_status ? s.box_active : s.box}/>
@@ -98,7 +100,7 @@ export const FieldListAnswerBall = ({name, change, value, add_data, title_add}) 
                 onClick={() => addData()}
                 className={GlobalStyle.CustomFontRegular + ' ' + s.button_add_function}
             >
-                {title_add}
+                {checkLanguageConst(title_add, translations)}
             </div>
         </>
     )

@@ -3,6 +3,9 @@ const controller = require('./controller');
 const router = express.Router();
 
 
+router.get('/translation/:language',
+    controller.translation);
+
 router.post('/register',
     controller.register);
 
@@ -69,10 +72,22 @@ router.get('/questions_test/:id',
 router.get('/meditation/:page/:label',
     controller.get_list_meditation);
 
+router.get('/get_musictherapys',
+    controller.get_musictherapys);
+
+router.get('/get_notes/:id_user',
+    controller.get_notes);
+
+router.get('/get_statistics_test/:id_user',
+    controller.get_statistics_test);
+
 router.get('/classic/:page/:label',
     controller.get_list_classic);
 
 router.get('/users/:page/:full_name/:is_admin/:access/:language',
+    controller.get_list_user);
+
+router.get('/users_fin/:page/:full_name/:is_admin/:access/:language',
     controller.get_list_user);
 
 router.post('/re_live_sound',
@@ -122,6 +137,12 @@ router.get('/translation',
 
 router.post('/re_translation',
     controller.re_translation);
+
+router.get('/translation_admin',
+    controller.get_translation_admin);
+
+router.post('/re_translation_admin',
+    controller.re_translation_admin);
 
 router.post('/re_version',
     controller.re_version);
