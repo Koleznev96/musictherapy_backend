@@ -19,7 +19,7 @@ export const FieldDateFull = ({label, name, change, value, isNowDate, translatio
                 {checkLanguageConst(label, translations)}
             </div>
             <MobileDatePicker
-                value={value}
+                value={value ? value : ''}
                 onChange={(newValue) => {
                     change({name, value: newValue})
                 }}

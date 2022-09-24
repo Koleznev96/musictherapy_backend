@@ -7,7 +7,7 @@ import MobileDateTimePicker from "@mui/lab/MobileDateTimePicker";
 import TextField from "@mui/material/TextField";
 import {ColorsStyles} from "../../constants/ColorsStyles";
 import ClipLoader from "react-spinners/ClipLoader";
-import {checkLanguageConst} from "../../hooks/translashion";
+import {checkLanguage, checkLanguageConst} from "../../hooks/translashion";
 
 export const FieldTemporaryAccessData = ({label, name, change, value, url_get_data, translations}) => {
     const auth = useContext(AuthContext);
@@ -22,7 +22,6 @@ export const FieldTemporaryAccessData = ({label, name, change, value, url_get_da
             });
             setList_value([...answer]);
         } catch (e){
-            console.log('err-', e)
         }
     }
 
@@ -77,7 +76,7 @@ export const FieldTemporaryAccessData = ({label, name, change, value, url_get_da
                                 <div key={index} className={s.button_input_b} onClick={() => boxHandler(item, indexElement)}>
                                     <div className={indexElement !== -1 ? s.box_active : s.box}/>
                                     <div className={s.clip_text}>
-                                        {item.label[0]?.value}
+                                        {checkLanguage(item.label, auth.language)}
                                     </div>
                                 </div>
                                 {indexElement !== -1 ? (

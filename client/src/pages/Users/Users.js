@@ -3,6 +3,7 @@ import s from './Users.module.scss';
 import {useHttp} from "../../hooks/http.hook";
 import {Search} from "../../components/search/Search";
 import {
+    optionCreateUser,
     optionUser,
     optionUserView
 } from "../../constants/OptionsTable";
@@ -38,13 +39,9 @@ export const Users = () => {
 
     const getData = async (page_, rel, data_search, sort, sortData, sortStatus) => {
         page_ = page_ ? page_ : (page ? page : 0);
-        // let search_ = search?.length > 0 ? search : "null";
-        // if (rel === "null") {
-        //     search_ = "null";
-        //     setSearch("");
-        // }
         let search_ = data_search?.search ? data_search.search : (search?.length > 0 ? search : "null");
-        let is_admin_ = typeof data_search?.is_admin === "boolean" ? data_search.is_admin : "null";
+        let is_admin_ = data_search?.is_admin ? data_search.is_admin : "null";
+        // typeof data_search?.is_admin === "boolean" ? data_search.is_admin : "null";
         let access_ = data_search?.access ? data_search.access : "null";
         let language_ = data_search?.language ? data_search.language : "null";
         if (rel === "null") {
@@ -92,9 +89,9 @@ export const Users = () => {
         popupForm.openHandler(
             <Form
                 data={null}
-                option={optionUser}
+                option={optionCreateUser}
                 reload={getData}
-                optionEdit={optionUser}
+                optionEdit={optionCreateUser}
             />
         );
     }

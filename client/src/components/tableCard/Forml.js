@@ -193,22 +193,22 @@ export const Form = ({data, option, reload, optionQuestionnaire, optionPassword,
                 <div className={s.items}>
                     {activeMenu === 0 && (
                         option?.fields?.map(item => {
-                            return listField({translations: auth.translations, item: item, change: changeRoot, value: value, optionLanguages: optionLanguages, id_data: data?._id})
+                            return listField({lang: auth.language, translations: auth.translations, item: item, change: changeRoot, value: value, optionLanguages: optionLanguages, id_data: data?._id})
                         })
                     )}
                     {activeMenu === 1 && (
                         optionQuestionnaire?.fields?.map(item => {
-                            return listField({translations: auth.translations, item: item, change: changeQuestionnaire, value: questionnaire, optionLanguages: optionLanguages})
+                            return listField({lang: auth.language, translations: auth.translations, item: item, change: changeQuestionnaire, value: questionnaire, optionLanguages: optionLanguages})
                         })
                     )}
                     {activeMenu === 2 && (
                         optionPassword?.fields?.map(item => {
-                            return listField({translations: auth.translations, item: item, change: changePassword,value:  password, optionLanguages: optionLanguages})
+                            return listField({lang: auth.language, translations: auth.translations, item: item, change: changePassword,value:  password, optionLanguages: optionLanguages})
                         })
                     )}
                     {activeMenu === 3 && (
                         optionSettings?.fields?.map(item => {
-                            return listField({translations: auth.translations, item: item, change: changeSettings, value: settings, optionLanguages: optionLanguages})
+                            return listField({lang: auth.language, translations: auth.translations, item: item, change: changeSettings, value: settings, optionLanguages: optionLanguages})
                         })
                     )}
                 </div>

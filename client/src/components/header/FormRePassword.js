@@ -94,7 +94,7 @@ export const FormRePassword = () => {
                 onChange={(value) => setNewPasswordRe(value.target.value)}
             />
             <div className={GlobalStyle.CustomFontRegular + ' ' + s.placeholder}>
-                Т
+
                 {checkLanguageConst('Текущий пароль', auth.translations)}
             </div>
             <input

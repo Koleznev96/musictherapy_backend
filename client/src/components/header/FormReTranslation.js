@@ -105,7 +105,7 @@ export const FormReTranslation = ({data, option, reload, status}) => {
                     ): null}
                     {
                         option?.fields?.map(item => {
-                            return listField({translations: auth.translations, item: item, change: changeRoot, value: value, optionLanguages: optionLanguages})
+                            return listField({lang: auth.language, translations: auth.translations, item: item, change: changeRoot, value: value, optionLanguages: optionLanguages})
                         })
                     }
                 </div>

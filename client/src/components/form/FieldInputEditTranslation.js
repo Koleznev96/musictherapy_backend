@@ -6,9 +6,9 @@ import MDEditor from '@uiw/react-md-editor';
 import MarkdownEditor from '@uiw/react-markdown-editor';
 import {checkLanguageConst} from "../../hooks/translashion";
 
-export const FieldInputEditTranslation = ({label, name, change, value, languages, translation, translations}) => {
+export const FieldInputEditTranslation = ({label, name, change, value, languages, translation, translations, lang}) => {
     const [boxField, setBoxField] = useState(translation ? [{language: 'ru', value: ''}, {language: 'com', value: ''}] : '');
-    const [itemMenu, setItemMenu] = useState(0);
+    const [itemMenu, setItemMenu] = useState(lang === 'ru' ? 0 : 1);
 
     useEffect(() => {
         if (value && value.length > 0) {
@@ -33,7 +33,7 @@ export const FieldInputEditTranslation = ({label, name, change, value, languages
     }
 
     return (
-        <div className={s.jin}>
+        <div className={s.jinl}>
             <div className={s.wrpper_field_header}>
                 <div className={GlobalStyle.CustomFontRegular + ' ' + s.placeholder}>
                     {checkLanguageConst(label, translations)}

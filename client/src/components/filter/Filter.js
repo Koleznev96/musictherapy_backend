@@ -106,7 +106,7 @@ export const Filter = ({width, section, value, callback, placeholder, handler, l
         <div style={{width: width ? width : 350}} className={s.root} onClick={() => openModal()}>
             <div className={s.input}>
                 <div className={GlobalStyle.CustomFontRegular + ' ' + (value ? s.value : s.placeholder)}>
-                {checkLanguageConst(value ? value : placeholder, translations)}
+                {checkLanguageConst(value ? list.list_value?.find(item => item.value === value).label : placeholder, translations)}
                 </div>
             </div>
             <div className={s.button}>

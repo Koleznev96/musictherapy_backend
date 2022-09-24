@@ -31,6 +31,21 @@
   background: $backgroundFooter;
   z-index: 1500;
 }
+.root___l {
+  transition: all 0.6s ease;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 30px;
+  height: 84vh;
+  background: var(#{--components-background-default});
+  box-shadow: 2px 5px 25px -3px rgba(180, 180, 180, 0.25);
+  border-radius: 20px;
+  background: $backgroundFooter;
+  z-index: 1500;
+}
+
 
 .blur__ {
   position: fixed;
@@ -592,6 +607,10 @@
   max-width: 400px;
 }
 
+.jinl {
+  width: 100%;
+}
+
 .input {
   width: 100%;
   margin-bottom: 20px;
@@ -609,6 +628,41 @@
   outline:none;
   border-radius: 14px;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.input_color {
+  width: 100%;
+  margin-bottom: 20px;
+  margin-top: 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 44px;
+  padding: 0.375rem 22px;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  background-color: #E0E6F1;
+  background-clip: padding-box;
+  border: 0;
+  outline:none;
+  border-radius: 14px;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.input_text_color {
+  flex: 1;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  background-clip: padding-box;
+  border: 0;
+  outline:none;
+  background-color: #E0E6F1;
 }
 
 .input_wil {

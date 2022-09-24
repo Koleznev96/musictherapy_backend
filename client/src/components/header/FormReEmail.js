@@ -97,8 +97,7 @@ export const FormReEmail = () => {
                         </div>
                     ) : (
                         <div className={GlobalStyle.CustomFontRegular + ' ' + s.popup_button_ok_text}>
-                            Сохранить
-                            {checkLanguageConst('Изменени', auth.translations)}
+                            {checkLanguageConst('Сохранить', auth.translations)}
                         </div>
                     )}
                 </div>

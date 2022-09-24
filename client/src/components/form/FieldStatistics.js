@@ -74,7 +74,6 @@ export const FieldStatistics = ({label, url_get_data, id_data, translations}) =>
                         },
                     ]
                 }
-                console.log('answer-', answer[i])
                 for(let j = 0; j < answer[i].result.length; j++) {
                     lit.labels.push(dateToString(answer[i].result[j].date_end));
                     lit.datasets[0].data.push(answer[i].result[j].result?.balls);
@@ -86,7 +85,6 @@ export const FieldStatistics = ({label, url_get_data, id_data, translations}) =>
             // console.log('dataG-', dataG)
             setDataGraph(dataG);
         } catch (e){
-            console.log('bbb-', e)
         }
     }
 

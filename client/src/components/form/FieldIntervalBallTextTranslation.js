@@ -7,7 +7,7 @@ import {FieldInput} from "./FielsInput";
 import {checkLanguageConst} from "../../hooks/translashion";
 
 
-export const FieldIntervalBallTextTranslation = ({labels, name, change, value, languages, add_data, title_add, translations}) => {
+export const FieldIntervalBallTextTranslation = ({labels, name, change, value, languages, add_data, title_add, translations, lang}) => {
     const [field, setField] = useState([]);
     const [itemMenu, setItemMenu] = useState([]);
 
@@ -16,7 +16,7 @@ export const FieldIntervalBallTextTranslation = ({labels, name, change, value, l
             setField(value);
             if (itemMenu.length === 0) {
                 let new_menu = [];
-                value.forEach(() => new_menu.push(0));
+                value.forEach(() => new_menu.push(lang === 'ru' ? 0 : 1));
                 setItemMenu(new_menu);
             }
         } else {
@@ -45,7 +45,7 @@ export const FieldIntervalBallTextTranslation = ({labels, name, change, value, l
         new_data.push(cloneDeep(add_data));
         changeRoot(new_data);
         let new_menu = [...itemMenu];
-        new_menu.push(0);
+        new_menu.push(lang === 'ru' ? 0 : 1);
         setItemMenu([...new_menu]);
     }
 
@@ -64,6 +64,8 @@ export const FieldIntervalBallTextTranslation = ({labels, name, change, value, l
         new_data[index][type] = value;
         changeRoot(new_data);
     }
+
+    const hasColor = /^#(?:[0-9a-f]{3}){1,2}$/i;
 
     return (
         <>
@@ -120,12 +122,21 @@ export const FieldIntervalBallTextTranslation = ({labels, name, change, value, l
                 <div className={GlobalStyle.CustomFontRegular + ' ' + s.placeholder}>
                     {checkLanguageConst(labels[2], translations)}
                 </div>
-                <input
-                    value={item.color}
-                    type="text"
-                    className={s.input}
-                    onChange={(value) => editBall(value.target.value, index, "color")}
-                />
+                    <div className={s.input_color}>
+                        <input
+                            value={item.color}
+                            type="text"
+                            className={s.input_text_color}
+                            onChange={(value) => editBall(value.target.value, index, "color")}
+                        />
+                        <div style={{
+                            marginLeft: 16,
+                            width: 30,
+                            height: 30,
+                            borderRadius: 2,
+                            backgroundColor: hasColor.test(item.color) ? item.color : 'rgba(0, 0, 0, 0)',
+                        }} />
+                    </div>
                 </>
             ))}
             <div

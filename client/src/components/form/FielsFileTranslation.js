@@ -9,7 +9,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import {PostService} from "../../services/PostService";
 import {checkLanguageConst} from "../../hooks/translashion";
 
-export const FieldFileTranslation = ({label, name, change, value, languages, translations}) => {
+export const FieldFileTranslation = ({label, name, change, value, languages, translations, lang}) => {
     const auth = useContext(AuthContext);
     const {request, error, clearError, loading} = useHttp();
     const [status, setStatus] = useState('upload');
@@ -17,7 +17,7 @@ export const FieldFileTranslation = ({label, name, change, value, languages, tra
     const [statusError, setStatusError] = useState(false);
     const [loader, setLoader] = useState(false);
     const [boxField, setBoxField] = useState([{language: 'ru', value: ''}, {language: 'com', value: ''}]);
-    const [itemMenu, setItemMenu] = useState(0);
+    const [itemMenu, setItemMenu] = useState(lang === 'ru' ? 0 : 1);
 
     const updateInfo = (valueNew) => {
         valueNew = valueNew ? valueNew : value;

@@ -3,7 +3,7 @@ const {Schema, model} = require('mongoose');
 const userSchema = new Schema({
     email: {
         type: String,
-        required: true,
+        required: false,
     },
     language: {
         type: String,
@@ -11,7 +11,7 @@ const userSchema = new Schema({
     },
     password: {
         type: String,
-        required: true,
+        required: false,
     },
     name: {
         type: String,
@@ -23,7 +23,7 @@ const userSchema = new Schema({
     },
     telephone: {
         type: String,
-        required: true,
+        required: false,
     },
     date_last_activity: {
         type: Date,

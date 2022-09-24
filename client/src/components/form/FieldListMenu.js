@@ -4,7 +4,7 @@ import React, {useState} from "react";
 import {listField, optionLanguages} from "../../constants/OptionsTable";
 import {checkLanguageConst} from "../../hooks/translashion";
 
-export const FieldListMenu = ({labels, list_menu_fields, change, value, id_data, translations}) => {
+export const FieldListMenu = ({labels, list_menu_fields, change, value, id_data, translations, lang}) => {
     const [itemMenu, setItemMenu] = useState(0);
     return (
         <>
@@ -20,7 +20,7 @@ export const FieldListMenu = ({labels, list_menu_fields, change, value, id_data,
             </div>
             {(
                 list_menu_fields[itemMenu]?.map(item => {
-                    return listField({translations, item: item, change: change, value: value, optionLanguages: optionLanguages, id_data: id_data})
+                    return listField({lang, translations, item: item, change: change, value: value, optionLanguages: optionLanguages, id_data: id_data})
                 })
             )}
         </>

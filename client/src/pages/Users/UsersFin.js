@@ -3,6 +3,7 @@ import s from './Users.module.scss';
 import {useHttp} from "../../hooks/http.hook";
 import {Search} from "../../components/search/Search";
 import {
+    optionCreateUserFin,
     optionUser, optionUserFin,
     optionUserView
 } from "../../constants/OptionsTable";
@@ -39,7 +40,7 @@ export const UsersFin = () => {
     const getData = async (page_, rel, data_search, sort, sortData, sortStatus) => {
         page_ = page_ ? page_ : (page ? page : 0);
         let search_ = data_search?.search ? data_search.search : (search?.length > 0 ? search : "null");
-        let is_admin_ = typeof data_search?.is_admin === "boolean" ? data_search.is_admin : "null";
+        let is_admin_ = data_search?.is_admin ? data_search.is_admin : "null";
         let access_ = data_search?.access ? data_search.access : "null";
         let language_ = data_search?.language ? data_search.language : "null";
         if (rel === "null") {
@@ -55,7 +56,7 @@ export const UsersFin = () => {
         // setSearch(search ? (search?.length > 0 ? search : "null") : "null");
         try {
             let answer;
-            answer = await request(`/api/admin_panel/users/${page_}/${search_}/${is_admin_}/${access_}/${language_}`, 'GET', null, {
+            answer = await request(`/api/admin_panel/users_fin/${page_}/${search_}/${is_admin_}/${access_}/${language_}`, 'GET', null, {
                 Authorization: auth.token
             });
             setPage(page);
@@ -71,9 +72,9 @@ export const UsersFin = () => {
         popupForm.openHandler(
             <Form
                 data={null}
-                option={optionUser}
+                option={optionCreateUserFin}
                 reload={getData}
-                optionEdit={optionUser}
+                optionEdit={optionCreateUserFin}
             />
         );
     }
@@ -88,14 +89,14 @@ export const UsersFin = () => {
                     <Filter translations={auth.translations} width={210} section={"language"} value={language} callback={setLanguage} placeholder={'Фильтр по языку'} handler={getData} list={optionUser.fields[0].list_menu_fields[3][0]} />
                     <TextCounter value={data_length}/>
                 </div>
-                {/*<div*/}
-                {/*    className={s.create_button_ok}*/}
-                {/*    onClick={() => creteHandler()}*/}
-                {/*>*/}
-                {/*    <div className={GlobalStyle.CustomFontRegular + ' ' + s.create_button_ok_text}>*/}
-                {/*       {checkLanguageConst(' Добавить нового пользователя', auth.translations)}*/}
-                {/*    </div>*/}
-                {/*</div>*/}
+                <div
+                    className={s.create_button_ok}
+                    onClick={() => creteHandler()}
+                >
+                    <div className={GlobalStyle.CustomFontRegular + ' ' + s.create_button_ok_text}>
+                       {checkLanguageConst(' Добавить нового пользователя', auth.translations)}
+                    </div>
+                </div>
             </div>
             <TableCard
                 option={optionUserView}

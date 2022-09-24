@@ -8,7 +8,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import {Form} from "./Forml";
 import {AuthContext} from "../../context/authContext";
 import {useHttp} from "../../hooks/http.hook";
-import {checkLanguageConst} from "../../hooks/translashion";
+import {checkLanguage, checkLanguageConst} from "../../hooks/translashion";
 
 
 const string_date = (string) => {
@@ -131,6 +131,10 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
 
             setData([...new_data]);
         }
+    }
+
+    const staringTrans = (strings) => {
+
     }
 
     return (
@@ -275,7 +279,7 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
                                                 field_item.translation ? (
                                                     // 'kkk'
                                                     data_item[field_item.value].length ? (
-                                                    String(data_item[field_item.value][0].value).length > 35 ? (data_item[field_item.value][0].value.slice(0, 35) + '...') : data_item[field_item.value][0].value
+                                                        String(checkLanguage(data_item[field_item.value], auth.language)).length > 35 ? (checkLanguage(data_item[field_item.value], auth.language)?.slice(0, 35) + '...') : checkLanguage(data_item[field_item.value], auth.language)
                                                     ): ''
                                                     ) : (
                                                     data_item[field_item.value].length ? (

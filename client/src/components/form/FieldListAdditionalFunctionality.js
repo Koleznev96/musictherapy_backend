@@ -14,7 +14,7 @@ import {listField, optionLanguages} from "../../constants/OptionsTable";
 import {checkLanguageConst} from "../../hooks/translashion";
 
 
-export const FieldListAdditionalFunctionality = ({labelFunc, placeholder, label, name, change, value, url_get_data, additional_functionality, title_add, id_data, add_data, translations}) => {
+export const FieldListAdditionalFunctionality = ({labelFunc, placeholder, label, name, change, value, url_get_data, additional_functionality, title_add, id_data, add_data, translations, wigth_panel}) => {
     const auth = useContext(AuthContext);
     const [list_value, setList_value] = useState([]);
     const [popapStatus, setPopapStatus] = useState(null);
@@ -140,8 +140,11 @@ export const FieldListAdditionalFunctionality = ({labelFunc, placeholder, label,
         <>
             {popapStatus ? (
                 <div className={s.blur__} onClick={() => setPopapStatus(null)}>
-                    <div className={s.root___} onClick={(e) => folHandler(e)}>
+                    <div className={s.root___l} onClick={(e) => folHandler(e)}>
                         <div className={s.root_popup_}>
+                            <div
+                                style={{width: wigth_panel ? wigth_panel : 400}}
+                            >
                             <div className={s.popup_header}>
                                 <div className={GlobalStyle.BellotaFontRegular + ' ' + s.popup_label}>
 
@@ -166,7 +169,7 @@ export const FieldListAdditionalFunctionality = ({labelFunc, placeholder, label,
                                 <div className={s.items}>
                                     {
                                         additional_functionality?.map((item, index) => {
-                                            return listField({translations, item: item, change: changeRoot, value: newData, optionLanguages: optionLanguages})
+                                            return listField({lang: auth.language, translations, item: item, change: changeRoot, value: newData, optionLanguages: optionLanguages})
                                         })
                                     }
                                 </div>
@@ -199,6 +202,7 @@ export const FieldListAdditionalFunctionality = ({labelFunc, placeholder, label,
                                     </div>
                                 </div>
                                 {/*</div>*/}
+                            </div>
                             </div>
                         </div>
                     </div>

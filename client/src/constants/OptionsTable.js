@@ -23,30 +23,30 @@ import {FieldDropDownList} from "../components/form/FielsDropDownList";
 import {FieldStatistics} from "../components/form/FieldStatistics";
 import {EmptyProps} from "../components/form/EmptyProps";
 
-export const listField = ({item, change, value, optionLanguages, st, id_data, translations}) => {
+export const listField = ({item, change, value, optionLanguages, st, id_data, translations, lang}) => {
     // console.log('pppp--------------------------', {item, change, value, optionLanguages, st})
-    if (item.type === 'input') return <FieldInput translations={translations} label={item.label} name={item.value} change={change} value={value[item.value]} />;
-    if (item.type === 'bool') return <FieldBool translations={translations} st={st} label={item.label} name={item.value} change={change} value={value[item.value]} list_value={item.list_value} />;
-    if (item.type === 'box') return <FieldBox translations={translations} st={st} label={item.label} name={item.value} change={change} value={value[item.value]} list_value={item.list_value} />;
-    if (item.type === 'date') return <FieldDate translations={translations} label={item.label} name={item.value} change={change} value={value[item.value]} />;
-    if (item.type === 'date_full') return <FieldDateFull translations={translations} label={item.label} name={item.value} change={change} value={value[item.value]} isNowDate={item.isNowDate} />;
-    if (item.type === 'img') return <FieldFile translations={translations} label={item.label} name={item.value} change={change} value={value[item.value]} />;
-    if (item.type === 'video') return <FieldVideo translations={translations} label={item.label} name={item.value} change={change} value={value[item.value]} />;
-    if (item.type === 'inputarrea') return <FieldText translations={translations} label={item.label} name={item.value} change={change} value={value[item.value]} />;
-    if (item.type === 'inputarrea_translation') return <FieldTextTranslation translations={translations} label={item.label} name={item.value} change={change} value={value[item.value]} languages={optionLanguages} />;
-    if (item.type === 'img_translation') return <FieldFileTranslation translations={translations} label={item.label} name={item.value} change={change} value={value[item.value]} languages={optionLanguages} />;
-    if (item.type === 'input_translation') return <FieldInputTranslation translations={translations} label={item.label} name={item.value} change={change} value={value[item.value]} languages={optionLanguages} />;
-    if (item.type === 'double_fields') return <FieldDoubleFields translations={translations} fields={item.fields} change={change} value={value} />;
-    if (item.type === 'temporary_access_data') return <FieldTemporaryAccessData translations={translations} label={item.label} name={item.value} change={change} value={value[item.value]} url_get_data={item.url_get_data} />;
-    if (item.type === 'list_menu') return <FieldListMenu translations={translations} id_data={id_data} labels={item.labels} list_menu_fields={item.list_menu_fields} change={change} value={value} />;
-    if (item.type === 'list_additional_functionality') return <FieldListAdditionalFunctionality translations={translations} labelFunc={item.labelFunc} placeholder={item.placeholder} add_data={item.add_data} id_data={id_data} label={item.label} name={item.value} change={change} value={value[item.value]} url_get_data={item.url_get_data} additional_functionality={item.additional_functionality} title_add={item.title_add}/>;
-    if (item.type === 'input_edit_translation') return <FieldInputEditTranslation translations={translations} translation={item.translation} label={item.label} name={item.value} change={change} value={value[item.value]} languages={optionLanguages} />;
-    if (item.type === 'list_interval_ball_text_translation') return <FieldIntervalBallTextTranslation translations={translations} labels={item.labels} name={item.value} change={change} value={value[item.value]} languages={optionLanguages} add_data={item.add_data} title_add={item.title_add}/>;
-    if (item.type === 'list_answer_ball') return <FieldListAnswerBall translations={translations} name={item.value} change={change} value={value[item.value]} languages={optionLanguages} add_data={item.add_data} title_add={item.title_add}/>;
-    if (item.type === 'file_open') return <FieldFileOpen translations={translations} label={item.label} name={item.value} change={change} value={value[item.value]} />;
-    if (item.type === 'drop_down_list') return <FieldDropDownList translations={translations} label={item.label} name={item.value} change={change} value={value[item.value]} url_get_data={item.url_get_data} valueIn={item.valueIn} labelIn={item.labelIn} />;
-    if (item.type === 'statistics') return <FieldStatistics translations={translations} id_data={id_data} label={item.label} url_get_data={item.url_get_data}/>;
-    if (item.type === 'empty_props') return <EmptyProps translations={translations} name={item.value} change={change} value={value[item.value]} additional_functionality={item.additional_functionality} id_data={id_data} st={st} />
+    if (item.type === 'input') return <FieldInput lang={lang} translations={translations} label={item.label} name={item.value} change={change} value={value[item.value]} />;
+    if (item.type === 'bool') return <FieldBool lang={lang} translations={translations} st={st} label={item.label} name={item.value} change={change} value={value[item.value]} list_value={item.list_value} />;
+    if (item.type === 'box') return <FieldBox lang={lang} translations={translations} st={st} label={item.label} name={item.value} change={change} value={value[item.value]} list_value={item.list_value} />;
+    if (item.type === 'date') return <FieldDate lang={lang} translations={translations} label={item.label} name={item.value} change={change} value={value[item.value]} />;
+    if (item.type === 'date_full') return <FieldDateFull lang={lang} translations={translations} label={item.label} name={item.value} change={change} value={value[item.value]} isNowDate={item.isNowDate} />;
+    if (item.type === 'img') return <FieldFile lang={lang} translations={translations} label={item.label} name={item.value} change={change} value={value[item.value]} />;
+    if (item.type === 'video') return <FieldVideo lang={lang} translations={translations} label={item.label} name={item.value} change={change} value={value[item.value]} />;
+    if (item.type === 'inputarrea') return <FieldText lang={lang} translations={translations} label={item.label} name={item.value} change={change} value={value[item.value]} />;
+    if (item.type === 'inputarrea_translation') return <FieldTextTranslation lang={lang} translations={translations} label={item.label} name={item.value} change={change} value={value[item.value]} languages={optionLanguages} />;
+    if (item.type === 'img_translation') return <FieldFileTranslation lang={lang} translations={translations} label={item.label} name={item.value} change={change} value={value[item.value]} languages={optionLanguages} />;
+    if (item.type === 'input_translation') return <FieldInputTranslation lang={lang} translations={translations} label={item.label} name={item.value} change={change} value={value[item.value]} languages={optionLanguages} />;
+    if (item.type === 'double_fields') return <FieldDoubleFields lang={lang} translations={translations} fields={item.fields} change={change} value={value} />;
+    if (item.type === 'temporary_access_data') return <FieldTemporaryAccessData lang={lang} translations={translations} label={item.label} name={item.value} change={change} value={value[item.value]} url_get_data={item.url_get_data} />;
+    if (item.type === 'list_menu') return <FieldListMenu lang={lang} translations={translations} id_data={id_data} labels={item.labels} list_menu_fields={item.list_menu_fields} change={change} value={value} />;
+    if (item.type === 'list_additional_functionality') return <FieldListAdditionalFunctionality lang={lang} wigth_panel={item.wigth_panel} translations={translations} labelFunc={item.labelFunc} placeholder={item.placeholder} add_data={item.add_data} id_data={id_data} label={item.label} name={item.value} change={change} value={value[item.value]} url_get_data={item.url_get_data} additional_functionality={item.additional_functionality} title_add={item.title_add}/>;
+    if (item.type === 'input_edit_translation') return <FieldInputEditTranslation lang={lang} translations={translations} translation={item.translation} label={item.label} name={item.value} change={change} value={value[item.value]} languages={optionLanguages} />;
+    if (item.type === 'list_interval_ball_text_translation') return <FieldIntervalBallTextTranslation lang={lang} translations={translations} labels={item.labels} name={item.value} change={change} value={value[item.value]} languages={optionLanguages} add_data={item.add_data} title_add={item.title_add}/>;
+    if (item.type === 'list_answer_ball') return <FieldListAnswerBall lang={lang} translations={translations} name={item.value} change={change} value={value[item.value]} languages={optionLanguages} add_data={item.add_data} title_add={item.title_add}/>;
+    if (item.type === 'file_open') return <FieldFileOpen lang={lang} translations={translations} label={item.label} name={item.value} change={change} value={value[item.value]} />;
+    if (item.type === 'drop_down_list') return <FieldDropDownList lang={lang} translations={translations} label={item.label} name={item.value} change={change} value={value[item.value]} url_get_data={item.url_get_data} valueIn={item.valueIn} labelIn={item.labelIn} />;
+    if (item.type === 'statistics') return <FieldStatistics lang={lang} translations={translations} id_data={id_data} label={item.label} url_get_data={item.url_get_data}/>;
+    if (item.type === 'empty_props') return <EmptyProps lang={lang} translations={translations} name={item.value} change={change} value={value[item.value]} additional_functionality={item.additional_functionality} id_data={id_data} st={st} />
     return null;
 }
 
@@ -166,7 +166,7 @@ export const optionUserFin = {
     fields: [
         {
             type: "list_menu",
-            labels: ["Информация", "Анкета", "Пароль", "Настройки", "Статистика", "Заметки"],
+            labels: ["Информация", "Анкета", "Статистика", "Заметки"],
             list_menu_fields: [
                 // Информация
                 [
@@ -337,6 +337,233 @@ export const optionUserFin = {
                         placeholder: 'note_writer_name',
                         value: 'notes',
                         type: "list_additional_functionality",
+                        wigth_panel: 850,
+                        filter: false,
+                        default: [],
+                        title_add: "добавить заметки",
+                        url_get_data: "/get_notes/",
+                        add_data: {
+                            date: "",
+                            label: "",
+                            text: "",
+                        },
+                        additional_functionality: [
+                            {
+                                label: 'Дата',
+                                value: 'date',
+                                type: "date_full",
+                                default: '',
+                                isNowDate: true,
+                            },
+                            {
+                                label: 'Тема',
+                                value: 'label',
+                                type: "input",
+                                default: '',
+                            },
+                            {
+                                translation: false,
+                                label: 'Детали',
+                                value: 'text',
+                                type: "input_edit_translation",
+                                filter: true,
+                                default: '',
+                            },
+                        ]
+                    }
+                ],
+            ],
+        },
+    ],
+}
+
+export const optionCreateUserFin = {
+    delete_url: '/delete_user',
+    url: '/create_user',
+
+    fields: [
+        {
+            type: "list_menu",
+            labels: ["Информация", "Анкета", "Пароль", "Заметки"],
+            list_menu_fields: [
+                // Информация
+                [
+                    {
+                        label: 'Фамилия',
+                        value: 'fullName',
+                        type: "input",
+                        filter: true,
+                        default: '',
+                    },
+                    {
+                        label: 'Имя',
+                        value: 'name',
+                        type: "input",
+                        filter: true,
+                        default: '',
+                    },
+                    {
+                        label: 'Телефон',
+                        value: 'telephone',
+                        type: "input",
+                        filter: false,
+                        default: '',
+                    },
+                    {
+                        label: 'E-mail',
+                        value: 'email',
+                        type: "input",
+                        filter: false,
+                        default: '',
+                    },
+                    {
+                        label: 'Дата регистрации',
+                        value: 'registration_date',
+                        type: "date",
+                        filter: true,
+                        default: '',
+                    },
+                    {
+                        label: 'Дата последнего входа',
+                        value: 'date_last_activity',
+                        type: "date",
+                        filter: true,
+                        default: '',
+                    },
+                    {
+                        label: 'Статус',
+                        value: 'status',
+                        type: "status",
+                        filter: false,
+                        default: '',
+                    },
+                ],
+                // Анкета
+                [
+                    {
+                        value: 'questionnaire',
+                        type: "empty_props",
+                        default: {},
+                        additional_functionality: [
+                    {
+                        label: 'Дата рождения',
+                        value: 'date_birth',
+                        type: "date_full",
+                        default: '',
+                    },
+                    {
+                        label: 'Пол',
+                        value: 'gender',
+                        type: "bool",
+                        default: '',
+                        list_value: [{label: 'Мужской', value: 'Мужской'}, {
+                            label: 'Женский',
+                            value: 'Женский'
+                        }, {label: 'Не указано', value: 'Не указано'}],
+                    },
+                    {
+                        label: 'Страна рождения',
+                        value: 'country_birth',
+                        type: "input",
+                        default: '',
+                    },
+                    {
+                        label: 'Страна проживания',
+                        value: 'country_residence',
+                        type: "input",
+                        default: '',
+                    },
+                    {
+                        label: 'Город проживания',
+                        value: 'city_residence',
+                        type: "input",
+                        default: '',
+                    },
+                    {
+                        label: 'Какую музыку любите слушать?',
+                        value: 'music',
+                        type: "box",
+                        default: '',
+                        list_value: [{label: 'Классика', value: 'Классика'}, {
+                            label: 'Рок',
+                            value: 'Рок'
+                        }, {label: 'Поп', value: 'Поп'},
+                            {label: 'Джаз', value: 'Джаз'}, {label: 'Рэп', value: 'Рэп'}, {
+                                label: 'Фольк',
+                                value: 'Фольк'
+                            },
+                            {label: 'Иное', value: 'Иное'}],
+                    },
+                    {
+                        label: 'Кто вы по натуре?',
+                        value: 'nature',
+                        type: "bool",
+                        default: '',
+                        list_value: [{label: 'Интраверт', value: 'Интраверт'}, {
+                            label: 'Экстраверт',
+                            value: 'Экстраверт'
+                        }, {label: 'Не знаю', value: 'Не знаю'}],
+                    },
+                    {
+                        label: 'Ваш уровень знакомства с классикой',
+                        value: 'level',
+                        type: "bool",
+                        default: '',
+                        list_value: [{
+                            label: 'Не слушаю и не понимаю, или слушаю редко и мало',
+                            value: '0'
+                        }, {label: 'Люблю популярную классику', value: '1'}
+                            , {
+                                label: 'Слушаю разную музыку разных эпох, разбираюсь в них',
+                                value: '2'
+                            }, {label: 'Имею академическое музыкальное образование', value: '3'}
+                            , {
+                                label: 'Хорошо разбираюсь в классической музыке, люблю слушать сложную музыку',
+                                value: '4'
+                            }],
+                    },
+                    {
+                        label: 'Насколько активная у вас жизнь?',
+                        value: 'active_life',
+                        type: "bool",
+                        default: '',
+                        list_value: [{label: 'Очень активная', value: 'Очень активная'}, {
+                            label: 'Активная',
+                            value: 'Активная'
+                        }, {label: 'Средняя', value: 'Средняя'},
+                            {label: 'Пассивная', value: 'Пассивная'}, {
+                                label: 'Очень пассивная',
+                                value: 'Очень пассивная'
+                            }],
+                    },
+                        ],
+                    }
+                ],
+                // Пароль
+                [
+                    // {
+                    //     value: 'questionnaire',
+                    //     type: "empty_props",
+                    //     default: {},
+                    //     additional_functionality: [
+                    {
+                        label: 'Пароль',
+                        value: 'password',
+                        type: "input",
+                        default: '',
+                    },
+                    //     ],
+                    // }
+                ],
+                // Заметки
+                [
+                    {
+                        label: undefined,
+                        labelFunc: (data) => `${dateToString(data.date)} ${data.label}`,
+                        placeholder: 'note_writer_name',
+                        value: 'notes',
+                        type: "list_additional_functionality",
+                        wigth_panel: 850,
                         filter: false,
                         default: [],
                         title_add: "добавить заметки",
@@ -566,7 +793,7 @@ export const optionUser = {
                                 value: 'language',
                                 type: "bool",
                                 default: '',
-                                list_value: [{label: 'ру', value: 'ru'}, {label: 'eng', value: 'com'}],
+                                list_value: [{label: 'Русский', value: 'ru'}, {label: 'Английский', value: 'com'}],
                             },
                             {
                                 label: 'Роль пользователя',
@@ -623,6 +850,294 @@ export const optionUser = {
                         placeholder: 'note_writer_name',
                         value: 'notes',
                         type: "list_additional_functionality",
+                        wigth_panel: 850,
+                        filter: false,
+                        default: [],
+                        title_add: "добавить заметки",
+                        url_get_data: "/get_notes/",
+                        add_data: {
+                            date: "",
+                            label: "",
+                            text: "",
+                        },
+                        additional_functionality: [
+                            {
+                                label: 'Дата',
+                                value: 'date',
+                                type: "date_full",
+                                default: '',
+                                isNowDate: true,
+                            },
+                            {
+                                label: 'Тема',
+                                value: 'label',
+                                type: "input",
+                                default: '',
+                            },
+                            {
+                                translation: false,
+                                label: 'Детали',
+                                value: 'text',
+                                type: "input_edit_translation",
+                                filter: true,
+                                default: '',
+                            },
+                        ]
+                    }
+                ],
+            ],
+        },
+    ],
+}
+
+export const optionCreateUser = {
+    delete_url: '/delete_user',
+    url: '/create_user',
+
+    fields: [
+        {
+            type: "list_menu",
+            labels: ["Информация", "Анкета", "Пароль", "Настройки", "Статистика", "Заметки"],
+            list_menu_fields: [
+                // Информация
+                [
+                    {
+                        label: 'Фамилия',
+                        value: 'fullName',
+                        type: "input",
+                        filter: true,
+                        default: '',
+                    },
+                    {
+                        label: 'Имя',
+                        value: 'name',
+                        type: "input",
+                        filter: true,
+                        default: '',
+                    },
+                    {
+                        label: 'Телефон',
+                        value: 'telephone',
+                        type: "input",
+                        filter: false,
+                        default: '',
+                    },
+                    {
+                        label: 'E-mail',
+                        value: 'email',
+                        type: "input",
+                        filter: false,
+                        default: '',
+                    },
+                    {
+                        label: 'Дата регистрации',
+                        value: 'registration_date',
+                        type: "date",
+                        filter: true,
+                        default: '',
+                    },
+                    {
+                        label: 'Дата последнего входа',
+                        value: 'date_last_activity',
+                        type: "date",
+                        filter: true,
+                        default: '',
+                    },
+                    {
+                        label: 'Статус',
+                        value: 'status',
+                        type: "status",
+                        filter: false,
+                        default: '',
+                    },
+                ],
+                // Анкета
+                [
+                    {
+                        value: 'questionnaire',
+                        type: "empty_props",
+                        default: {},
+                        additional_functionality: [
+                    {
+                        label: 'Дата рождения',
+                        value: 'date_birth',
+                        type: "date_full",
+                        default: '',
+                    },
+                    {
+                        label: 'Пол',
+                        value: 'gender',
+                        type: "bool",
+                        default: '',
+                        list_value: [{label: 'Мужской', value: 'Мужской'}, {
+                            label: 'Женский',
+                            value: 'Женский'
+                        }, {label: 'Не указано', value: 'Не указано'}],
+                    },
+                    {
+                        label: 'Страна рождения',
+                        value: 'country_birth',
+                        type: "input",
+                        default: '',
+                    },
+                    {
+                        label: 'Страна проживания',
+                        value: 'country_residence',
+                        type: "input",
+                        default: '',
+                    },
+                    {
+                        label: 'Город проживания',
+                        value: 'city_residence',
+                        type: "input",
+                        default: '',
+                    },
+                    {
+                        label: 'Какую музыку любите слушать?',
+                        value: 'music',
+                        type: "box",
+                        default: '',
+                        list_value: [{label: 'Классика', value: 'Классика'}, {
+                            label: 'Рок',
+                            value: 'Рок'
+                        }, {label: 'Поп', value: 'Поп'},
+                            {label: 'Джаз', value: 'Джаз'}, {label: 'Рэп', value: 'Рэп'}, {
+                                label: 'Фольк',
+                                value: 'Фольк'
+                            },
+                            {label: 'Иное', value: 'Иное'}],
+                    },
+                    {
+                        label: 'Кто вы по натуре?',
+                        value: 'nature',
+                        type: "bool",
+                        default: '',
+                        list_value: [{label: 'Интраверт', value: 'Интраверт'}, {
+                            label: 'Экстраверт',
+                            value: 'Экстраверт'
+                        }, {label: 'Не знаю', value: 'Не знаю'}],
+                    },
+                    {
+                        label: 'Ваш уровень знакомства с классикой',
+                        value: 'level',
+                        type: "bool",
+                        default: '',
+                        list_value: [{
+                            label: 'Не слушаю и не понимаю, или слушаю редко и мало',
+                            value: '0'
+                        }, {label: 'Люблю популярную классику', value: '1'}
+                            , {
+                                label: 'Слушаю разную музыку разных эпох, разбираюсь в них',
+                                value: '2'
+                            }, {label: 'Имею академическое музыкальное образование', value: '3'}
+                            , {
+                                label: 'Хорошо разбираюсь в классической музыке, люблю слушать сложную музыку',
+                                value: '4'
+                            }],
+                    },
+                    {
+                        label: 'Насколько активная у вас жизнь?',
+                        value: 'active_life',
+                        type: "bool",
+                        default: '',
+                        list_value: [{label: 'Очень активная', value: 'Очень активная'}, {
+                            label: 'Активная',
+                            value: 'Активная'
+                        }, {label: 'Средняя', value: 'Средняя'},
+                            {label: 'Пассивная', value: 'Пассивная'}, {
+                                label: 'Очень пассивная',
+                                value: 'Очень пассивная'
+                            }],
+                    },
+                        ],
+                    }
+                ],
+                // Пароль
+                [
+                    // {
+                    //     value: 'questionnaire',
+                    //     type: "empty_props",
+                    //     default: {},
+                    //     additional_functionality: [
+                    {
+                        label: 'Пароль',
+                        value: 'password',
+                        type: "input",
+                        default: '',
+                    },
+                    //     ],
+                    // }
+                ],
+                // Настройки
+                [
+                    // {
+                    //     value: 'questionnaire',
+                    //     type: "empty_props",
+                    //     default: {},
+                    //     additional_functionality: [
+                    {
+                        label: 'Язык',
+                        value: 'language',
+                        type: "bool",
+                        default: '',
+                        list_value: [{label: 'Русский', value: 'ru'}, {label: 'Английский', value: 'com'}],
+                    },
+                    {
+                        label: 'Роль пользователя',
+                        value: 'type_admin',
+                        type: "bool",
+                        default: '',
+                        list_value: [{label: 'Администратор', value: 'Администратор'}, {
+                            label: 'Клиент',
+                            value: 'Клиент'
+                        }, {label: 'Музыкотерапевт', value: 'Музыкотерапевт'}],
+                    },
+                    {
+                        label: 'Уровень пользователя',
+                        value: 'access',
+                        type: "bool",
+                        default: '',
+                        list_value: [{label: 'Гость', value: 'Гость'}, {
+                            label: 'Премиум',
+                            value: 'Премиум'
+                        }, {label: 'VIP', value: 'VIP'}],
+                    },
+                    {
+                        label: 'Доступные онлайн курсы',
+                        value: 'available_courses',
+                        type: "temporary_access_data",
+                        url_get_data: "/courses_mini_list",
+                        default: [],
+                    },
+                    {
+                        label: 'Назначенный музыкотерапевт',
+                        value: 'musicTherapy',
+                        valueIn: 'id',
+                        labelIn: 'name',
+                        type: "drop_down_list",
+                        url_get_data: "/get_musictherapys",
+                        default: null,
+                    },
+                    //     ],
+                    // }
+                ],
+                // Статистика
+                [
+                    {
+                        label: '',
+                        type: "statistics",
+                        url_get_data: "/get_statistics_test/",
+                    },
+                ],
+                // Заметки
+                [
+                    {
+                        label: undefined,
+                        labelFunc: (data) => `${dateToString(data.date)} ${data.label}`,
+                        placeholder: 'note_writer_name',
+                        value: 'notes',
+                        type: "list_additional_functionality",
+                        wigth_panel: 850,
                         filter: false,
                         default: [],
                         title_add: "добавить заметки",
@@ -859,6 +1374,7 @@ export const optionCreateCourses = {
                         label: '№',
                         value: 'lessons',
                         type: "list_additional_functionality",
+                        wigth_panel: 850,
                         filter: false,
                         default: [],
                         title_add: "добавить урок",
@@ -987,6 +1503,7 @@ export const optionCreateTests = {
                         label: '№',
                         value: 'questions',
                         type: "list_additional_functionality",
+                        wigth_panel: 850,
                         filter: false,
                         default: [],
                         title_add: "добавить вопрос",
@@ -1043,7 +1560,7 @@ export const optionCreateTests = {
                     {
                         translation: true,
                         label: '',
-                        labels: ['Баллы от... до...', 'Объяснение'],
+                        labels: ['Баллы от... до...', 'Объяснение', 'Цвет в шестнадцатеричном значении (#RRGGBB)'],
                         value: 'result',
                         title_add: "добавить вариант результата",
                         type: "list_interval_ball_text_translation",
@@ -1052,6 +1569,7 @@ export const optionCreateTests = {
                             start_balls: "",
                             end_balls: "",
                             description: [{language: 'ru', value: ''}, {language: 'com', value: ''}],
+                            color: "",
                         },
                         default: [],
                     },
@@ -1130,6 +1648,7 @@ export const optionEditCourses = {
                         label: '№',
                         value: 'lessons',
                         type: "list_additional_functionality",
+                        wigth_panel: 850,
                         filter: false,
                         default: [],
                         title_add: "добавить урок",
@@ -1258,6 +1777,7 @@ export const optionEditTests = {
                         label: '№',
                         value: 'questions',
                         type: "list_additional_functionality",
+                        wigth_panel: 850,
                         filter: false,
                         default: [],
                         title_add: "добавить вопрос",

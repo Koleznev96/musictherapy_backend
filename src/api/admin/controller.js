@@ -192,27 +192,42 @@ module.exports.create_user = async function(req, res) {
 
         let candidate = await User.findOne({_id: check.id});
 
+        let new_data_user = {};
+        for (let key of Object.keys(req.body.data)) {
+            if (req.body.data[key] && req.body.data[key].length) {
+                new_data_user[key] = req.body.data[key];
+            }
+        }
+
         let new_data = new User({
+            isNoCheck: false,
+            is_admin: false,
+            type_admin: 'Клиент',
+            access: "Гость",
             password: req.body.password,
-            ...req.body.settings,
-            ...req.body.data,
+            ...new_data_user,
+            status: false,
         });
 
-        // Object.entries(req.body.data).forEach(item => {
-        //     new_data[item[0]] = item[1]
-        // });
-        //
-        // if (req.body.password) new_data.password = req.body.password;
-        // if (req.body.settings) {
-        //     Object.entries(req.body.settings).forEach(item => {
-        //         new_data[item[0]] = item[1]
-        //     });
-        // }
         await new_data.save();
-        if (req.body.questionnaire) {
+
+        if (req.body.data.notes !== undefined) {
+            let new_notes = null;
+            for(let i = 0; i < req.body.data.notes.length; i++) {
+                new_notes = new Notes({
+                    ...req.body.data.notes[i],
+                    id_user: new_data._id,
+                    note_writer_name: candidate.fullName + ' ' + candidate.name,
+                });
+                await new_notes.save();
+            }
+        }
+
+
+        if (req.body.data?.questionnaire) {
             const questionnaire = new Questionnaire({
                 id_user: new_data._id.toString(),
-                ...req.body.questionnaire,
+                ...req.body.data.questionnaire,
                 status: false,
             });
             await questionnaire.save();
@@ -871,6 +886,45 @@ module.exports.users_sort = async function(req, res) {
     }
 }
 
+module.exports.get_list_user_fin = async function(req, res) {
+    try {
+        const check = await checkAdmin.check(req, res);
+        if (!check.id) {
+            return res.status(401).json('Unauthorized');
+        }
+
+        const page = (Number(req.params.page)) * limitPageDataVeb;
+        // let initFilter = {'musicTherapy.id': check.id};
+        // const filter = req.params.full_name ? (req.params.full_name !== "null" ? {fullName: req.params.full_name} : {}): {};
+        let filter = req.params.full_name ? (req.params.full_name !== "null" ? {fullName: {$regex: req.params.full_name}} : {}): {};
+        filter['musicTherapy.id'] = check.id;
+
+        if (req.params.is_admin && req.params.is_admin !== "null") filter.type_admin = req.params.is_admin;
+        if (req.params.access && req.params.access !== "null") filter.access = req.params.access;
+        if (req.params.language && req.params.language !== "null") filter.language = req.params.language;
+
+        // let data = await User.find(filter, null, { skip: page, limit: limitPageDataVeb });
+        let data = await User.find(filter);
+        const count_page = Math.ceil((await User.find(filter).count()) / limitPageDataVeb) - 1;
+        const count_data = await User.find().count();
+
+        for (let i = 0; i < data.length; i++) {
+            data[i].questionnaire = await Questionnaire.findOne({id_user: data[i]._id.toString()});
+            data[i].counter_video = await LogData.find({id_user: data[i]._id.toString(), type: "video"}).count();
+            data[i].counter_audio = await LogData.find({id_user: data[i]._id.toString(), type: "audio"}).count();
+        }
+
+        res.status(201).json({data, page: Number(req.params.page), count_page, end_page: count_page <= page, count_data});
+
+        let candidate = await User.findOne({_id: check.id});
+        candidate.date_last_activity = new Date();
+        await candidate.save();
+    } catch(e) {
+        errorHandler(res, e);
+        // throw e;
+    }
+}
+
 module.exports.get_list_user = async function(req, res) {
     try {
         const check = await checkAdmin.check(req, res);
@@ -882,7 +936,7 @@ module.exports.get_list_user = async function(req, res) {
         // const filter = req.params.full_name ? (req.params.full_name !== "null" ? {fullName: req.params.full_name} : {}): {};
         let filter = req.params.full_name ? (req.params.full_name !== "null" ? {fullName: {$regex: req.params.full_name}} : {}): {};
 
-        if (req.params.is_admin && req.params.is_admin !== "null") filter.is_admin = req.params.is_admin === "true";
+        if (req.params.is_admin && req.params.is_admin !== "null") filter.type_admin = req.params.is_admin;
         if (req.params.access && req.params.access !== "null") filter.access = req.params.access;
         if (req.params.language && req.params.language !== "null") filter.language = req.params.language;
 

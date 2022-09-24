@@ -14,10 +14,10 @@ export const FieldBox = ({label, name, change, value, list_value, st, translatio
 
     const boxHandler = (data) => {
         let arr_1 = value;
-        if (arr_1.indexOf(data) !== -1) {
+        if (arr_1 && arr_1.indexOf(data) !== -1) {
             arr_1.splice(arr_1.indexOf(data), 1);
         } else {
-            arr_1 = [...arr_1, data];
+            arr_1 = arr_1 ? [...arr_1, data] : [data];
             arr_1 = [...new Set(arr_1)];
         }
         change({name, value: arr_1});

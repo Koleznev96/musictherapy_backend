@@ -4,9 +4,9 @@ import React, {useEffect, useState} from "react";
 import {GlobalSvgSelector} from "../../assets/icons/global/GlobalSvgSelector";
 import {checkLanguageConst} from "../../hooks/translashion";
 
-export const FieldInputTranslation = ({label, name, change, value, languages, translations}) => {
+export const FieldInputTranslation = ({label, name, change, value, languages, translations, lang}) => {
     const [boxField, setBoxField] = useState([{language: 'ru', value: ''}, {language: 'com', value: ''}]);
-    const [itemMenu, setItemMenu] = useState(0);
+    const [itemMenu, setItemMenu] = useState(lang === 'ru' ? 0 : 1);
     // const [status, setStatus] = useState(false);
 
     useEffect(() => {
