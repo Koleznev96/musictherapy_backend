@@ -5,5 +5,6 @@ export const checkLanguage = (field, language) => {
 }
 
 export const checkLanguageConst = (value, translations) => {
+    if (!value) return '';
     return (translations && translations[value]) ? translations[value] : value;
 }

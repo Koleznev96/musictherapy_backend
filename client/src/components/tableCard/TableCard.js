@@ -135,9 +135,9 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
 
     const langsStringTo = (strings) => {
         let new_string = [];
-        for(let i = 0; i < strings.length; i++) {
-            new_string.push(checkLanguageConst(strings[i], auth.translations));
-        }
+        // for(let i = 0; i < strings.length; i++) {
+        //     new_string.push(checkLanguageConst(strings[i], auth.translations));
+        // }
         return new_string.join(', ');
     }
 
