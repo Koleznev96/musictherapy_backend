@@ -74,7 +74,7 @@ export const UsersFin = () => {
                 data={null}
                 option={optionCreateUserFin}
                 reload={getData}
-                optionEdit={optionCreateUserFin}
+                optionEdit={optionUserFin}
             />
         );
     }

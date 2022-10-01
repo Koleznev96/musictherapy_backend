@@ -49,16 +49,11 @@ export const Auth = () => {
             password: '',
         });
 
-        console.log('1111111')
-
         try {
             const data = await request(`/api/admin_panel/login`, 'POST', {email, password});
-            console.log('22222-', data)
             if (data.errors) {
-                console.log('333333-errors-', data.errors)
                 setErrorField({...errorField, [data.errors[0][0]]: data.errors[0][1]});
             } else {
-                console.log('444444-', data.token, email, data.type_admin, data.name)
                 auth.login(data.token, email, data.type_admin, data.name);
             }
         } catch (e) {}

@@ -60,7 +60,6 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
         else {
             // отредачить, непонятно почему так
             new_data.sort((prev, next) => {
-                // console.log('prev-', prev[item.value])
                 if (next[item.value] === undefined || next[item.value] === null) return statusFilter ? 1 : -1;
                 if (prev[item.value] === undefined || prev[item.value] === null) return statusFilter ? -1 : 1;
                 if ( prev[item.value] < next[item.value] ) return -1;
@@ -86,8 +85,8 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
     const StringLang = (data) => {
         let answer = '';
         data?.forEach((item, index) => {
-            if (item === 'ru') answer += 'рус';
-            else answer += 'анг';
+            if (item === 'ru') answer += checkLanguageConst('рус', auth.translations);
+            else answer += checkLanguageConst('анг', auth.translations);
             answer +=  data?.length - 1 > index ? ', ' : '';
         });
         return answer;
@@ -116,9 +115,6 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
                 Authorization: auth.token
             });
         } catch (e){
-            console.log('ERROR \n' +
-                'url: /api/admin_panel/reordering \n' +
-                'message: ', e);
 
             // меняем поля number
             temp = new_data[index].number;
@@ -136,7 +132,6 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
     const langsStringTo = (strings) => {
         let new_string = [];
         for(let i = 0; i < strings.length; i++) {
-            console.log('naaaa-', strings[i], checkLanguageConst(strings[i], auth.translations))
             new_string.push(checkLanguageConst(strings[i], auth.translations));
         }
         return new_string.join(', ');

@@ -91,7 +91,7 @@ export const Users = () => {
                 data={null}
                 option={optionCreateUser}
                 reload={getData}
-                optionEdit={optionCreateUser}
+                optionEdit={optionUser}
             />
         );
     }

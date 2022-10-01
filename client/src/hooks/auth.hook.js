@@ -20,25 +20,20 @@ export const useAuth = () => {
   }, []);
 
   const login = useCallback((jwtToken, email, type_admin, name) => {
-    console.log('55555-', jwtToken, email, type_admin, name)
     setToken(jwtToken);
     setEmail(email);
     set_type_admin(type_admin);
     set_name(name);
-    console.log('666666666')
 
     localStorage.setItem(storageName, JSON.stringify({
       token: jwtToken
     }));
-    console.log('7777777')
     localStorage.setItem('email', JSON.stringify(email));
     localStorage.setItem('type_admin', JSON.stringify(type_admin));
     localStorage.setItem('name', JSON.stringify(name));
-    console.log('888888')
   }, []);
 
   const logout = useCallback(()=> {
-    console.log('logout!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
     setToken(null);
     setEmail(null);
     set_type_admin(null);
@@ -47,13 +42,10 @@ export const useAuth = () => {
   }, []);
 
   const getTranslations = async (language_) => {
-    console.log('trans-111111-', language_);
     try {
-      console.log('trans-22222-token-', token);
       const data = await request(`/api/admin_panel/translation/${language_}`, 'GET', null, {
         Authorization: `${token}`
       });
-      console.log('trans-333333-', data);
       setTranslations(data);
     } catch (e) {}
   }
