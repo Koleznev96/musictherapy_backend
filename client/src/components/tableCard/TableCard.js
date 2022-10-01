@@ -133,8 +133,12 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
         }
     }
 
-    const staringTrans = (strings) => {
-
+    const langsStringTo = (strings) => {
+        let new_string = [];
+        for(let i = 0; i < strings.length; i++) {
+            new_string.push(checkLanguage(strings[i], auth.language));
+        }
+        return new_string.join(', ');
     }
 
     return (
@@ -263,14 +267,14 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
                                                     checkLanguageConst('Клиент', auth.translations) : ''
                                             ) : (
                                             (field_item.type === 'bool') ? (
-                                            field_item.list_value?.find(element => element.value === data_item[field_item.value])?.label
+                                                checkLanguage(field_item.list_value?.find(element => element.value === data_item[field_item.value])?.label, auth.language)
                                             // data_item[field_item.value] === 'meditation' ? 'Медитация' : (data_item[field_item.value] === 'classic' ? 'Классика HD' : 'Инструменты')
                                         ) : (
                                             field_item.type === 'box' ? (
                                                 field_item.value === 'language' ? (
                                                     StringLang(data_item[field_item.value])
                                             ) :
-                                                data_item[field_item.value].slice(0, data_item[field_item.value].length > 5 ? 5 : data_item[field_item.value].length).join(', ')
+                                                    langsStringTo(data_item[field_item.value].slice(0, data_item[field_item.value].length > 5 ? 5 : data_item[field_item.value].length))
                                             ) :
                                                 (field_item.type === 'date' ? (
                                                 string_date(data_item[field_item.value])

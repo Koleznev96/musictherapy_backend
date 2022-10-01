@@ -751,7 +751,7 @@ module.exports.get_musictherapys = async function(req, res) {
         for (let i = 0; i < musictherapys.length; i++) {
             list_mus.push({
                 id: musictherapys[i]._id,
-                name: musictherapys[i].name + musictherapys[i].fullName,
+                name: musictherapys[i].name + ' ' + musictherapys[i].fullName,
             })
         }
 
