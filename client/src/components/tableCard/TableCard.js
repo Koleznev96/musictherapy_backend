@@ -136,7 +136,7 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
     const langsStringTo = (strings) => {
         let new_string = [];
         for(let i = 0; i < strings.length; i++) {
-            new_string.push(checkLanguage(strings[i], auth.language));
+            new_string.push(checkLanguageConst(strings[i], auth.translations));
         }
         return new_string.join(', ');
     }
@@ -267,7 +267,7 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
                                                     checkLanguageConst('Клиент', auth.translations) : ''
                                             ) : (
                                             (field_item.type === 'bool') ? (
-                                                checkLanguage(field_item.list_value?.find(element => element.value === data_item[field_item.value])?.label, auth.language)
+                                                checkLanguageConst(field_item.list_value?.find(element => element.value === data_item[field_item.value])?.label, auth.translations)
                                             // data_item[field_item.value] === 'meditation' ? 'Медитация' : (data_item[field_item.value] === 'classic' ? 'Классика HD' : 'Инструменты')
                                         ) : (
                                             field_item.type === 'box' ? (
