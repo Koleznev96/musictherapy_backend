@@ -906,7 +906,7 @@ module.exports.get_list_user_fin = async function(req, res) {
         // let data = await User.find(filter, null, { skip: page, limit: limitPageDataVeb });
         let data = await User.find(filter);
         const count_page = Math.ceil((await User.find(filter).count()) / limitPageDataVeb) - 1;
-        const count_data = await User.find().count();
+        const count_data = await User.find(filter).count();
 
         for (let i = 0; i < data.length; i++) {
             data[i].questionnaire = await Questionnaire.findOne({id_user: data[i]._id.toString()});
@@ -943,7 +943,7 @@ module.exports.get_list_user = async function(req, res) {
         // let data = await User.find(filter, null, { skip: page, limit: limitPageDataVeb });
         let data = await User.find(filter);
         const count_page = Math.ceil((await User.find(filter).count()) / limitPageDataVeb) - 1;
-        const count_data = await User.find().count();
+        const count_data = await User.find(filter).count();
 
         for (let i = 0; i < data.length; i++) {
             data[i].questionnaire = await Questionnaire.findOne({id_user: data[i]._id.toString()});

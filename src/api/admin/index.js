@@ -90,8 +90,8 @@ router.get('/users/:page/:full_name/:is_admin/:access/:language',
 router.get('/users_fin/:page/:full_name/:is_admin/:access/:language',
     controller.get_list_user_fin);
 
-router.get('/users_fin/:page/:full_name/:is_admin/:access/:language',
-    controller.get_list_user);
+// router.get('/users_fin/:page/:full_name/:is_admin/:access/:language',
+//     controller.get_list_user);
 
 router.post('/re_live_sound',
     controller.re_live_sound);
