@@ -7,8 +7,9 @@ import {useHttp} from "../../hooks/http.hook";
 import {ColorsStyles} from "../../constants/ColorsStyles";
 import ClipLoader from "react-spinners/ClipLoader";
 import {PostService} from "../../services/PostService";
+import {checkLanguageConst} from "../../hooks/translashion";
 
-export const FieldFile = ({label, name, change, value}) => {
+export const FieldFile = ({label, name, change, value, translations}) => {
     const auth = useContext(AuthContext);
     const {request, error, clearError, loading} = useHttp();
     const [status, setStatus] = useState('upload');
@@ -54,7 +55,7 @@ export const FieldFile = ({label, name, change, value}) => {
     return (
         <div className={s.jin}>
             <div className={GlobalStyle.CustomFontRegular + ' ' + s.placeholder}>
-                {label}
+                {checkLanguageConst(label, translations)}
             </div>
             <div className={s.root_file}>
                 <input

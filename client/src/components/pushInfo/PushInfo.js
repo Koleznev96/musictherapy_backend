@@ -3,16 +3,17 @@ import s from './PushInfo.module.scss';
 import {GlobalSvgSelector} from "../../assets/icons/global/GlobalSvgSelector";
 import GlobalStyle from "../GlobalStyle.module.scss";
 import {usePopupForm} from "../../hooks/usePopupForm";
+import {checkLanguageConst} from "../../hooks/translashion";
 
 
-export const PushInfo = ({value}) => {
+export const PushInfo = ({value, translations}) => {
     const popupForm = usePopupForm();
 
     return (
         <div className={s.root_popup}>
             <div className={s.popup_header}>
                 <div className={GlobalStyle.BellotaFontRegular + ' ' + s.popup_label}>
-                    Информация
+                    {checkLanguageConst('Информация', translations)}
                 </div>
                 <div className={s.button_close} onClick={() => popupForm.exitHandler()}>
                     <GlobalSvgSelector id='close' />
@@ -20,7 +21,7 @@ export const PushInfo = ({value}) => {
             </div>
 
             <div className={GlobalStyle.CustomFontRegular + ' ' + s.popup_value}>
-                {value}
+                {checkLanguageConst(value, translations)}
             </div>
 
             <div className={s.blcok_buttons}>
@@ -29,7 +30,7 @@ export const PushInfo = ({value}) => {
                 onClick={() => popupForm.exitHandler()}
             >
                 <div className={GlobalStyle.CustomFontRegular + ' ' + s.popup_button_ok_text}>
-                    ОК
+                    {checkLanguageConst('ОК', translations)}
                 </div>
             </div>
             </div>

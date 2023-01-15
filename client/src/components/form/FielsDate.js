@@ -3,12 +3,13 @@ import s from "../tableCard/Form.module.scss";
 import React from "react";
 import MobileDateTimePicker from "@mui/lab/MobileDateTimePicker";
 import TextField from "@mui/material/TextField";
+import {checkLanguageConst} from "../../hooks/translashion";
 
-export const FieldDate = ({label, name, change, value}) => {
+export const FieldDate = ({label, name, change, value, translations}) => {
     return (
         <div className={s.jin}>
             <div className={GlobalStyle.CustomFontRegular + ' ' + s.placeholder}>
-                {label}
+                {checkLanguageConst(label, translations)}
             </div>
             <MobileDateTimePicker
                 value={value}

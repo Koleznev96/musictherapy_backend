@@ -11,9 +11,10 @@ import {GlobalSvgSelector} from "../../assets/icons/global/GlobalSvgSelector";
 import cloneDeep from 'lodash/cloneDeep';
 import Scrollbars from "react-custom-scrollbars-2";
 import {listField, optionLanguages} from "../../constants/OptionsTable";
+import {checkLanguageConst} from "../../hooks/translashion";
 
 
-export const FieldListAdditionalFunctionality = ({label, name, change, value, url_get_data, additional_functionality, title_add, id_data, add_data}) => {
+export const FieldListAdditionalFunctionality = ({labelFunc, placeholder, label, name, change, value, url_get_data, additional_functionality, title_add, id_data, add_data, translations, wigth_panel}) => {
     const auth = useContext(AuthContext);
     const [list_value, setList_value] = useState([]);
     const [popapStatus, setPopapStatus] = useState(null);
@@ -121,9 +122,15 @@ export const FieldListAdditionalFunctionality = ({label, name, change, value, ur
     const saveHandler = () => {
         let new_data = [...list_value];
         if (!popapStatus.item) {
+            if (placeholder)
+            new_data.push({...newData, [placeholder]: auth.name});
+            else
             new_data.push(newData);
         } else {
-            new_data[popapStatus.index] = newData;
+            if (placeholder)
+            new_data[popapStatus.index] = {...newData, [placeholder]: auth.name};
+            else
+            new_data.push(newData);
         }
         changeRootMain([...new_data]);
         setPopapStatus(null);
@@ -133,11 +140,15 @@ export const FieldListAdditionalFunctionality = ({label, name, change, value, ur
         <>
             {popapStatus ? (
                 <div className={s.blur__} onClick={() => setPopapStatus(null)}>
-                    <div className={s.root___} onClick={(e) => folHandler(e)}>
+                    <div className={s.root___l} onClick={(e) => folHandler(e)}>
                         <div className={s.root_popup_}>
+                            <div
+                                style={{width: wigth_panel ? wigth_panel : 400}}
+                            >
                             <div className={s.popup_header}>
                                 <div className={GlobalStyle.BellotaFontRegular + ' ' + s.popup_label}>
-                                    Редактирование
+
+                                    {checkLanguageConst('Редактирование', translations)}
                                 </div>
                                     <div className={s.block_buttons}>
                                         <div
@@ -145,7 +156,8 @@ export const FieldListAdditionalFunctionality = ({label, name, change, value, ur
                                             onClick={() => clearHandler(popapStatus)}
                                         >
                                             <div className={GlobalStyle.CustomFontRegular + ' ' + s.popup_button_exit_text}>
-                                                Удалить
+
+                                                {checkLanguageConst('Удалить', translations)}
                                             </div>
                                         </div>
                                         <div className={s.button_close} onClick={() => setPopapStatus(null)}>
@@ -157,13 +169,13 @@ export const FieldListAdditionalFunctionality = ({label, name, change, value, ur
                                 <div className={s.items}>
                                     {
                                         additional_functionality?.map((item, index) => {
-                                            return listField({item: item, change: changeRoot, value: newData, optionLanguages: optionLanguages})
+                                            return listField({lang: auth.language, translations, item: item, change: changeRoot, value: newData, optionLanguages: optionLanguages})
                                         })
                                     }
                                 </div>
                             </Scrollbars>
                             <div className={GlobalStyle.CustomFontRegular + ' ' + (popupOk.length !== 0 ? s.popup_ok : s.popup_error)}>
-                                {popupOk || popupError}
+                                {checkLanguageConst(popupOk || popupError, translations)}
                             </div>
                             <div className={s.popup_liner_button}>
                                 <div
@@ -176,28 +188,21 @@ export const FieldListAdditionalFunctionality = ({label, name, change, value, ur
                                         </div>
                                     ) : (
                                         <div className={GlobalStyle.CustomFontRegular + ' ' + s.popup_button_ok_text}>
-                                            {popapStatus?.item ? "Сохранить" : "Добавить"}
+                                            {checkLanguageConst(popapStatus?.item ? "Сохранить" : "Добавить", translations)}
                                         </div>
                                     )}
                                 </div>
-                                {/*<div className={s.blcok_buttons}>*/}
-                                {/*<div*/}
-                                {/*    className={s.popup_button_delete}*/}
-                                {/*    onClick={() => popupForm.exitHandler()}*/}
-                                {/*>*/}
-                                {/*    <div className={GlobalStyle.CustomFontRegular + ' ' + s.popup_button_exit_text}>*/}
-                                {/*        Удалить*/}
-                                {/*    </div>*/}
-                                {/*</div>*/}
                                 <div
                                     className={s.popup_button_exit}
                                     onClick={() => setPopapStatus(null)}
                                 >
                                     <div className={GlobalStyle.CustomFontRegular + ' ' + s.popup_button_exit_text}>
-                                        Отмена
+
+                                        {checkLanguageConst('Отмена', translations)}
                                     </div>
                                 </div>
                                 {/*</div>*/}
+                            </div>
                             </div>
                         </div>
                     </div>
@@ -219,7 +224,7 @@ export const FieldListAdditionalFunctionality = ({label, name, change, value, ur
                             className={s.additional_item}
                         >
                             <div className={GlobalStyle.CustomFontRegular + ' ' + s.additional_item_text}>
-                                {item.label[0].value}
+                                {labelFunc ? labelFunc(item) : item.label[0].value}
                             </div>
                             <div
                                 className={s.button_delet}
@@ -227,6 +232,11 @@ export const FieldListAdditionalFunctionality = ({label, name, change, value, ur
                             >
                                 <GlobalSvgSelector id="clear" />
                             </div>
+                            {placeholder ? (
+                                <div className={GlobalStyle.CustomFontLite + ' ' + s.additional_item_placeholder}>
+                                    {item[placeholder]}
+                                </div>
+                            ): null}
                         </div>
                     ))}
                     {!loading ? (
@@ -235,7 +245,7 @@ export const FieldListAdditionalFunctionality = ({label, name, change, value, ur
                             onClick={() => addHandler()}
                             className={GlobalStyle.CustomFontRegular + ' ' + s.button_add_function}
                         >
-                            {title_add}
+                            {checkLanguageConst(title_add, translations)}
                         </div>
                         // </div>
                     ): null}

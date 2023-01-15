@@ -7,12 +7,13 @@ import {Form} from "../tableCard/Forml";
 import {usePopupForm} from "../../hooks/usePopupForm";
 import ClipLoader from "react-spinners/ClipLoader";
 import {ColorsStyles} from "../../constants/ColorsStyles";
+import {checkLanguageConst} from "../../hooks/translashion";
 
 
-export const TextCounter = ({value}) => {
+export const TextCounter = ({value, translations}) => {
     return (
         <div className={GlobalStyle.CustomFontRegular + ' ' + s.root}>
-            Количество: {value}
+            {checkLanguageConst('Количество', translations)}: {value}
         </div>
     );
 };

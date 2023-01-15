@@ -15,6 +15,7 @@ import {PaginationTable} from "../../components/paginationTable/PaginationTable"
 import {usePopupForm} from "../../hooks/usePopupForm";
 import {Form} from "../../components/tableCard/Forml";
 import GlobalStyle from "../../components/GlobalStyle.module.scss";
+import {checkLanguageConst} from "../../hooks/translashion";
 
 
 export const Tests = () => {
@@ -57,13 +58,13 @@ export const Tests = () => {
     return (
         <div className={s.root}>
             <div className={s.header}>
-                <Search value={search} callback={setSearch} placeholder={'Поиск по названию'} handler={getData}/>
+                <Search translations={auth.translations} value={search} callback={setSearch} placeholder={'Поиск по названию'} handler={getData}/>
                 <div
                     className={s.create_button_ok}
                     onClick={() => creteHandler()}
                 >
                     <div className={GlobalStyle.CustomFontRegular + ' ' + s.create_button_ok_text}>
-                        Добавить новый тест
+                        {checkLanguageConst('Добавить новый тест', auth.translations)}
                     </div>
                 </div>
             </div>
@@ -75,9 +76,10 @@ export const Tests = () => {
                 reload={getData}
                 setData={filtersData}
                 table_name={"live_sound"}
+                page={page}
             />
             <div className={s.footer}>
-                <PaginationTable page={page} endPage={endPage} startPage={startPage} getData={getData} search={search} />
+                <PaginationTable page={page} endPage={endPage} startPage={startPage} getData={setPage} search={search} />
             </div>
         </div>
     );

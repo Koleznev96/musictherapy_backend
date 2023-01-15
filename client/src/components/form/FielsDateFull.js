@@ -1,17 +1,25 @@
 import GlobalStyle from "../GlobalStyle.module.scss";
 import s from "../tableCard/Form.module.scss";
-import React from "react";
+import React, {useEffect} from "react";
 import MobileDatePicker from "@mui/lab/MobileDatePicker";
 import TextField from "@mui/material/TextField";
+import {checkLanguageConst} from "../../hooks/translashion";
 
-export const FieldDateFull = ({label, name, change, value}) => {
+export const FieldDateFull = ({label, name, change, value, isNowDate, translations}) => {
+
+    useEffect(() => {
+        if ((!value || value.length) && isNowDate) {
+            change({name, value: new Date()})
+        }
+    }, [])
+
     return (
         <div className={s.jin}>
             <div className={GlobalStyle.CustomFontRegular + ' ' + s.placeholder}>
-                {label}
+                {checkLanguageConst(label, translations)}
             </div>
             <MobileDatePicker
-                value={value}
+                value={value ? value : ''}
                 onChange={(newValue) => {
                     change({name, value: newValue})
                 }}

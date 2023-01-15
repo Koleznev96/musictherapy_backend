@@ -12,6 +12,8 @@ import GlobalStyle from "../../components/GlobalStyle.module.scss";
 import {usePopupForm} from "../../hooks/usePopupForm";
 import {Form} from "../../components/tableCard/Forml";
 import {TextCounter} from "../../components/textCounter/TextCounter";
+import {sortRoot} from "../../components/tableCard/functional";
+import {checkLanguageConst} from "../../hooks/translashion";
 
 
 export const Video = () => {
@@ -29,7 +31,7 @@ export const Video = () => {
         setData([...new_data]);
     }
 
-    const getData = async (page, rel) => {
+    const getData = async (page, rel, data_search, sort, sortData, sortStatus) => {
         page = page ? page : 0;
         let search_ = search?.length > 0 ? search : "null";
         if (rel === "null") {
@@ -37,7 +39,21 @@ export const Video = () => {
             setSearch("");
         }
         try {
-            const answer = await request(`/api/admin_panel/video/${page}/${search_}`, 'GET', null, {
+            let answer;
+            if (sort) {
+                answer  = await sortRoot(
+                    `/api/admin_panel/video/sort`,
+                    {
+                        page,
+                        search: search_,
+                    },
+                    sortData,
+                    sortStatus,
+                    request,
+                    auth
+                )
+            } else
+            answer = await request(`/api/admin_panel/video/${page}/${search_}`, 'GET', null, {
                 Authorization: auth.token
             });
             // Выполнить сортировку по полю number
@@ -58,15 +74,15 @@ export const Video = () => {
         <div className={s.root}>
             <div className={s.header}>
                 <div className={s.wrapper_header}>
-                    <Search value={search} callback={setSearch} placeholder={'Поиск по названию'} handler={getData}/>
-                    <TextCounter value={data_length}/>
+                    <Search translations={auth.translations} value={search} callback={setSearch} placeholder={'Поиск по названию'} handler={getData}/>
+                    <TextCounter translations={auth.translations} value={data_length}/>
                 </div>
                 <div
                     className={s.create_button_ok}
                     onClick={() => creteHandler()}
                 >
                     <div className={GlobalStyle.CustomFontRegular + ' ' + s.create_button_ok_text}>
-                        Добавить новое видео
+                        {checkLanguageConst('Добавить новое видео', auth.translations)}
                     </div>
                 </div>
             </div>
@@ -78,9 +94,10 @@ export const Video = () => {
                 setData={filtersData}
                 optionEdit={optionEditVideo}
                 table_name={"video"}
+                page={page}
             />
             <div className={s.footer}>
-                <PaginationTable page={page} endPage={endPage} startPage={startPage} getData={getData} search={search} />
+                <PaginationTable page={page} endPage={endPage} startPage={startPage} getData={setPage} search={search} />
             </div>
         </div>
     );

@@ -12,6 +12,10 @@ const translationSchema = new Schema({
     root: {
         type: Number,
         required: false,
+    },
+    status: {
+        type: String,
+        required: false,
     }
 });
 

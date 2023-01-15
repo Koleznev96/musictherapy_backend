@@ -39,6 +39,7 @@ const testSchema = new Schema({
                     value: String,
                 },
             ],
+            color: String,
         },
     ],
     like: {

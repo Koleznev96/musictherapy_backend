@@ -8,6 +8,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import {Form} from "./Forml";
 import {AuthContext} from "../../context/authContext";
 import {useHttp} from "../../hooks/http.hook";
+import {checkLanguage, checkLanguageConst} from "../../hooks/translashion";
 
 
 const string_date = (string) => {
@@ -28,7 +29,7 @@ const string_date_ = (string) => {
     return day + '.' + month + '.' + year;
 }
 
-export const TableCard = ({option, data, loading, reload, setData, optionQuestionnaire, optionPassword, optionSettings, optionEdit, table_name, wigth_panel}) => {
+export const TableCard = ({option, data, loading, reload, setData, optionQuestionnaire, optionPassword, optionSettings, optionEdit, table_name, wigth_panel, page}) => {
     const popupForm = usePopupForm();
     const auth = useContext(AuthContext);
     const {request, error, clearError} = useHttp();
@@ -59,7 +60,6 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
         else {
             // отредачить, непонятно почему так
             new_data.sort((prev, next) => {
-                // console.log('prev-', prev[item.value])
                 if (next[item.value] === undefined || next[item.value] === null) return statusFilter ? 1 : -1;
                 if (prev[item.value] === undefined || prev[item.value] === null) return statusFilter ? -1 : 1;
                 if ( prev[item.value] < next[item.value] ) return -1;
@@ -67,12 +67,17 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
                 return 0;
             });
         }
+        // let statusSort;
         if (statusFilter) {
             new_data.reverse();
+            // statusSort = false;
             setStatusFilter(false);
         } else {
+            // statusSort = true;
             setStatusFilter(true);
         }
+
+        // reload(null, 0, null, true, item, statusSort);
         setData([...new_data]);
         setStatus(item.value);
     }
@@ -80,8 +85,8 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
     const StringLang = (data) => {
         let answer = '';
         data?.forEach((item, index) => {
-            if (item === 'ru') answer += 'рус';
-            else answer += 'анг';
+            if (item === 'ru') answer += checkLanguageConst('рус', auth.translations);
+            else answer += checkLanguageConst('анг', auth.translations);
             answer +=  data?.length - 1 > index ? ', ' : '';
         });
         return answer;
@@ -110,9 +115,6 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
                 Authorization: auth.token
             });
         } catch (e){
-            console.log('ERROR \n' +
-                'url: /api/admin_panel/reordering \n' +
-                'message: ', e);
 
             // меняем поля number
             temp = new_data[index].number;
@@ -127,6 +129,14 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
         }
     }
 
+    const langsStringTo = (strings) => {
+        let new_string = [];
+        for(let i = 0; i < strings.length; i++) {
+            new_string.push(checkLanguageConst(strings[i], auth.translations));
+        }
+        return new_string.join(', ');
+    }
+
     return (
         <table className={s.table} cellSpacing="0">
             <thead>
@@ -136,10 +146,10 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
                 return (
                     <>
                     <td key={index} className={GlobalStyle.CustomFontBold + ' ' + s.table_td}
-                        onClick={() => settingFieldHandler(item)}>
+                        onClick={() => item.filter ? settingFieldHandler(item) : null}>
                         <div className={s.table_td_block}>
                             <div className={GlobalStyle.CustomFontBold + ' ' + s.table_td_label}>
-                                {item.label}
+                                {checkLanguageConst(item.label, auth.translations)}
                             </div>
                             {item.filter ? (
                                 <div
@@ -179,7 +189,8 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
                     <tr className={s.td_error_block}>
                         <td colSpan={option?.fields?.length + 1}>
                             <div className={GlobalStyle.CustomFontRegular + ' ' + s.td_error_text}>
-                                Записей нету
+
+                                {checkLanguageConst('Записей нету', auth.translations)}
                             </div>
                         </td>
                     </tr>
@@ -189,7 +200,7 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
                     </tr>
                     </>
                 ) : (
-                    data?.map((data_item, index) => (
+                    data.slice(page * 100, (page + 1) * 100)?.map((data_item, index) => (
                         <tr key={index} className={index % 2 === 0 ? s.tr_br : s.tr} onClick={() => itemHandler(data_item)}>
                         {option?.fields?.map((field_item, counter) => {
                             if (!field_item.not_see)
@@ -197,6 +208,9 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
                                     <>
                                     <td className={GlobalStyle.CustomFontRegular + ' ' + s.td}>
                                         {
+                                            field_item.type === 'status' ? (
+                                                    data_item[field_item.value] ? checkLanguageConst('неактивно', auth.translations) : ''
+                                                ) : (
                                             field_item.type === 'input_tooltip_test' ? (
                                                 <div className={s.tooltip_test}>
                                                     <div className={s.tooltip_test_text}>
@@ -206,7 +220,7 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
                                                     <div className={s.tooltip}>
                                                         {data_item[field_item.value]?.reverse()?.map((item, index) => (
                                                             <div className={s.text_item} key={index}>
-                                                                {`${string_date_(item.date_start)} ${item.user_name} - ${item.result?.balls} балов`}
+                                                                {`${string_date_(item.date_start)} ${item.user_name} - ${item.result?.balls} ${checkLanguageConst('балов', auth.translations)}`}
                                                             </div>
                                                         ))}
                                                     </div>
@@ -246,17 +260,17 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
                                                     ) : (
                                             !data_item[field_item.value] ? (
                                                 (field_item.value === 'is_admin') ?
-                                                    'Клиент' : ''
+                                                    checkLanguageConst('Клиент', auth.translations) : ''
                                             ) : (
                                             (field_item.type === 'bool') ? (
-                                            field_item.list_value?.find(element => element.value === data_item[field_item.value])?.label
+                                                checkLanguageConst(field_item.list_value?.find(element => element.value === data_item[field_item.value])?.label, auth.translations)
                                             // data_item[field_item.value] === 'meditation' ? 'Медитация' : (data_item[field_item.value] === 'classic' ? 'Классика HD' : 'Инструменты')
                                         ) : (
                                             field_item.type === 'box' ? (
                                                 field_item.value === 'language' ? (
                                                     StringLang(data_item[field_item.value])
                                             ) :
-                                                data_item[field_item.value].slice(0, data_item[field_item.value].length > 5 ? 5 : data_item[field_item.value].length).join(', ')
+                                                    langsStringTo(data_item[field_item.value].slice(0, data_item[field_item.value].length > 5 ? 5 : data_item[field_item.value].length))
                                             ) :
                                                 (field_item.type === 'date' ? (
                                                 string_date(data_item[field_item.value])
@@ -265,7 +279,7 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
                                                 field_item.translation ? (
                                                     // 'kkk'
                                                     data_item[field_item.value].length ? (
-                                                    String(data_item[field_item.value][0].value).length > 35 ? (data_item[field_item.value][0].value.slice(0, 35) + '...') : data_item[field_item.value][0].value
+                                                        String(checkLanguage(data_item[field_item.value], auth.language)).length > 35 ? (checkLanguage(data_item[field_item.value], auth.language)?.slice(0, 35) + '...') : checkLanguage(data_item[field_item.value], auth.language)
                                                     ): ''
                                                     ) : (
                                                     data_item[field_item.value].length ? (
@@ -275,7 +289,7 @@ export const TableCard = ({option, data, loading, reload, setData, optionQuestio
                                                         data_item[field_item.value]
                                                     )
                                         )))
-                                        ))))}
+                                        )))))}
                                     </td>
                                     {/*==============Кнопки для переноса=================*/}
                                     {/*{(table_name && counter === 1) ? (*/}

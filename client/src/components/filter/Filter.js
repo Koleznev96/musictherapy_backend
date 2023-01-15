@@ -7,9 +7,10 @@ import {Form} from "../tableCard/Forml";
 import {usePopupForm} from "../../hooks/usePopupForm";
 import ClipLoader from "react-spinners/ClipLoader";
 import {ColorsStyles} from "../../constants/ColorsStyles";
+import {checkLanguageConst} from "../../hooks/translashion";
 
 
-const Modal = ({section, value, callback, handler, list, exitHandler, placeholder}) => {
+const Modal = ({section, value, callback, handler, list, exitHandler, placeholder, translations}) => {
     const [active, setActive] = useState('');
 
     useEffect(() => {
@@ -30,28 +31,28 @@ const Modal = ({section, value, callback, handler, list, exitHandler, placeholde
         <div className={s.root_popup}>
             <div className={s.popup_header}>
                 <div className={GlobalStyle.BellotaFontRegular + ' ' + s.popup_label}>
-                    {placeholder}
+                    {checkLanguageConst(placeholder, translations)}
                 </div>
                 <div className={s.button_close} onClick={() => exitHandler()}>
                     <GlobalSvgSelector id='close' />
                 </div>
             </div>
             <div className={GlobalStyle.CustomFontRegular + ' ' + s.placeholder_i}>
-                {list?.label}
+                {checkLanguageConst(list?.label, translations)}
             </div>
             <div className={s.wrapper_bool}>
                 <div className={s.root_click}>
                     <div className={s.button_input} onClick={() => newActive('')}>
                         <div className={active?.length === 0 ? s.clip_active : s.clip}/>
                         <div className={s.clip_text}>
-                            Все
+                            {checkLanguageConst('Все', translations)}
                         </div>
                     </div>
                     {list?.list_value?.slice(0, list?.list_value.length/2).map((item, index) => (
                         <div className={s.button_input} onClick={() => newActive(item.value)}>
                             <div className={active === item.value ? s.clip_active : s.clip}/>
                             <div className={s.clip_text}>
-                                {item.label}
+                                {checkLanguageConst(item.label, translations)}
                             </div>
                         </div>
                     ))}
@@ -61,7 +62,7 @@ const Modal = ({section, value, callback, handler, list, exitHandler, placeholde
                         <div className={s.button_input} onClick={() => newActive(item.value)}>
                             <div className={active === item.value ? s.clip_active : s.clip}/>
                             <div className={s.clip_text}>
-                                {item.label}
+                                {checkLanguageConst(item.label, translations)}
                             </div>
                         </div>
                     ))}
@@ -73,7 +74,7 @@ const Modal = ({section, value, callback, handler, list, exitHandler, placeholde
                     onClick={() => itemHandler()}
                 >
                     <div className={GlobalStyle.CustomFontRegular + ' ' + s.popup_button_ok_text}>
-                        Применить
+                        {checkLanguageConst('Применить', translations)}
                     </div>
                 </div>
                 <div
@@ -81,7 +82,7 @@ const Modal = ({section, value, callback, handler, list, exitHandler, placeholde
                     onClick={() => exitHandler()}
                 >
                     <div className={GlobalStyle.CustomFontRegular + ' ' + s.popup_button_exit_text}>
-                        Отмена
+                        {checkLanguageConst('Отмена', translations)}
                     </div>
                 </div>
             </div>
@@ -90,7 +91,7 @@ const Modal = ({section, value, callback, handler, list, exitHandler, placeholde
 }
 
 
-export const Filter = ({width, section, value, callback, placeholder, handler, list}) => {
+export const Filter = ({width, section, value, callback, placeholder, handler, list, translations}) => {
     const popupForm = usePopupForm();
 
     const exitHandler = () => {
@@ -98,14 +99,14 @@ export const Filter = ({width, section, value, callback, placeholder, handler, l
     }
 
     const openModal = () => {
-        popupForm.openHandler(<Modal section={section} value={value} callback={callback} handler={handler} list={list} exitHandler={exitHandler} placeholder={placeholder}/>);
+        popupForm.openHandler(<Modal translations={translations} section={section} value={value} callback={callback} handler={handler} list={list} exitHandler={exitHandler} placeholder={placeholder}/>);
     }
 
     return (
         <div style={{width: width ? width : 350}} className={s.root} onClick={() => openModal()}>
             <div className={s.input}>
                 <div className={GlobalStyle.CustomFontRegular + ' ' + (value ? s.value : s.placeholder)}>
-                {value ? value : placeholder}
+                {checkLanguageConst(value ? list.list_value?.find(item => item.value === value).label : placeholder, translations)}
                 </div>
             </div>
             <div className={s.button}>

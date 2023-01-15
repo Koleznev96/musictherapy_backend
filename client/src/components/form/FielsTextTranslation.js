@@ -2,10 +2,11 @@ import GlobalStyle from "../GlobalStyle.module.scss";
 import s from "../tableCard/Form.module.scss";
 import React, {useEffect, useState} from "react";
 import {GlobalSvgSelector} from "../../assets/icons/global/GlobalSvgSelector";
+import {checkLanguageConst} from "../../hooks/translashion";
 
-export const FieldTextTranslation = ({label, name, change, value, languages}) => {
+export const FieldTextTranslation = ({label, name, change, value, languages, translations, lang}) => {
     const [boxField, setBoxField] = useState([{language: 'ru', value: ''}, {language: 'com', value: ''}]);
-    const [itemMenu, setItemMenu] = useState(0);
+    const [itemMenu, setItemMenu] = useState(lang === 'ru' ? 0 : 1);
     // const [status, setStatus] = useState(false);
 
     useEffect(() => {
@@ -30,12 +31,12 @@ export const FieldTextTranslation = ({label, name, change, value, languages}) =>
         <>
             <div className={s.wrpper_field_header}>
                 <div className={GlobalStyle.CustomFontRegular + ' ' + s.placeholder}>
-                    {label}
+                    {checkLanguageConst(label, translations)}
                 </div>
                 <div className={s.box_translation}>
                     <div className={s.wrapper_language_label} onClick={() => newLanguage()}>
                         <div className={GlobalStyle.CustomFontRegular + ' ' + s.language_label}>
-                            {languages[itemMenu].label}
+                            {checkLanguageConst(languages[itemMenu].label, translations)}
                         </div>
                         <GlobalSvgSelector id="arrow_mini" />
                     </div>

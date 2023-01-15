@@ -11,6 +11,7 @@ import {PushInfo} from "../pushInfo/PushInfo";
 import Scrollbars from "react-custom-scrollbars-2";
 import {httpServer} from "../../const";
 import {listField, optionLanguages} from "../../constants/OptionsTable";
+import {checkLanguageConst} from "../../hooks/translashion";
 
 
 export const FormReTranslation = ({data, option, reload, status}) => {
@@ -67,7 +68,7 @@ export const FormReTranslation = ({data, option, reload, status}) => {
                 Authorization: `${auth.token}`
             });
             popupForm.exitHandler()
-            popupForm.openHandler(<PushInfo value={'Запись удалена'} />);
+            popupForm.openHandler(<PushInfo translations={auth.translations} value={'Запись удалена'} />);
             reload(0, "null");
         } catch (e) {
             setPopupError(data ? 'Ошибка.' : 'Ошибка.');
@@ -82,7 +83,8 @@ export const FormReTranslation = ({data, option, reload, status}) => {
         <div className={s.root_popup}>
             <div className={s.popup_header}>
                 <div className={GlobalStyle.BellotaFontRegular + ' ' + s.popup_label}>
-                    Редактирование
+
+                    {checkLanguageConst('Редактирование', auth.translations)}
                 </div>
                 <div className={s.button_close} onClick={() => popupForm.exitHandler()}>
                     <GlobalSvgSelector id='close' />
@@ -96,19 +98,20 @@ export const FormReTranslation = ({data, option, reload, status}) => {
                             className={GlobalStyle.CustomFontRegular + s.button_upload_text}
                             onClick={() => sampleTranslationHandler()}
                         >
-                            Посмотреть шаблон json файла
+
+                            {checkLanguageConst('Посмотреть шаблон json файла', auth.translations)}
                         </div>
                     </a>
                     ): null}
                     {
                         option?.fields?.map(item => {
-                            return listField({item: item, change: changeRoot, value: value, optionLanguages: optionLanguages})
+                            return listField({lang: auth.language, translations: auth.translations, item: item, change: changeRoot, value: value, optionLanguages: optionLanguages})
                         })
                     }
                 </div>
             </Scrollbars>
             <div className={GlobalStyle.CustomFontRegular + ' ' + (popupOk.length !== 0 ? s.popup_ok : s.popup_error)}>
-                {popupOk || popupError}
+                {checkLanguageConst(popupOk || popupError, auth.translations)}
             </div>
             <div className={s.popup_liner_button}>
                 <div
@@ -121,7 +124,7 @@ export const FormReTranslation = ({data, option, reload, status}) => {
                         </div>
                     ) : (
                         <div className={GlobalStyle.CustomFontRegular + ' ' + s.popup_button_ok_text}>
-                            {"Сохранить"}
+                            {checkLanguageConst('Сохранить', auth.translations)}
                         </div>
                     )}
                 </div>
@@ -130,7 +133,7 @@ export const FormReTranslation = ({data, option, reload, status}) => {
                     onClick={() => popupForm.exitHandler()}
                 >
                     <div className={GlobalStyle.CustomFontRegular + ' ' + s.popup_button_exit_text}>
-                        Отмена
+                        {checkLanguageConst('Отмена', auth.translations)}
                     </div>
                 </div>
             </div>

@@ -16,5 +16,9 @@ router.get('/translation/:language',
     // passport.authenticate('jwt', {session: false}),
     controller.translation);
 
+router.get('/delete_account',
+    // passport.authenticate('jwt', {session: false}),
+    controller.delete_account);
+
 
 module.exports = router;

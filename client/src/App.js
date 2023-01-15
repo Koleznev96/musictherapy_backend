@@ -30,16 +30,17 @@ const theme = createTheme({
 });
 
 function App() {
-    const {token, login, logout, ready, email, newEmail} = useAuth();
+    const {token, login, logout, ready, email, newEmail, type_admin, name, language, newLanguage, translations} = useAuth();
 
     const isAuthenticated = !!token;
-    const routes = useRoutes(isAuthenticated);
+    const isAdmin = type_admin === 'Администратор';
+    const routes = useRoutes(isAuthenticated, isAdmin);
 
     return (
         <LocalizationProvider dateAdapter={DateAdapter}>
         <ThemeProvider theme={theme}>
             <AuthContext.Provider value={{
-                token, login, logout, isAuthenticated, email, newEmail
+                token, login, logout, isAuthenticated, email, newEmail, type_admin, name, language, newLanguage, translations
             }}>
                 <PopupFormProvider>
                     <PopupForm />

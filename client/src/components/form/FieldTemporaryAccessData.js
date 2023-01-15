@@ -7,8 +7,9 @@ import MobileDateTimePicker from "@mui/lab/MobileDateTimePicker";
 import TextField from "@mui/material/TextField";
 import {ColorsStyles} from "../../constants/ColorsStyles";
 import ClipLoader from "react-spinners/ClipLoader";
+import {checkLanguage, checkLanguageConst} from "../../hooks/translashion";
 
-export const FieldTemporaryAccessData = ({label, name, change, value, url_get_data}) => {
+export const FieldTemporaryAccessData = ({label, name, change, value, url_get_data, translations}) => {
     const auth = useContext(AuthContext);
     const [boxField, setBoxField] = useState([]);
     const [list_value, setList_value] = useState([]);
@@ -21,7 +22,6 @@ export const FieldTemporaryAccessData = ({label, name, change, value, url_get_da
             });
             setList_value([...answer]);
         } catch (e){
-            console.log('err-', e)
         }
     }
 
@@ -61,7 +61,7 @@ export const FieldTemporaryAccessData = ({label, name, change, value, url_get_da
     return (
         <div className={s.jin}>
             <div className={GlobalStyle.CustomFontRegular + ' ' + s.placeholder}>
-                {label}
+                {checkLanguageConst(label, translations)}
             </div>
             <div className={s.wrapper_bool}>
                 <div className={s.root_click_}>
@@ -76,13 +76,13 @@ export const FieldTemporaryAccessData = ({label, name, change, value, url_get_da
                                 <div key={index} className={s.button_input_b} onClick={() => boxHandler(item, indexElement)}>
                                     <div className={indexElement !== -1 ? s.box_active : s.box}/>
                                     <div className={s.clip_text}>
-                                        {item.label[0]?.value}
+                                        {checkLanguage(item.label, auth.language)}
                                     </div>
                                 </div>
                                 {indexElement !== -1 ? (
                                     <div className={s.wrapper_date}>
                                         <div className={GlobalStyle.CustomFontRegular + ' ' + s.st_date}>
-                                            с
+                                            {checkLanguageConst('с', translations)}
                                         </div>
                                         <MobileDateTimePicker
                                             value={boxField[indexElement].start_date}
@@ -117,7 +117,7 @@ export const FieldTemporaryAccessData = ({label, name, change, value, url_get_da
                                             }
                                         />
                                         <div className={GlobalStyle.CustomFontRegular + ' ' + s.st_date}>
-                                            по
+                                            {checkLanguageConst('по', translations)}
                                         </div>
                                         <MobileDateTimePicker
                                             value={boxField[indexElement].end_date}

@@ -3,7 +3,7 @@ const {Schema, model} = require('mongoose');
 const userSchema = new Schema({
     email: {
         type: String,
-        required: true,
+        required: false,
     },
     language: {
         type: String,
@@ -11,7 +11,7 @@ const userSchema = new Schema({
     },
     password: {
         type: String,
-        required: true,
+        required: false,
     },
     name: {
         type: String,
@@ -23,7 +23,7 @@ const userSchema = new Schema({
     },
     telephone: {
         type: String,
-        required: true,
+        required: false,
     },
     date_last_activity: {
         type: Date,
@@ -68,6 +68,11 @@ const userSchema = new Schema({
         type: Boolean,
         required: false,
     },
+    // Делаю из Boolean в String
+    type_admin: {
+        type: String,
+        required: false,
+    },
     codeCheck: {
         type: String,
         required: false,
@@ -75,7 +80,15 @@ const userSchema = new Schema({
     isNoCheck: {
         type: Boolean,
         required: false,
-    }
+    },
+    status: {
+        type: Boolean,
+        required: false,
+    },
+    musicTherapy: {
+        id: String,
+        name: String,
+    },
 });
 
 module.exports = model('User', userSchema);

@@ -241,16 +241,22 @@ module.exports.get_list_course = async function(req, res) {
             } else {
                 // data[i].dostup = 'view';
             }
-
+            // console.log('check-', check)
             // Проверка на доступ по профилю
-            avalibel = check.available_courses.find((item) => {
-                return String(item.course_id) === String(data[i]._id)
-            });
-            data[i].avalibel = avalibel !== undefined && avalibel.end_date >= new Date();
-            if (avalibel)
-            data[i].object_date = {
-                end_date: avalibel.end_date,
-                start_date: avalibel.start_date,
+            if (check.available_courses) {
+                // console.log('check.available_course-', check.available_courses)
+                avalibel = check.available_courses.find((item) => {
+                    return String(item.course_id) === String(data[i]._id)
+                });
+                // console.log('avalibel-', avalibel)
+                data[i].avalibel = avalibel !== undefined && avalibel.end_date >= new Date();
+                // console.log('data[i].avalibel-', data[i].avalibel)
+                if (avalibel)
+                    data[i].object_date = {
+                        end_date: avalibel.end_date,
+                        start_date: avalibel.start_date,
+                    }
+                // console.log('data[i].object_date-', data[i].object_date)
             }
 
             // if (check?._id && avalibel !== undefined && avalibel.end_date < new Date()) {
@@ -706,6 +712,11 @@ module.exports.get_v2_list_meditation_ios = async function(req, res) {
     }
 }
 
+function shuffle(array) {
+    // Перемешивание масива
+    return array.sort(() => Math.random() - 0.5);
+}
+
 module.exports.get_v2_list_audio_ios = async function(req, res) {
     try {
         const check = await checkUser.check(req, res);
@@ -719,11 +730,12 @@ module.exports.get_v2_list_audio_ios = async function(req, res) {
         // const count_page = (await Audio.find({category}).count());
         let filter = checkLanguage(req, res);
         filter.category = category;
-        let data = await Audio.find(filter);
-
+        let data = shuffle(await Audio.find(filter));
+        let new_data = [];
         for (let i = 0; i < data.length; i++) {
             if (!(!data[i].access || data[i].access.indexOf(access) !== -1)) {
-                data.splice(i, 1);
+
+                // data.splice(i, 1);
                 continue;
                 // if (data[i].access.length === 1 && data[i].access.indexOf("VIP") !== -1) {
                 //     data.splice(i, 1);
@@ -738,19 +750,18 @@ module.exports.get_v2_list_audio_ios = async function(req, res) {
             } else {
                 data[i].dostup = 'view';
             }
-
             if (check._id) {
                 let status = await LikeAudio.findOne({id_root: data[i]._id.toString(), id_user: check?._id.toString()});
                 data[i].like = status ? 1 : 0;
             }
-
+            new_data.push(data[i]);
         }
 
         // for (let i = 0; i < data.length; i++) {
         //
         // }
 
-        res.status(201).json({data, page, count_page: 20, end_page: true, access});
+        res.status(201).json({data: new_data, page, count_page: 20, end_page: true, access});
 
         // res.status(201).json({data, page, count_page, end_page: count_page <= page + limitPageData});
     } catch(e) {

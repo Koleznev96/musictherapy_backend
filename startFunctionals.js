@@ -85,6 +85,15 @@ module.exports.startServerIsAdminTables = async () => {
         let new_data = await User.findOne({_id: data_list[i]._id});
         if (typeof new_data.is_admin !== 'boolean') {
             new_data.is_admin = false;
+            new_data.type_admin = 'Клиент';
+            await new_data.save();
+        } else {
+            if (new_data.is_admin && !new_data.type_admin) {
+                new_data.type_admin = 'Администратор';
+            }
+            if (!new_data.is_admin && !new_data.type_admin) {
+                new_data.type_admin = 'Клиент';
+            }
             await new_data.save();
         }
     }

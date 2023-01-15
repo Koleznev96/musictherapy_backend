@@ -5,6 +5,7 @@ const Audio = require('../../models/Audio');
 const Admin = require('../../models/Admin');
 const User = require('../../models/User');
 const Test = require('../../models/Test');
+const Notes = require('../../models/Notes');
 const LessonsCourses = require('../../models/LessonsCourses');
 const QuestionsTest = require('../../models/QuestionsTest');
 const Questionnaire = require('../../models/Questionnaire');
@@ -24,7 +25,37 @@ const keys = require('../../../config/keys');
 const {limitPageDataVeb} = require("../../utils/dataConst");
 var fs = require('fs');
 const UserLessonCourse = require("../../models/UserLessonCourse");
+const checkUser = require("../auth/authUser");
+const UserQuestionTest = require("../../models/UserQuestionTest");
 
+
+module.exports.translation = async function(req, res) {
+    try {
+        const language = req.params.language;
+        const check = await checkAdmin.check(req, res);
+        if (check.id) {
+            let candidate = await User.findOne({_id: check.id});
+            if (candidate._id) {
+                candidate.language = language;
+                await candidate.save();
+            }
+        }
+        const translation = await Translation.findOne({root: 1});
+        let obj;
+        await fs.readFile(`./${translation[language]}`, 'utf8', async function (err, data) {
+            if (err) {
+                console.log('errr, not File:', `./${translation[language]}`);
+                res.status(201).json({});
+                return;
+            }
+            res.status(201).json(JSON.parse(data));
+        });
+
+    } catch(e) {
+        errorHandler(res, e);
+        // throw e;
+    }
+}
 
 module.exports.register = async function(req, res) {
     try {
@@ -61,18 +92,21 @@ module.exports.login = async function(req, res) {
     let candidate = await User.findOne({email: req.body.email});
     if (candidate) {
         const passwordResult = req.body.password === candidate.password;
-        if (passwordResult) {
-            const token = jwt.sign({
-                email: candidate.email,
-                userId: candidate._id,
-            }, keys.jwt, {expiresIn: 60000 * 60000});
+        if (passwordResult && (candidate.type_admin === 'Администратор' || candidate.type_admin === 'Музыкотерапевт')) {
+            // const token = jwt.sign({
+            //     email: candidate.email,
+            //     userId: candidate._id,
+            // }, keys.jwt, {expiresIn: 60000 * 60000});
+            const token = 'sdfgsdgf456fdgs' + candidate._id;
 
             candidate.date_last_activity = new Date();
             candidate.token = `Bearer ${token}`;
             await candidate.save();
 
             res.status(200).json({
-                token: `Bearer ${token}`
+                type_admin: candidate.type_admin,
+                token: `Bearer ${token}`,
+                name: candidate.fullName + ' ' + candidate.name,
             });
         } else {
             res.status(409).json({
@@ -158,27 +192,42 @@ module.exports.create_user = async function(req, res) {
 
         let candidate = await User.findOne({_id: check.id});
 
+        let new_data_user = {};
+        for (let key of Object.keys(req.body.data)) {
+            if (req.body.data[key] && req.body.data[key].length) {
+                new_data_user[key] = req.body.data[key];
+            }
+        }
+
         let new_data = new User({
+            isNoCheck: false,
+            is_admin: false,
+            type_admin: 'Клиент',
+            access: "Гость",
             password: req.body.password,
-            ...req.body.settings,
-            ...req.body.data,
+            ...new_data_user,
+            status: false,
         });
 
-        // Object.entries(req.body.data).forEach(item => {
-        //     new_data[item[0]] = item[1]
-        // });
-        //
-        // if (req.body.password) new_data.password = req.body.password;
-        // if (req.body.settings) {
-        //     Object.entries(req.body.settings).forEach(item => {
-        //         new_data[item[0]] = item[1]
-        //     });
-        // }
         await new_data.save();
-        if (req.body.questionnaire) {
+
+        if (req.body.data.notes !== undefined) {
+            let new_notes = null;
+            for(let i = 0; i < req.body.data.notes.length; i++) {
+                new_notes = new Notes({
+                    ...req.body.data.notes[i],
+                    id_user: new_data._id,
+                    note_writer_name: candidate.fullName + ' ' + candidate.name,
+                });
+                await new_notes.save();
+            }
+        }
+
+
+        if (req.body.data?.questionnaire) {
             const questionnaire = new Questionnaire({
                 id_user: new_data._id.toString(),
-                ...req.body.questionnaire,
+                ...req.body.data.questionnaire,
                 status: false,
             });
             await questionnaire.save();
@@ -429,7 +478,8 @@ module.exports.get_list_live_sound = async function(req, res) {
         const page = (Number(req.params.page)) * limitPageDataVeb;
         // const filter = req.params.label ? (req.params.label !== "null" ? {label: req.params.label} : {}): {};
         const filter = req.params.label ? (req.params.label !== "null" ? {label: {$elemMatch: {value: {$regex: req.params.label}}}} : {}): {};
-        const data = await LiveSound.find(filter, null, { skip: page, limit: limitPageDataVeb });
+        // const data = await LiveSound.find(filter, null, { skip: page, limit: limitPageDataVeb });
+        const data = await LiveSound.find(filter);
         const count_page = Math.ceil((await LiveSound.find(filter).count()) / limitPageDataVeb) - 1;
         res.status(201).json({data, page: Number(req.params.page), count_page, end_page: count_page <= page});
 
@@ -456,7 +506,8 @@ module.exports.get_list_audio = async function(req, res) {
         if (req.params.label && req.params.label !== "null") filter.label = {$elemMatch: {value: {$regex: req.params.label}}};
         if (req.params.category && req.params.category !== "null") filter.category = req.params.category;
         if (req.params.genre && req.params.genre !== "null") filter.genre = req.params.genre;
-        const data = await Audio.find(filter, null, { skip: page, limit: limitPageDataVeb });
+        // const data = await Audio.find(filter, null, { skip: page, limit: limitPageDataVeb });
+        const data = await Audio.find(filter);
         const count_page = Math.ceil((await Audio.find(filter).count()) / limitPageDataVeb) - 1;
         const count_data = await Audio.find().count();
 
@@ -489,7 +540,8 @@ module.exports.get_list_video = async function(req, res) {
 
         const page = (Number(req.params.page)) * limitPageDataVeb;
         const filter = req.params.label ? (req.params.label !== "null" ? {label_: {$elemMatch: {value: {$regex: req.params.label}}}} : {}): {};
-        let data = await Video.find(filter, null, { skip: page, limit: limitPageDataVeb });
+        // let data = await Video.find(filter, null, { skip: page, limit: limitPageDataVeb });
+        let data = await Video.find(filter);
         const count_page = Math.ceil((await Video.find(filter).count()) / limitPageDataVeb) - 1;
         const count_data = await Video.find().count();
 
@@ -522,7 +574,8 @@ module.exports.get_list_maps = async function(req, res) {
 
         const page = (Number(req.params.page)) * limitPageDataVeb;
         const filter = req.params.label ? (req.params.label !== "null" ? {label_: {$elemMatch: {value: {$regex: req.params.label}}}} : {}): {};
-        let data = await Maps.find(filter, null, { skip: page, limit: limitPageDataVeb });
+        // let data = await Maps.find(filter, null, { skip: page, limit: limitPageDataVeb });
+        let data = await Maps.find(filter);
         const count_page = Math.ceil((await Maps.find(filter).count()) / limitPageDataVeb) - 1;
 
         res.status(201).json({data, page: Number(req.params.page), count_page, end_page: count_page <= page});
@@ -545,7 +598,8 @@ module.exports.get_list_test = async function(req, res) {
 
         const page = (Number(req.params.page)) * limitPageDataVeb;
         const filter = req.params.label ? (req.params.label !== "null" ? {label_: {$elemMatch: {value: {$regex: req.params.label}}}} : {}): {};
-        let data = await Test.find(filter, null, { skip: page, limit: limitPageDataVeb });
+        // let data = await Test.find(filter, null, { skip: page, limit: limitPageDataVeb });
+        let data = await Test.find(filter);
         const count_page = Math.ceil((await Test.find(filter).count()) / limitPageDataVeb) - 1;
 
         for (let i = 0; i < data.length; i++) {
@@ -575,7 +629,8 @@ module.exports.get_list_courses = async function(req, res) {
 
         const page = (Number(req.params.page)) * limitPageDataVeb;
         const filter = req.params.label ? (req.params.label !== "null" ? {label_: {$elemMatch: {value: {$regex: req.params.label}}}} : {}): {};
-        let data = await Courses.find(filter, null, { skip: page, limit: limitPageDataVeb });
+        // let data = await Courses.find(filter, null, { skip: page, limit: limitPageDataVeb });
+        let data = await Courses.find(filter);
         const count_page = Math.ceil((await Courses.find(filter).count()) / limitPageDataVeb) - 1;
 
         for (let i = 0; i < data.length; i++) {
@@ -584,10 +639,10 @@ module.exports.get_list_courses = async function(req, res) {
             }, { date_start: 1, user_name: 1, user_id: 1, proc_lessons: 1 });
             if (data[i].info_tooltip && data[i].info_tooltip?.length && data[i].length_lessons !== 0) {
                 for (let j = 0; j < data[i].info_tooltip?.length; j++) {
-                    data[i].info_tooltip[j].proc_lessons = await UserLessonCourse.find({
+                    data[i].info_tooltip[j].proc_lessons = Math.round((await UserLessonCourse.find({
                         user_course_id: data[i].info_tooltip[j]._id,
                         user_id: data[i].info_tooltip[j].user_id
-                    }).count() / data[i].length_lessons * 100;
+                    }).count() / data[i].length_lessons * 100) * 100) / 100;
                 }
             }
 
@@ -684,6 +739,96 @@ module.exports.get_list_meditation = async function(req, res) {
     }
 }
 
+module.exports.get_musictherapys = async function(req, res) {
+    try {
+        const check = await checkAdmin.check(req, res);
+        if (!check.id) {
+            return res.status(401).json('Unauthorized');
+        }
+
+        let list_mus = [];
+        let musictherapys = await User.find({type_admin: 'Музыкотерапевт'});
+        for (let i = 0; i < musictherapys.length; i++) {
+            list_mus.push({
+                id: musictherapys[i]._id,
+                name: musictherapys[i].name + ' ' + musictherapys[i].fullName,
+            })
+        }
+
+        res.status(201).json(list_mus);
+    } catch(e) {
+        errorHandler(res, e);
+        // throw e;
+    }
+}
+
+module.exports.get_notes = async function(req, res) {
+    try {
+        const check = await checkAdmin.check(req, res);
+        if (!check.id) {
+            return res.status(401).json('Unauthorized');
+        }
+        const {id_user} = req.params;
+        const data = await Notes.find({id_user});
+        res.status(201).json(data);
+    } catch(e) {
+        errorHandler(res, e);
+        // throw e;
+    }
+}
+
+module.exports.get_statistics_test = async function(req, res) {
+    try {
+        const check = await checkAdmin.check(req, res);
+        if (!check.id) {
+            return res.status(401).json('Unauthorized');
+        }
+        const {id_user} = req.params;
+        let tests = await Test.find();
+        let result_data = [];
+        for (let index = 0; index < tests.length; index++) {
+            let item_result = await UserTest.find({
+                user_id: id_user,
+                test_id: tests[index]._id,
+                status: true
+            });
+            if (item_result && item_result.length) {
+                let data_list;
+                for (let j = 0; j < item_result?.length; j++) {
+                    data_list = JSON.parse(JSON.stringify(await QuestionsTest.find({
+                        test_id: item_result[j].test_id,
+                    })));
+                    for (let i = 0; i < data_list?.length; i++) {
+                        data_list[i].answer = await UserQuestionTest.findOne({
+                            user_id: id_user,
+                            test_id: item_result[j].test_id,
+                            user_test_id: item_result[j]._id,
+                            question_test_id: data_list[i]._id
+                        });
+                    }
+                    item_result[j].data = data_list;
+                    item_result[j].test = await Test.findOne({_id: item_result[j].test_id});
+                }
+                result_data.push({
+                    label: tests[index].label,
+                    result: item_result,
+                });
+            }
+        }
+
+
+        // let result = await UserTest.find({
+        //     user_id: id_user,
+        //     status: true
+        // });
+
+        res.status(201).json(result_data);
+    } catch(e) {
+        errorHandler(res, e);
+        // throw e;
+    }
+}
+
 module.exports.get_list_classic = async function(req, res) {
     try {
         const check = await checkAdmin.check(req, res);
@@ -706,6 +851,80 @@ module.exports.get_list_classic = async function(req, res) {
     }
 }
 
+module.exports.users_sort = async function(req, res) {
+    try {
+        const check = await checkAdmin.check(req, res);
+        if (!check.id) {
+            return res.status(401).json('Unauthorized');
+        }
+
+        const page = (Number(req.body.data.page)) * limitPageDataVeb;
+        let filter = req.body.data.full_name ? (req.body.data.full_name !== "null" ? {fullName: {$regex: req.body.data.full_name}} : {}): {};
+
+        if (req.body.data.is_admin && req.body.data.is_admin !== "null") filter.is_admin = req.body.data.is_admin === "true";
+        if (req.body.data.access && req.body.data.access !== "null") filter.access = req.body.data.access;
+        if (req.body.data.language && req.body.data.language !== "null") filter.language = req.body.data.language;
+
+        let data = await User.find(filter, null, { skip: page, limit: limitPageDataVeb }).sort({ [req.body.sortData.value]: req.body.status ? 1 : -1 });
+        const count_page = Math.ceil((await User.find(filter).count()) / limitPageDataVeb) - 1;
+        const count_data = await User.find().count();
+
+        for (let i = 0; i < data.length; i++) {
+            data[i].questionnaire = await Questionnaire.findOne({id_user: data[i]._id.toString()});
+            data[i].counter_video = await LogData.find({id_user: data[i]._id.toString(), type: "video"}).count();
+            data[i].counter_audio = await LogData.find({id_user: data[i]._id.toString(), type: "audio"}).count();
+        }
+
+        res.status(201).json({data, page: Number(req.body.data.page), count_page, end_page: count_page <= page, count_data});
+
+        let candidate = await User.findOne({_id: check.id});
+        candidate.date_last_activity = new Date();
+        await candidate.save();
+    } catch(e) {
+        errorHandler(res, e);
+        // throw e;
+    }
+}
+
+module.exports.get_list_user_fin = async function(req, res) {
+    try {
+        const check = await checkAdmin.check(req, res);
+        if (!check.id) {
+            return res.status(401).json('Unauthorized');
+        }
+
+        const page = (Number(req.params.page)) * limitPageDataVeb;
+        // let initFilter = {'musicTherapy.id': check.id};
+        // const filter = req.params.full_name ? (req.params.full_name !== "null" ? {fullName: req.params.full_name} : {}): {};
+        let filter = req.params.full_name ? (req.params.full_name !== "null" ? {fullName: {$regex: req.params.full_name}} : {}): {};
+        filter['musicTherapy.id'] = check.id;
+
+        if (req.params.is_admin && req.params.is_admin !== "null") filter.type_admin = req.params.is_admin;
+        if (req.params.access && req.params.access !== "null") filter.access = req.params.access;
+        if (req.params.language && req.params.language !== "null") filter.language = req.params.language;
+
+        // let data = await User.find(filter, null, { skip: page, limit: limitPageDataVeb });
+        let data = await User.find(filter);
+        const count_page = Math.ceil((await User.find(filter).count()) / limitPageDataVeb) - 1;
+        const count_data = await User.find(filter).count();
+
+        for (let i = 0; i < data.length; i++) {
+            data[i].questionnaire = await Questionnaire.findOne({id_user: data[i]._id.toString()});
+            data[i].counter_video = await LogData.find({id_user: data[i]._id.toString(), type: "video"}).count();
+            data[i].counter_audio = await LogData.find({id_user: data[i]._id.toString(), type: "audio"}).count();
+        }
+
+        res.status(201).json({data, page: Number(req.params.page), count_page, end_page: count_page <= page, count_data});
+
+        let candidate = await User.findOne({_id: check.id});
+        candidate.date_last_activity = new Date();
+        await candidate.save();
+    } catch(e) {
+        errorHandler(res, e);
+        // throw e;
+    }
+}
+
 module.exports.get_list_user = async function(req, res) {
     try {
         const check = await checkAdmin.check(req, res);
@@ -717,13 +936,14 @@ module.exports.get_list_user = async function(req, res) {
         // const filter = req.params.full_name ? (req.params.full_name !== "null" ? {fullName: req.params.full_name} : {}): {};
         let filter = req.params.full_name ? (req.params.full_name !== "null" ? {fullName: {$regex: req.params.full_name}} : {}): {};
 
-        if (req.params.is_admin && req.params.is_admin !== "null") filter.is_admin = req.params.is_admin === "true";
+        if (req.params.is_admin && req.params.is_admin !== "null") filter.type_admin = req.params.is_admin;
         if (req.params.access && req.params.access !== "null") filter.access = req.params.access;
         if (req.params.language && req.params.language !== "null") filter.language = req.params.language;
 
-        let data = await User.find(filter, null, { skip: page, limit: limitPageDataVeb });
+        // let data = await User.find(filter, null, { skip: page, limit: limitPageDataVeb });
+        let data = await User.find(filter);
         const count_page = Math.ceil((await User.find(filter).count()) / limitPageDataVeb) - 1;
-        const count_data = await User.find().count();
+        const count_data = await User.find(filter).count();
 
         for (let i = 0; i < data.length; i++) {
             data[i].questionnaire = await Questionnaire.findOne({id_user: data[i]._id.toString()});
@@ -757,25 +977,38 @@ module.exports.re_user = async function(req, res) {
             new_data[item[0]] = item[1]
         });
 
-        if (req.body.password) new_data.password = req.body.password;
-        if (req.body.settings) {
-            Object.entries(req.body.settings).forEach(item => {
+        if (req.body.data.notes !== undefined) {
+            await Notes.deleteMany({id_user: req.body._id});
+            let new_notes = null;
+            for(let i = 0; i < req.body.data.notes.length; i++) {
+                new_notes = new Notes({
+                    ...req.body.data.notes[i],
+                    id_user: req.body._id,
+                    note_writer_name: candidate.fullName + ' ' + candidate.name,
+                });
+                await new_notes.save();
+            }
+        }
+
+        if (req.body.data.password) new_data.password = req.body.data.password;
+        if (req.body.data.settings) {
+            Object.entries(req.body.data.settings).forEach(item => {
                 new_data[item[0]] = item[1]
             });
         }
         await new_data.save();
 
-        if (req.body.questionnaire) {
+        if (req.body.data.questionnaire) {
             let questionnaire = await Questionnaire.findOne({id_user: req.body._id.toString()});
 
             if (questionnaire) {
-                Object.entries(req.body.questionnaire).forEach(item => {
+                Object.entries(req.body.data.questionnaire).forEach(item => {
                     questionnaire[item[0]] = item[1]
                 });
             } else {
                 questionnaire = new Questionnaire({
                     id_user: req.body._id.toString(),
-                    ...req.body.questionnaire,
+                    ...req.body.data.questionnaire,
                     status: false,
                 });
             }
@@ -1021,8 +1254,8 @@ module.exports.delete_live_sound = async function(req, res) {
         let delete_data = await LiveSound.findOne({_id: req.body._id});
 
         // await fs.unlink(`./${delete_data.img}`, (err) => {
-        //     if (err) console.log("no delete!!!!");
-        // }).catch((e) => console.log(e));
+        //     if (err)
+        // }).catch();
 
         await delete_data.delete();
 
@@ -1070,14 +1303,6 @@ module.exports.delete_audio = async function(req, res) {
 
         let delete_data = await Audio.findOne({_id: req.body._id});
 
-        // await fs.unlink(`./${delete_data.video}`, (err) => {
-        //     if (err) console.log("no delete!!!!");
-        // }).catch((e) => console.log(e));
-        //
-        // await fs.unlink(`./${delete_data.poster}`, (err) => {
-        //     if (err) console.log("no delete!!!!");
-        // }).catch((e) => console.log(e));
-
         await delete_data.delete();
 
         res.status(201).json('OK');
@@ -1101,13 +1326,6 @@ module.exports.delete_video = async function(req, res) {
 
         let delete_data = await Video.findOne({_id: req.body._id});
 
-        // await fs.unlink(`./${delete_data.video}`, (err) => {
-        //     if (err) console.log("no delete!!!!");
-        // }).catch((e) => console.log(e));
-        //
-        // await fs.unlink(`./${delete_data.poster}`, (err) => {
-        //     if (err) console.log("no delete!!!!");
-        // }).catch((e) => console.log(e));
 
         await delete_data.delete();
         res.status(201).json('OK');
@@ -1129,10 +1347,6 @@ module.exports.delete_map = async function(req, res) {
         let candidate = await User.findOne({_id: check.id});
 
         let delete_data = await Maps.findOne({_id: req.body._id});
-
-        // await fs.unlink(`./${delete_data.img}`, (err) => {
-        //     if (err) console.log("no delete!!!!");
-        // }).catch((e) => console.log(e));
 
         await delete_data.delete();
         res.status(201).json('OK');
@@ -1229,6 +1443,24 @@ module.exports.get_translation = async function(req, res) {
     }
 }
 
+module.exports.get_translation_admin = async function(req, res) {
+    try {
+        const check = await checkAdmin.check(req, res);
+        if (!check.id) {
+            return res.status(401).json('Unauthorized');
+        }
+
+        let candidate = await User.findOne({_id: check.id});
+        let translations = await Translation.findOne({root: 1});
+        res.status(201).json(translations);
+        candidate.date_last_activity = new Date();
+        await candidate.save();
+    } catch(e) {
+        errorHandler(res, e);
+        // throw e;
+    }
+}
+
 module.exports.re_translation = async function(req, res) {
     try {
         const check = await checkAdmin.check(req, res);
@@ -1247,6 +1479,40 @@ module.exports.re_translation = async function(req, res) {
         } else {
             translations = new Translation({
                 root: 0,
+                ...req.body.data,
+            })
+        }
+        await translations.save();
+
+        res.status(201).json({translations});
+
+        candidate.date_last_activity = new Date();
+        await candidate.save();
+    } catch(e) {
+        errorHandler(res, e);
+        // throw e;
+    }
+}
+
+module.exports.re_translation_admin = async function(req, res) {
+    try {
+        const check = await checkAdmin.check(req, res);
+        if (!check.id) {
+            return res.status(401).json('Unauthorized');
+        }
+
+        let candidate = await User.findOne({_id: check.id});
+
+        let translations = await Translation.findOne({root : 1});
+
+
+        if (translations) {
+            Object.entries(req.body.data).forEach(item => {
+                translations[item[0]] = item[1] && item[1].length ? item[1] : null
+            });
+        } else {
+            translations = new Translation({
+                root: 1,
                 ...req.body.data,
             })
         }

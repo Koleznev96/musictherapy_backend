@@ -26,6 +26,12 @@ module.exports.login = async function(req, res) {
     let candidate = await User.findOne({email: req.body.email});
     if (candidate) {
         const passwordResult = req.body.password === candidate.password;
+        if (candidate.status) {
+            res.status(409).json({
+                errors: [['email', 'такой аккаунт не существует.'], ['password', 'такой аккаунт не существует.']]
+            });
+            return;
+        }
         if (passwordResult) {
             // const token = jwt.sign({
             //     email: candidate.email,
@@ -94,6 +100,7 @@ module.exports.register = async function(req, res) {
             codeCheck: code,
             isNoCheck: true,
             is_admin: false,
+            type_admin: 'Клиент',
         });
 
         // const code_entry = new Code({
@@ -123,7 +130,7 @@ module.exports.register = async function(req, res) {
 
 module.exports.register_old = async function(req, res) {
     const candidate = await User.findOne({email: req.body.email});
-    if (candidate && !candidate.isNoCheck) {
+    if (candidate) {
         res.status(409).json({
             errors: [['email', 'Такой e-mail уже занят.']]
         });
@@ -144,6 +151,7 @@ module.exports.register_old = async function(req, res) {
             codeCheck: code,
             isNoCheck: true,
             is_admin: false,
+            type_admin: 'Клиент',
         });
 
         try {

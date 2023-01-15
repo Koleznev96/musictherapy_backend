@@ -9,6 +9,7 @@ import {AuthContext} from "../../context/authContext";
 import ClipLoader from "react-spinners/ClipLoader";
 import {ColorsStyles} from "../../constants/ColorsStyles";
 import {useHttp} from "../../hooks/http.hook";
+import {checkLanguageConst} from "../../hooks/translashion";
 
 export const FormRePassword = () => {
     const popupForm = usePopupForm();
@@ -65,14 +66,16 @@ export const FormRePassword = () => {
         <div className={s.root_popup}>
             <div className={s.popup_header}>
                 <div className={GlobalStyle.BellotaFontRegular + ' ' + s.popup_label}>
-                    Изменение Пароля
+
+                    {checkLanguageConst('Изменение Пароля', auth.translations)}
                 </div>
                 <div className={s.button_close} onClick={() => popupForm.exitHandler()}>
                     <GlobalSvgSelector id='close' />
                 </div>
             </div>
             <div className={GlobalStyle.CustomFontRegular + ' ' + s.placeholder}>
-                Новый пароль
+
+                {checkLanguageConst('Новый пароль', auth.translations)}
             </div>
             <input
                 value={newPassword}
@@ -81,7 +84,8 @@ export const FormRePassword = () => {
                 onChange={(value) => setNewPassword(value.target.value)}
             />
             <div className={GlobalStyle.CustomFontRegular + ' ' + s.placeholder}>
-                Повторите пароль
+
+                {checkLanguageConst('Повторите пароль', auth.translations)}
             </div>
             <input
                 value={newPasswordRe}
@@ -90,7 +94,8 @@ export const FormRePassword = () => {
                 onChange={(value) => setNewPasswordRe(value.target.value)}
             />
             <div className={GlobalStyle.CustomFontRegular + ' ' + s.placeholder}>
-                Текущий пароль
+
+                {checkLanguageConst('Текущий пароль', auth.translations)}
             </div>
             <input
                 value={password}
@@ -99,8 +104,7 @@ export const FormRePassword = () => {
                 onChange={(value) => setPassword(value.target.value)}
             />
             <div className={GlobalStyle.CustomFontRegular + ' ' + (popupOk.length !== 0 ? s.popup_ok : s.popup_error)}>
-                {popupError}
-                {popupOk}
+                {checkLanguageConst(popupError || popupOk, auth.translations)}
             </div>
             <div className={s.popup_liner_button}>
                 <div
@@ -113,7 +117,8 @@ export const FormRePassword = () => {
                         </div>
                     ) : (
                         <div className={GlobalStyle.CustomFontRegular + ' ' + s.popup_button_ok_text}>
-                            Сохранить
+
+                            {checkLanguageConst('Сохранить', auth.translations)}
                         </div>
                     )}
                 </div>
@@ -122,7 +127,8 @@ export const FormRePassword = () => {
                     onClick={() => popupForm.exitHandler()}
                 >
                     <div className={GlobalStyle.CustomFontRegular + ' ' + s.popup_button_exit_text}>
-                        Отмена
+
+                        {checkLanguageConst('Отмена', auth.translations)}
                     </div>
                 </div>
             </div>

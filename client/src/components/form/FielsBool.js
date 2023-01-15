@@ -1,8 +1,9 @@
 import GlobalStyle from "../GlobalStyle.module.scss";
 import s from "../tableCard/Form.module.scss";
 import React, {useEffect, useState} from "react";
+import {checkLanguageConst} from "../../hooks/translashion";
 
-export const FieldBool = ({label, name, change, value, list_value, st}) => {
+export const FieldBool = ({label, name, change, value, list_value, st, translations}) => {
     const [statusField, setStatusField] = useState(null);
 
     useEffect(() => {
@@ -18,7 +19,7 @@ export const FieldBool = ({label, name, change, value, list_value, st}) => {
     return (
         <div className={s.jin}>
             <div className={GlobalStyle.CustomFontRegular + ' ' + s.placeholder}>
-                {label}
+                {checkLanguageConst(label, translations)}
             </div>
             <div className={s.wrapper_bool}>
                 {st ? (
@@ -27,7 +28,7 @@ export const FieldBool = ({label, name, change, value, list_value, st}) => {
                             <div key={index} className={s.button_input} onClick={() => clickHandler(item.value)}>
                                 <div className={statusField === item.value ? s.clip_active : s.clip}/>
                                 <div className={s.clip_text}>
-                                    {item.label}
+                                    {checkLanguageConst(item.label, translations)}
                                 </div>
                             </div>
                         ))}
@@ -39,7 +40,7 @@ export const FieldBool = ({label, name, change, value, list_value, st}) => {
                             <div key={index} className={s.button_input} onClick={() => clickHandler(item.value)}>
                                 <div className={statusField === item.value ? s.clip_active : s.clip}/>
                                 <div className={s.clip_text}>
-                                    {item.label}
+                                    {checkLanguageConst(item.label, translations)}
                                 </div>
                             </div>
                         ))}
@@ -49,7 +50,7 @@ export const FieldBool = ({label, name, change, value, list_value, st}) => {
                             <div key={index} className={s.button_input} onClick={() => clickHandler(item.value)}>
                                 <div className={statusField === item.value ? s.clip_active : s.clip}/>
                                 <div className={s.clip_text}>
-                                    {item.label}
+                                    {checkLanguageConst(item.label, translations)}
                                 </div>
                             </div>
                         ))}

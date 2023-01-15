@@ -3,9 +3,10 @@ import s from "./ButtonFull.module.scss";
 import GlobalStyle from "../GlobalStyle.module.scss";
 import ClipLoader from "react-spinners/ClipLoader";
 import {ColorsStyles} from "../../constants/ColorsStyles";
+import {checkLanguageConst} from "../../hooks/translashion";
 
 
-export const ButtonFull = ({ data }) => {
+export const ButtonFull = ({ data, translations }) => {
     return (
         <div
         className={s.button + ' ' + (data?.styles ? data.styles : null)}
@@ -17,7 +18,7 @@ export const ButtonFull = ({ data }) => {
                 </div>
             ) : (
                 <div className={GlobalStyle.CustomFontRegular + ' ' + s.button_text}>
-                    {data.value}
+                    {checkLanguageConst(data.value, translations)}
                 </div>
             )}
         </div>
