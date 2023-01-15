@@ -1,34 +1,35 @@
-const errorHandler = require('../../utils/errorHandler');
-const jwt = require('jsonwebtoken');
-const keys = require('../../../config/keys');
-const emailTransport = require('../../middleware/emailTransport');
+const errorHandler = require("../../utils/errorHandler");
+const jwt = require("jsonwebtoken");
+const keys = require("../../../config/keys");
+const emailTransport = require("../../middleware/emailTransport");
 
-const User = require('../../models/User');
-const Code = require('../../models/Code');
+const User = require("../../models/User");
+const Code = require("../../models/Code");
 
-
-const sendEmail = async function(email, message, res) {
-    const mailOptions={
-        to : email,
-        subject : "Активация аккаунта Музыкотерапия",
-        html : message,
-    }
-    await emailTransport.sendMail(mailOptions, function(error, response){
-        if(error){
-            console.log('emailTransport-', error);
+const sendEmail = async function (email, message, res) {
+    const mailOptions = {
+        to: email,
+        subject: "Активация аккаунта Музыкотерапия",
+        html: message,
+    };
+    await emailTransport.sendMail(mailOptions, function (error, response) {
+        if (error) {
+            console.log("emailTransport-", error);
             res.end("error");
         }
     });
-}
+};
 
-
-module.exports.login = async function(req, res) {
-    let candidate = await User.findOne({email: req.body.email});
+module.exports.login = async function (req, res) {
+    let candidate = await User.findOne({ email: req.body.email });
     if (candidate) {
         const passwordResult = req.body.password === candidate.password;
         if (candidate.status) {
             res.status(409).json({
-                errors: [['email', 'такой аккаунт не существует.'], ['password', 'такой аккаунт не существует.']]
+                errors: [
+                    ["email", "такой аккаунт не существует."],
+                    ["password", "такой аккаунт не существует."],
+                ],
             });
             return;
         }
@@ -38,47 +39,55 @@ module.exports.login = async function(req, res) {
             //     userId: candidate._id,
             // }, keys.jwt, {expiresIn: 60000 * 60000});
 
-            const token = 'sdfgsdgf456fdgs' + candidate._id;
+            const token = "sdfgsdgf456fdgs" + candidate._id;
 
             candidate.token = `Bearer ${token}`;
             candidate.date_last_activity = new Date();
             await candidate.save();
 
             res.status(200).json({
-                token: `Bearer ${token}`
+                token: `Bearer ${token}`,
             });
         } else {
             res.status(409).json({
-                errors: [['email', 'Неверный пароль или e-mail.'], ['password', 'Неверный пароль или e-mail.']]
+                errors: [
+                    ["email", "PasswordOrE-mailError"],
+                    ["password", "PasswordOrE-mailError"],
+                ],
             });
         }
-    }else {
+    } else {
         res.status(409).json({
-            errors: [['email', 'Неверный пароль или e-mail.'], ['password', 'Неверный пароль или e-mail.']]
+            errors: [
+                ["email", "PasswordOrE-mailError"],
+                ["password", "PasswordOrE-mailError"],
+            ],
         });
     }
-}
+};
 
-module.exports.register = async function(req, res) {
-    const candidate = await User.findOne({email: req.body.email});
+module.exports.register = async function (req, res) {
+    const candidate = await User.findOne({ email: req.body.email });
     if (candidate) {
         if (!candidate.isNoCheck) {
             res.status(409).json({
-                errors: [['email', 'Пользователь с таким e-mail зарегестрирован, попробуйте востановить пароль.']]
+                errors: [["email", "UserAlreadyRegistered"]],
             });
         } else {
             // Отправляем Письмо с кодом
-            const message_ = req.body.name +
+            const message_ =
+                req.body.name +
                 ", подтверждаем вашу регистрацию в приложении «Музыкотерапия»." +
-                "<br><br>Код активации: " + candidate.codeCheck.toString() +
+                "<br><br>Код активации: " +
+                candidate.codeCheck.toString() +
                 "<br><br>Приятного использования!" +
                 "<br><br>По всем вопросам Вы можете обращаться в службу поддержки – info@musictherapy.by или по телефону/вайбер/телеграм +375(44)464-73-47." +
                 "<br>--" +
                 "<br>www.MusicTherapy.by";
             await sendEmail(req.body.email, message_, res);
-            res.status(201).json({tokenCode: req.body.email});
+            res.status(201).json({ tokenCode: req.body.email });
             // res.status(409).json({
-            //     errors: [['no_check', 'Такой e-mail уже занят.']]
+            //     errors: [['no_check', 'E-mailAlreadyRegistered']]
             // });
         }
     } else {
@@ -89,7 +98,7 @@ module.exports.register = async function(req, res) {
         const date = new Date();
         const user = new User({
             email: req.body.email,
-            language: req.body.language ? req.body.language : 'ru',
+            language: req.body.language ? req.body.language : "ru",
             password: req.body.password,
             name: req.body.name,
             fullName: req.body.fullName,
@@ -100,7 +109,7 @@ module.exports.register = async function(req, res) {
             codeCheck: code,
             isNoCheck: true,
             is_admin: false,
-            type_admin: 'Клиент',
+            type_admin: "Клиент",
         });
 
         // const code_entry = new Code({
@@ -109,9 +118,11 @@ module.exports.register = async function(req, res) {
         // });
 
         // Отправляем Письмо с кодом
-        const message = req.body.name +
+        const message =
+            req.body.name +
             ", подтверждаем вашу регистрацию в приложении «Музыкотерапия»." +
-            "<br><br>Код активации: " + code.toString() +
+            "<br><br>Код активации: " +
+            code.toString() +
             "<br><br>Приятного использования!" +
             "<br><br>По всем вопросам Вы можете обращаться в службу поддержки – info@musictherapy.by или по телефону/вайбер/телеграм +375(44)464-73-47." +
             "<br>--" +
@@ -120,27 +131,27 @@ module.exports.register = async function(req, res) {
 
         try {
             await user.save();
-            res.status(201).json({tokenCode: req.body.email});
-        } catch(e) {
+            res.status(201).json({ tokenCode: req.body.email });
+        } catch (e) {
             errorHandler(res, e);
             // throw e;
         }
     }
-}
+};
 
-module.exports.register_old = async function(req, res) {
-    const candidate = await User.findOne({email: req.body.email});
+module.exports.register_old = async function (req, res) {
+    const candidate = await User.findOne({ email: req.body.email });
     if (candidate) {
         res.status(409).json({
-            errors: [['email', 'Такой e-mail уже занят.']]
+            errors: [["email", "E-mailAlreadyRegistered"]],
         });
     } else {
-        const code = '111111';
+        const code = "111111";
 
         const date = new Date();
         const user = new User({
             email: req.body.email,
-            language: req.body.language ? req.body.language : 'ru',
+            language: req.body.language ? req.body.language : "ru",
             password: req.body.password,
             name: req.body.name,
             fullName: req.body.fullName,
@@ -151,25 +162,28 @@ module.exports.register_old = async function(req, res) {
             codeCheck: code,
             isNoCheck: true,
             is_admin: false,
-            type_admin: 'Клиент',
+            type_admin: "Клиент",
         });
 
         try {
             await user.save();
-            res.status(201).json({tokenCode: req.body.email});
-        } catch(e) {
+            res.status(201).json({ tokenCode: req.body.email });
+        } catch (e) {
             errorHandler(res, e);
             // throw e;
         }
     }
-}
+};
 
-module.exports.code_check = async function(req, res) {
+module.exports.code_check = async function (req, res) {
     try {
-        let candidate = await User.findOne({email: req.body.email});
-        if (!candidate.codeCheck.length || (candidate.codeCheck.toString() !== req.body.code.toString())) {
+        let candidate = await User.findOne({ email: req.body.email });
+        if (
+            !candidate.codeCheck.length ||
+            candidate.codeCheck.toString() !== req.body.code.toString()
+        ) {
             return res.status(409).json({
-                errors: [['code', 'Неверный код, попробуйте снова']]
+                errors: [["code", "CodeError"]],
             });
         }
 
@@ -192,27 +206,27 @@ module.exports.code_check = async function(req, res) {
         //     email: req.body.email,
         //     userId: user._id,
         // }, keys.jwt, {expiresIn: 60000 * 60000});
-        const token = 'sdfgsdgf456fdgs' + candidate._id;
+        const token = "sdfgsdgf456fdgs" + candidate._id;
 
         candidate.token = `Bearer ${token}`;
         await candidate.save();
 
         res.status(201).json({
-            token: `Bearer ${token}`
+            token: `Bearer ${token}`,
         });
-    } catch(e) {
+    } catch (e) {
         errorHandler(res, e);
         // throw e;
     }
-}
+};
 
-module.exports.help_password = async function(req, res) {
+module.exports.help_password = async function (req, res) {
     // Воставновление пароля
     try {
-        const candidate = await User.findOne({email: req.body.email});
+        const candidate = await User.findOne({ email: req.body.email });
         if (!candidate) {
             return res.status(401).json({
-                errors: [['email', 'Такой e-mail не зарегестрирован']]
+                errors: [["email", "E-mailNotRegistered"]],
             });
         }
 
@@ -220,19 +234,19 @@ module.exports.help_password = async function(req, res) {
         const message = "Ваш пароль: " + candidate.password;
         await sendEmail(req.body.email, message, res);
 
-        res.status(201).json('OK');
-    } catch(e) {
+        res.status(201).json("OK");
+    } catch (e) {
         errorHandler(res, e);
         // throw e;
     }
-}
+};
 
-module.exports.get_data = async function(req, res) {
+module.exports.get_data = async function (req, res) {
     try {
         const data = await Code.find();
         res.status(201).json(data);
-    } catch(e) {
+    } catch (e) {
         errorHandler(res, e);
         // throw e;
     }
-}
+};

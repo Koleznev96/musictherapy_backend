@@ -1,17 +1,19 @@
-@import '../../constants/ColorsStyles';
+@import "../../constants/ColorsStyles";
 
 .input {
     width: 100%;
     height: 46px;
-    border-radius: 14px;
+    // border-radius: 14px;
     aligin-items: center;
     color: #fff;
     margin-top: 10px;
     text-align: center;
-    border-color: $colorButton;
+    // border-color: $colorButton;
     border-width: 2px;
     font-size: 18px;
     background: rgba(255, 255, 255, 0);
+    border: $auhtBorderInputColor;
+    border-radius: $auhtRadiusInputColor;
 }
 
 .error_text {
@@ -21,4 +23,13 @@
     padding-left: 4px;
     text-align: left;
     margin-top: 4px;
+}
+
+.inp {
+    border-color: $auhtBorderInputColor;
+    border-radius: $auhtRadiusInputColor;
+}
+
+.but {
+    border-radius: $auhtRadiusInputColor;
 }

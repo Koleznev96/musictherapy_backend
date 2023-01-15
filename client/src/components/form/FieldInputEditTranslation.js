@@ -1,61 +1,100 @@
 import GlobalStyle from "../GlobalStyle.module.scss";
 import s from "../tableCard/Form.module.scss";
-import React, {useEffect, useState} from "react";
-import {GlobalSvgSelector} from "../../assets/icons/global/GlobalSvgSelector";
-import MDEditor from '@uiw/react-md-editor';
-import MarkdownEditor from '@uiw/react-markdown-editor';
-import {checkLanguageConst} from "../../hooks/translashion";
+import React, { useEffect, useState } from "react";
+import { GlobalSvgSelector } from "../../assets/icons/global/GlobalSvgSelector";
+import MDEditor from "@uiw/react-md-editor";
+import MarkdownEditor from "@uiw/react-markdown-editor";
+import { checkLanguageConst } from "../../hooks/translashion";
+import { Lengs } from "./Lengs";
 
-export const FieldInputEditTranslation = ({label, name, change, value, languages, translation, translations, lang}) => {
-    const [boxField, setBoxField] = useState(translation ? [{language: 'ru', value: ''}, {language: 'com', value: ''}] : '');
-    const [itemMenu, setItemMenu] = useState(lang === 'ru' ? 0 : 1);
+export const FieldInputEditTranslation = ({
+    label,
+    name,
+    change,
+    value,
+    languages,
+    translation,
+    translations,
+    lang,
+}) => {
+    const [boxField, setBoxField] = useState(
+        translation
+            ? languages?.map((item) => ({ language: item.code, value: "" }))
+            : ""
+    );
+    const [itemMenu, setItemMenu] = useState(lang);
 
     useEffect(() => {
         if (value && value.length > 0) {
             setBoxField(value);
         } else {
-            setBoxField(translation ? [{language: 'ru', value: ''}, {language: 'com', value: ''}] : '');
+            setBoxField(
+                translation
+                    ? languages?.map((item) => ({
+                          language: item.code,
+                          value: "",
+                      }))
+                    : ""
+            );
         }
     }, [value]);
-
-    const newLanguage = () => {
-        setItemMenu(itemMenu === 0 ? 1 : 0);
-    }
 
     const editFiled = (value) => {
         if (translation) {
             let new_boxField = boxField;
-            new_boxField[itemMenu].value = value;
-            change({name, value: new_boxField});
+            const index_l = new_boxField.findIndex(
+                (item) => item.language === itemMenu
+            );
+            if (index_l === -1) {
+                new_boxField.push({
+                    language: itemMenu,
+                    value,
+                });
+            } else {
+                new_boxField[index_l].value = value;
+            }
+            change({ name, value: new_boxField });
         } else {
-            change({name, value});
+            change({ name, value });
         }
-    }
+    };
 
     return (
         <div className={s.jinl}>
             <div className={s.wrpper_field_header}>
-                <div className={GlobalStyle.CustomFontRegular + ' ' + s.placeholder}>
+                <div
+                    className={
+                        GlobalStyle.CustomFontRegular + " " + s.placeholder
+                    }
+                >
                     {checkLanguageConst(label, translations)}
                 </div>
                 {translation ? (
-                <div className={s.box_translation}>
-                    <div className={s.wrapper_language_label} onClick={() => newLanguage()}>
-                        <div className={GlobalStyle.CustomFontRegular + ' ' + s.language_label}>
-                            {checkLanguageConst(languages[itemMenu].label, translations)}
-                        </div>
-                        <GlobalSvgSelector id="arrow_mini" />
-                    </div>
-                </div>
-                ): null}
+                    <Lengs
+                        languages={languages}
+                        translations={translations}
+                        setItemMenu={setItemMenu}
+                        itemMenu={languages.findIndex(
+                            (item) => item.code === itemMenu
+                        )}
+                    />
+                ) : null}
             </div>
             <MDEditor
-                value={translation ? boxField[itemMenu]?.value : boxField}
+                value={
+                    translation
+                        ? boxField?.find((item) => item.language === itemMenu)
+                            ? boxField?.find(
+                                  (item) => item.language === itemMenu
+                              ).value
+                            : ""
+                        : boxField
+                }
                 onChange={editFiled}
-                preview={'edit'}
+                preview={"edit"}
                 className={s.markdown}
                 height={220}
             />
         </div>
-    )
-}
+    );
+};

@@ -1,40 +1,44 @@
 import GlobalStyle from "../GlobalStyle.module.scss";
 import s from "../tableCard/Form.module.scss";
-import React, {useContext, useEffect, useState} from "react";
-import {GlobalSvgSelector} from "../../assets/icons/global/GlobalSvgSelector";
-import {AuthContext} from "../../context/authContext";
-import {useHttp} from "../../hooks/http.hook";
-import {ColorsStyles} from "../../constants/ColorsStyles";
+import React, { useContext, useEffect, useState } from "react";
+import { GlobalSvgSelector } from "../../assets/icons/global/GlobalSvgSelector";
+import { AuthContext } from "../../context/authContext";
+import { useHttp } from "../../hooks/http.hook";
+import { ColorsStyles } from "../../constants/ColorsStyles";
 import ClipLoader from "react-spinners/ClipLoader";
-import {PostService} from "../../services/PostService";
-import {httpServer} from "../../const";
-import {checkLanguageConst} from "../../hooks/translashion";
+import { PostService } from "../../services/PostService";
+import { httpServer } from "../../const";
+import { checkLanguageConst } from "../../hooks/translashion";
 
-
-export const FieldFileOpen = ({label, name, change, value, translations}) => {
+export const FieldFileOpen = ({ label, name, change, value, translations }) => {
     const auth = useContext(AuthContext);
-    const {request, error, clearError, loading} = useHttp();
-    const [status, setStatus] = useState('upload');
+    const { request, error, clearError, loading } = useHttp();
+    const [status, setStatus] = useState("upload");
     const [statusOk, setStatusOk] = useState(false);
     const [statusError, setStatusError] = useState(false);
     const [loader, setLoader] = useState(false);
 
     useEffect(() => {
-        if (value && value.length > 0) setStatus('delete');
-        else setStatus('upload');
+        if (value && value.length > 0) setStatus("delete");
+        else setStatus("upload");
     }, [value]);
 
     const deleteFile = async () => {
         try {
-            await request(`/api/upload/delete`, 'POST', {url: value}, {
-                Authorization: `${auth.token}`
-            });
-            change({name, value: ''});
+            await request(
+                `/api/upload/delete`,
+                "POST",
+                { url: value },
+                {
+                    Authorization: `${auth.token}`,
+                }
+            );
+            change({ name, value: "" });
         } catch (e) {}
-    }
+    };
 
     const openFile = async (event) => {
-        if (status === 'delete') {
+        if (status === "delete") {
             await deleteFile();
             return null;
         }
@@ -43,52 +47,79 @@ export const FieldFileOpen = ({label, name, change, value, translations}) => {
         setStatusError(false);
         try {
             const files = event.target.files[0];
-            const data = (await PostService.postUploadVideo(files, auth.token)).data;
+            const data = (await PostService.postUploadVideo(files, auth.token))
+                .data;
             setStatusOk(true);
             setTimeout(() => setStatusOk(false), 2500);
-            change({name, value: data});
+            change({ name, value: data });
             setLoader(false);
         } catch (e) {
             setStatusError(true);
             setLoader(false);
         }
-    }
+    };
     // .replace('\\', '/')
     return (
         <div className={s.jin}>
-            <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
-                <div className={GlobalStyle.CustomFontRegular + ' ' + s.placeholder}>
+            <div
+                style={{
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "space-between",
+                }}
+            >
+                <div
+                    className={
+                        GlobalStyle.CustomFontRegular + " " + s.placeholder
+                    }
+                >
                     {checkLanguageConst(label, translations)}
                 </div>
-                <a className={s.button_open} href={`${httpServer}/${value}`} target="_blank">
-                    <div className={GlobalStyle.CustomFontRegular + ' ' + s.placeholder}>
-                        {checkLanguageConst('Открыть', translations)}
+                <a
+                    className={s.button_open}
+                    href={`${httpServer}/${value}`}
+                    target="_blank"
+                >
+                    <div
+                        className={
+                            GlobalStyle.CustomFontRegular + " " + s.placeholder
+                        }
+                    >
+                        {checkLanguageConst("Open", translations)}
                     </div>
                 </a>
             </div>
             <div className={s.root_file}>
-                <input
-                    value={value}
-                    type='text'
-                    className={s.input_file}
-                />
+                <input value={value} type="text" className={s.input_file} />
                 <div className={s.button_file} onClick={() => openFile()}>
                     {loader ? (
-                        <ClipLoader color={ColorsStyles.colorTextError} loading={true} css={s.loader} size={32} />
+                        <ClipLoader
+                            color={ColorsStyles.colorTextError}
+                            loading={true}
+                            css={s.loader}
+                            size={32}
+                        />
+                    ) : status === "upload" ? (
+                        <>
+                            <input
+                                className={s.step}
+                                type="file"
+                                name="myImage"
+                                onChange={(event) => openFile(event)}
+                            />
+                            <GlobalSvgSelector
+                                id={statusOk ? "ok" : "upload"}
+                            />
+                        </>
                     ) : (
-                        status === 'upload' ? (
-                            <>
-                                <input className={s.step} type="file" name="myImage" onChange={(event) => openFile(event)} />
-                                <GlobalSvgSelector id={statusOk ? 'ok' : 'upload'} />
-                            </>
-                        ) : (
-                            <>
-                                <GlobalSvgSelector id={statusOk ? 'ok' : 'delete'} />
-                            </>
-                        )
+                        <>
+                            <GlobalSvgSelector
+                                id={statusOk ? "ok" : "delete"}
+                            />
+                        </>
                     )}
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};

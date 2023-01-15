@@ -1,0 +1,44 @@
+@import "../../constants/ColorsStyles";
+
+.root {
+    width: 100vw;
+    min-height: 100vh;
+    background-color: $background;
+    padding: 58px 45px 0 45px;
+}
+
+.header {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 15px;
+    margin-right: 40px;
+}
+
+.create_button_ok {
+    width: 250px;
+    height: 36px;
+    background-color: $colorButton;
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    &:hover {
+        opacity: 0.8;
+        //background-color: #448FE4;
+    }
+}
+
+.create_button_ok_text {
+    width: 100%;
+    text-align: center;
+    color: #fff;
+}

@@ -1,224 +1,224 @@
-@import '../../constants/ColorsStyles';
+@import "../../constants/ColorsStyles";
 
 .root {
-  height: 38px;
-  border-radius: 12px;
-  border: 2px solid $colorButton;
-  aligin-items: center;
-  display: flex;
-  margin-right: 12px;
+    height: 38px;
+    border-radius: 12px;
+    border: 2px solid $SettingColorInput;
+    aligin-items: center;
+    display: flex;
+    margin-right: 12px;
 }
 
 .value {
-  font-size: 16px;
-  color: #000;
+    font-size: 16px;
+    color: #000;
 }
 
 .placeholder {
-  font-size: 16px;
-  color: #7e7e7e;
+    font-size: 16px;
+    color: $SetingColorTextFilter;
 }
 
 .input {
-  width: 100%;
-  display: block;
-  padding: 8px 12px;
-  color: #212529;
-  background-clip: padding-box;
-  border: 0;
-  outline:none;
-  border-radius: 14px;
-  cursor: pointer;
+    width: 100%;
+    display: block;
+    padding: 8px 12px;
+    color: #212529;
+    background-clip: padding-box;
+    border: 0;
+    outline: none;
+    border-radius: 14px;
+    cursor: pointer;
 }
 
 .button {
-  width: 65px;
-  height: 100%;
-  border-radius: 0 10px 10px 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  &:hover {
-    opacity: 0.5;
-  }
+    width: 65px;
+    height: 100%;
+    border-radius: 0 10px 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    &:hover {
+        opacity: 0.5;
+    }
 }
 
 .root_popup {
-  width: 350px;
+    width: 350px;
 }
 
 .popup_header {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  aligin-items: center;
-  margin-bottom: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    aligin-items: center;
+    margin-bottom: 20px;
 }
 
 .popup_label {
-  color: #fff;
-  font-size: 24px;
+    color: #fff;
+    font-size: 24px;
 }
 
 .button_close {
-  margin-top: 6px;
-  cursor: pointer;
-  svg {
-    transition: 0.3s;
-  }
-  &:hover {
+    margin-top: 6px;
+    cursor: pointer;
     svg {
-      transform: rotate(360deg);
+        transition: 0.3s;
     }
-  }
+    &:hover {
+        svg {
+            transform: rotate(360deg);
+        }
+    }
 }
 
 .placeholder_i {
-  margin-top: 20px;
-  font-size: 12px;
-  color: #fff;
-  margin-left: 10px;
+    margin-top: 20px;
+    font-size: 12px;
+    color: #fff;
+    margin-left: 10px;
 }
 
 .popup_error {
-  color: $colorTextError;
-  font-size: 12px;
-  margin-top: 10px;
+    color: $colorTextError;
+    font-size: 12px;
+    margin-top: 10px;
 }
 
 .popup_ok {
-  color: #15F539;
-  font-size: 12px;
-  margin-top: 10px;
+    color: #15f539;
+    font-size: 12px;
+    margin-top: 10px;
 }
 
 .popup_liner_button {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 20px;
-  margin-bottom: 10px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+    margin-bottom: 10px;
 }
 
 .popup_button_ok {
-  width: 68%;
-  height: 46px;
-  background-color: $colorButton;
-  border-radius: 6px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  &:hover {
-    opacity: 0.8;
-    //background-color: #448FE4;
-  }
+    width: 68%;
+    height: 46px;
+    background-color: $colorButton;
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    &:hover {
+        opacity: 0.8;
+        //background-color: #448FE4;
+    }
 }
 
 .popup_button_ok_text {
-  color: #FFFFFF;
+    color: #ffffff;
 }
 
 .popup_button_exit_text {
-  color: #FFFFFF;
+    color: #ffffff;
 }
 
 .popup_button_exit {
-  width: 30%;
-  height: 46px;
-  border: 2px solid $colorButton;
-  border-radius: 6px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  &:hover {
-    border: 3px solid $colorButton;
-    opacity: 0.8;
-  }
+    width: 30%;
+    height: 46px;
+    border: 2px solid $colorButton;
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    &:hover {
+        border: 3px solid $colorButton;
+        opacity: 0.8;
+    }
 }
 
 .popup_button_delete {
-  width: 90px;
-  height: 26px;
-  margin-right: 10px;
-  border: 2px solid #ff0000;
-  border-radius: 6px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
+    width: 90px;
+    height: 26px;
+    margin-right: 10px;
+    border: 2px solid #ff0000;
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
 
-  &:hover {
-    border: 3px solid #FF0000;
-    opacity: 0.8;
-  }
+    &:hover {
+        border: 3px solid #ff0000;
+        opacity: 0.8;
+    }
 }
 
 .wrapper_bool {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
 }
 
 .root_click {
-  width: 50%;
+    width: 50%;
 }
 
 .button_input {
-  display: flex;
-  aligin-items: center;
-  align-content: center;
-  cursor: pointer;
-  margin-top: 10px;
+    display: flex;
+    aligin-items: center;
+    align-content: center;
+    cursor: pointer;
+    margin-top: 10px;
 }
 
 .button_input_b {
-  aligin-items: center;
-  display: flex;
-  cursor: pointer;
-  margin-top: 10px;
+    aligin-items: center;
+    display: flex;
+    cursor: pointer;
+    margin-top: 10px;
 }
 
 .box {
-  border: 1px solid $colorButton;
-  width: 18px;
-  height: 18px;
-  background-color: #E0E6F1;
+    border: 1px solid $colorButton;
+    width: 18px;
+    height: 18px;
+    background-color: #e0e6f1;
 }
 
 .box_active {
-  border: 2px solid $colorButton;
-  width: 18px;
-  height: 18px;
-  background-color: $colorButton;
-  box-shadow: 2px 5px 25px 2px rgba(112, 146, 190, 0.4);
+    border: 2px solid $colorButton;
+    width: 18px;
+    height: 18px;
+    background-color: $colorButton;
+    box-shadow: 2px 5px 25px 2px rgba(112, 146, 190, 0.4);
 }
 
 .clip {
-  border: 1px solid $colorButton;
-  width: 18px;
-  height: 18px;
-  border-radius: 100px;
-  background-color: #E0E6F1;
-  //box-shadow: 2px 2px 25px 2px rgba(180, 180, 180, 0.6);
-  //box-shadow: 2px 5px 25px 2px rgba(112, 146, 190, 0.4);
+    border: 1px solid $colorButton;
+    width: 18px;
+    height: 18px;
+    border-radius: 100px;
+    background-color: #e0e6f1;
+    //box-shadow: 2px 2px 25px 2px rgba(180, 180, 180, 0.6);
+    //box-shadow: 2px 5px 25px 2px rgba(112, 146, 190, 0.4);
 }
 
 .clip_active {
-  border: 2px solid $colorButton;
-  width: 18px;
-  height: 18px;
-  border-radius: 100px;
-  background-color: $colorButton;
-  box-shadow: 2px 5px 25px 2px rgba(112, 146, 190, 0.4);
+    border: 2px solid $colorButton;
+    width: 18px;
+    height: 18px;
+    border-radius: 100px;
+    background-color: $colorButton;
+    box-shadow: 2px 5px 25px 2px rgba(112, 146, 190, 0.4);
 }
 
 .clip_text {
-  margin-top: 2px;
-  margin-left: 10px;
-  font-size: 14px;
-  color: #E0E6F1;
+    margin-top: 2px;
+    margin-left: 10px;
+    font-size: 14px;
+    color: #e0e6f1;
 }

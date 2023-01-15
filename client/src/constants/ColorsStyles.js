@@ -1,6 +1,15 @@
+import { ColorsStyles as Colors } from "../Settings/Components/ColorsStyles";
+
 export const ColorsStyles = {
-    colorButton: '#7092BE',
-    colorTextError: '#FCB900',
-    backgroundFooter: '#021F2D',
-    colorHr: '#B3B3B3',
-}
+    colorButton: Colors.colorButton,
+    colorTextError: Colors.colorTextError,
+    backgroundFooter: Colors.backgroundFooter,
+    colorHr: Colors.backgroundFooter,
+    colorInput: Colors.colorInput,
+    background: Colors.background,
+    backgroundTwo: Colors.backgroundTwo,
+    backgroundTwoHover: Colors.backgroundTwoHover,
+    backgroundInput: Colors.backgroundInput,
+    borderInput: Colors.borderInput,
+    colorTextInput: Colors.colorTextInput,
+};

@@ -1,45 +1,49 @@
-import React, {useContext, useEffect, useState} from 'react';
-import s from './Form.module.scss';
-import {GlobalSvgSelector} from "../../assets/icons/global/GlobalSvgSelector";
+import React, { useContext, useEffect, useState } from "react";
+import s from "./Form.module.scss";
+import { GlobalSvgSelector } from "../../assets/icons/global/GlobalSvgSelector";
 import GlobalStyle from "../GlobalStyle.module.scss";
-import {usePopupForm} from "../../hooks/usePopupForm";
-import {AuthContext} from "../../context/authContext";
+import { usePopupForm } from "../../hooks/usePopupForm";
+import { AuthContext } from "../../context/authContext";
 import ClipLoader from "react-spinners/ClipLoader";
-import {ColorsStyles} from "../../constants/ColorsStyles";
-import {useHttp} from "../../hooks/http.hook";
-import {PushInfo} from "../pushInfo/PushInfo";
+import { ColorsStyles } from "../../constants/ColorsStyles";
+import { useHttp } from "../../hooks/http.hook";
+import { PushInfo } from "../pushInfo/PushInfo";
 import Scrollbars from "react-custom-scrollbars-2";
-import {httpServer} from "../../const";
-import {listField, optionLanguages} from "../../constants/OptionsTable";
-import {checkLanguageConst} from "../../hooks/translashion";
+import { httpServer } from "../../const";
+import { listField, optionLanguages } from "../../constants/OptionsTable";
+import { checkLanguageConst } from "../../hooks/translashion";
 
-
-export const FormReTranslation = ({data, option, reload, status}) => {
+export const FormReTranslation = ({ option, status }) => {
     const popupForm = usePopupForm();
     const auth = useContext(AuthContext);
-    const {request, error, clearError, loading} = useHttp();
-    const [popupError, setPopupError] = useState('');
-    const [popupOk, setPopupOk] = useState('');
-    const [value, setValue] = useState({});
+    const { request, error, clearError, loading } = useHttp();
+    const [popupError, setPopupError] = useState("");
+    const [popupOk, setPopupOk] = useState("");
+    const [value, setValue] = useState([]);
 
     useEffect(() => {
-        let field = {};
-        option?.fields?.forEach(item => {
-            field[item.value] = data ? data[item.value] : item.default;
-        });
-        setValue(field);
-    }, [option]);
+        // let field = {};
+        // option?.fields?.forEach(item => {
+        //     field[item.value] = data ? data[item.value] : item.default;
+        // });
+        setValue(auth.languages_list);
+    }, [auth.languages_list]);
 
-    const changeRoot = (data) => {
-        let new_data = {...value};
-        new_data[data.name] = data.value;
+    useEffect(() => {
+        auth.get_list_lengs();
+    }, []);
+
+    const changeRoot = (_id, data) => {
+        let new_data = [...value];
+        let index = new_data.findIndex((item) => item._id === _id);
+        new_data[index][data.name] = data.value;
         setValue(new_data);
-    }
+    };
 
     const clearErrorPopup = () => {
-        setPopupError('');
-        setPopupOk('');
-    }
+        setPopupError("");
+        setPopupOk("");
+    };
 
     useEffect(() => {
         clearErrorPopup();
@@ -48,69 +52,102 @@ export const FormReTranslation = ({data, option, reload, status}) => {
     const saveHandler = async () => {
         clearErrorPopup();
         try {
-            await request(`/api/admin_panel${option?.url}`, 'POST',
-                {data: value, _id: data?._id},
+            await request(
+                `/api/admin_panel${option?.url}`,
+                "POST",
+                { data: value },
                 {
-                    Authorization: `${auth.token}`
+                    Authorization: `${auth.token}`,
                 }
             );
-            setPopupOk(data ? 'Изменения сохранены.' : 'Добавлено.');
-            reload();
+            setPopupOk("ChangesSaved");
         } catch (e) {
-            setPopupError(data ? 'Ошибка.' : 'Заполните все поля.');
+            setPopupError("Error");
         }
-    }
-
-    const deleteHandler = async () => {
-        clearErrorPopup();
-        try {
-            await request(`/api/admin_panel${option?.delete_url}`, 'POST', {_id: data?._id}, {
-                Authorization: `${auth.token}`
-            });
-            popupForm.exitHandler()
-            popupForm.openHandler(<PushInfo translations={auth.translations} value={'Запись удалена'} />);
-            reload(0, "null");
-        } catch (e) {
-            setPopupError(data ? 'Ошибка.' : 'Ошибка.');
-        }
-    }
-
-    const sampleTranslationHandler = () => {
-
-    }
+    };
 
     return (
         <div className={s.root_popup}>
             <div className={s.popup_header}>
-                <div className={GlobalStyle.BellotaFontRegular + ' ' + s.popup_label}>
-
-                    {checkLanguageConst('Редактирование', auth.translations)}
+                <div
+                    className={
+                        GlobalStyle.BellotaFontRegular + " " + s.popup_label
+                    }
+                >
+                    {checkLanguageConst("Editing", auth.translations)}
                 </div>
-                <div className={s.button_close} onClick={() => popupForm.exitHandler()}>
-                    <GlobalSvgSelector id='close' />
+                <div
+                    className={s.button_close}
+                    onClick={() => popupForm.exitHandler()}
+                >
+                    <GlobalSvgSelector id="close" />
                 </div>
             </div>
-            <Scrollbars style={{width: '100%', height: '60vh', marginTop: 18}}>
+            <Scrollbars
+                style={{ width: "100%", height: "60vh", marginTop: 18 }}
+            >
                 <div className={s.items}>
                     {status ? (
-                    <a className={s.button_upload} href={httpServer + "/translations/sample_translation.json"} target="_blank">
-                        <div
-                            className={GlobalStyle.CustomFontRegular + s.button_upload_text}
-                            onClick={() => sampleTranslationHandler()}
+                        <a
+                            className={s.button_upload}
+                            href={
+                                httpServer +
+                                "/translations/sample_translation.json"
+                            }
+                            target="_blank"
                         >
-
-                            {checkLanguageConst('Посмотреть шаблон json файла', auth.translations)}
+                            <div
+                                className={
+                                    GlobalStyle.CustomFontRegular +
+                                    s.button_upload_text
+                                }
+                            >
+                                {checkLanguageConst(
+                                    "JsonTemplate",
+                                    auth.translations
+                                )}
+                            </div>
+                        </a>
+                    ) : null}
+                    {value?.map((item_data, index) => (
+                        <div
+                            key={index}
+                            style={{
+                                width: "100%",
+                                marginTop: 16,
+                            }}
+                        >
+                            <div
+                                className={
+                                    GlobalStyle.CustomFontRegular +
+                                    " " +
+                                    s.item_header_label
+                                }
+                            >
+                                {item_data.name}
+                            </div>
+                            {option?.fields?.map((item) => {
+                                return listField({
+                                    lang: auth.language,
+                                    translations: auth.translations,
+                                    item: item,
+                                    change: (data) =>
+                                        changeRoot(item_data._id, data),
+                                    value: value[index],
+                                    optionLanguages: auth.languages_list,
+                                });
+                            })}
                         </div>
-                    </a>
-                    ): null}
-                    {
-                        option?.fields?.map(item => {
-                            return listField({lang: auth.language, translations: auth.translations, item: item, change: changeRoot, value: value, optionLanguages: optionLanguages})
-                        })
-                    }
+                    ))}
                 </div>
             </Scrollbars>
-            <div className={GlobalStyle.CustomFontRegular + ' ' + (popupOk.length !== 0 ? s.popup_ok : s.popup_error)}>
+            <div
+                className={
+                    GlobalStyle.CustomFontRegular +
+                    " " +
+                    (popupOk.length !== 0 ? s.popup_ok : s.popup_error)
+                }
+            >
                 {checkLanguageConst(popupOk || popupError, auth.translations)}
             </div>
             <div className={s.popup_liner_button}>
@@ -120,11 +157,22 @@ export const FormReTranslation = ({data, option, reload, status}) => {
                 >
                     {loading ? (
                         <div className={s.popup_button_ok_loader}>
-                            <ClipLoader color={ColorsStyles.colorTextError} loading={true} css={s.loader} size={32} />
+                            <ClipLoader
+                                color={ColorsStyles.colorTextError}
+                                loading={true}
+                                css={s.loader}
+                                size={32}
+                            />
                         </div>
                     ) : (
-                        <div className={GlobalStyle.CustomFontRegular + ' ' + s.popup_button_ok_text}>
-                            {checkLanguageConst('Сохранить', auth.translations)}
+                        <div
+                            className={
+                                GlobalStyle.CustomFontRegular +
+                                " " +
+                                s.popup_button_ok_text
+                            }
+                        >
+                            {checkLanguageConst("Save", auth.translations)}
                         </div>
                     )}
                 </div>
@@ -132,11 +180,17 @@ export const FormReTranslation = ({data, option, reload, status}) => {
                     className={s.popup_button_exit}
                     onClick={() => popupForm.exitHandler()}
                 >
-                    <div className={GlobalStyle.CustomFontRegular + ' ' + s.popup_button_exit_text}>
-                        {checkLanguageConst('Отмена', auth.translations)}
+                    <div
+                        className={
+                            GlobalStyle.CustomFontRegular +
+                            " " +
+                            s.popup_button_exit_text
+                        }
+                    >
+                        {checkLanguageConst("Cancel", auth.translations)}
                     </div>
                 </div>
             </div>
         </div>
     );
-}
+};

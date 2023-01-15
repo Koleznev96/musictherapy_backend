@@ -1,5 +1,17 @@
+@import "../Settings/Components/ColorsStyles.scss";
 
-$colorButton: #7092be;
-$colorTextError: #FCB900;
-$backgroundFooter: #021F2D;
-$colorHr: #B3B3B3;
+$colorButton: $SettingColorButton;
+$colorTextError: $SettingColorTextError;
+$backgroundFooter: $SettingBackgroundFooter;
+$colorHr: $SettingColorHr;
+$colorInput: $SettingColorInput;
+$background: $SettingBackground;
+$backgroundTwo: $SettingBackgroundTwo;
+$backgroundTwoHover: $SettingBackgroundTwoHover;
+$backgroundInput: $SettingBackgroundInput;
+$borderInput: $SettingBorderInput;
+$colorTextInput: $SetingColorTextInput;
+$colorTextFilter: $SetingColorTextFilter;
+
+$auhtBorderInputColor: $SetingAuthBorderInputColor;
+$auhtRadiusInputColor: $SetingAuhtRadiusInputColor;
