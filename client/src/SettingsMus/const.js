@@ -1,5 +1,5 @@
 // localhost
-export const httpServer = "http://localhost:5000";
+export const httpServer = "http://localhost:8080";
 
 // prodaction
 // export const httpServer = "https://admin.musictherapy.by";

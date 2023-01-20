@@ -7,9 +7,24 @@
     box-sizing: border-box;
 }
 
+.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: (some color);
+}
+
+html {
+    // margin: 0;
+    // background: #212224;
+}
+
 body {
+    background: #212224;
+    background-image: url("./background.png");
     margin: 0;
-    background-image: url("./background.jpg");
+}
+
+.bodyV {
+    // margin: 0;
+    // background-image: url("./background.png");
 }
 
 input {

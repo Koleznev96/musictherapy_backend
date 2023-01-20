@@ -1,5 +1,5 @@
 const express = require("express");
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
 const passport = require("passport");
 const bodyParser = require("body-parser");
 const path = require("path");
@@ -11,15 +11,18 @@ const adminRoute = require("./src/api/admin");
 const uploadRoute = require("./src/api/upload");
 const logRoute = require("./src/api/log");
 const individualPlaylistRoute = require("./src/api/individualPlaylist");
+const connectToDB = require("./database/db");
 
 const keys = require("./config/keys");
 const http = require("http");
 const app = express();
 
-mongoose
-    .connect(keys.mongoURI, { useUnifiedTopology: true, useNewUrlParser: true })
-    .then(() => console.log("MongoDB connected."))
-    .catch((error) => console.log(error));
+connectToDB();
+
+// mongoose
+//     .connect(keys.mongoURI, { useUnifiedTopology: true, useNewUrlParser: true })
+//     .then(() => console.log("MongoDB connected."))
+//     .catch((error) => console.log(error));
 
 app.use(passport.initialize());
 require("./src/middleware/passport")(passport);
