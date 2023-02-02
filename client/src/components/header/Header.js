@@ -114,14 +114,22 @@ export const Header = () => {
     const translationHandler = () => {
         profileHandler();
         popupForm.openHandler(
-            <FormReTranslation option={optionTranslation} status={true} />
+            <FormReTranslation
+                fileName={"sample_translation.json"}
+                option={optionTranslation}
+                status={true}
+            />
         );
     };
 
     const translationAdminHandler = () => {
         profileHandler();
         popupForm.openHandler(
-            <FormReTranslation option={optionTranslationAdmin} status={true} />
+            <FormReTranslation
+                fileName={"sample_translation_admin.json"}
+                option={optionTranslationAdmin}
+                status={true}
+            />
         );
     };
 

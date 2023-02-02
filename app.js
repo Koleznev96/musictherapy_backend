@@ -13,7 +13,6 @@ const logRoute = require("./src/api/log");
 const individualPlaylistRoute = require("./src/api/individualPlaylist");
 const connectToDB = require("./database/db");
 
-const keys = require("./config/keys");
 const http = require("http");
 const app = express();
 

@@ -13,7 +13,7 @@ import { httpServer } from "../../const";
 import { listField, optionLanguages } from "../../constants/OptionsTable";
 import { checkLanguageConst } from "../../hooks/translashion";
 
-export const FormReTranslation = ({ option, status }) => {
+export const FormReTranslation = ({ option, status, fileName }) => {
     const popupForm = usePopupForm();
     const auth = useContext(AuthContext);
     const { request, error, clearError, loading } = useHttp();
@@ -92,7 +92,7 @@ export const FormReTranslation = ({ option, status }) => {
                             className={s.button_upload}
                             href={
                                 httpServer +
-                                "/translations/sample_translation.json"
+                                "/translations/" + fileName
                             }
                             target="_blank"
                         >
