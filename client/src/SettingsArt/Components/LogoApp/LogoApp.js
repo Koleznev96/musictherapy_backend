@@ -9,9 +9,9 @@ export const LogoApp = ({ translations }) => {
         <div className={s.logo_app}>
             <img src={logo} alt="Logo" style={s.logo} />
 
-            <div className={GlobalStyle.BellotaFontRegular + " " + s.label}>
+            {/* <div className={GlobalStyle.BellotaFontRegular + " " + s.label}>
                 {checkLanguageConst("ApplicationName", translations)}
-            </div>
+            </div> */}
         </div>
     );
 };
