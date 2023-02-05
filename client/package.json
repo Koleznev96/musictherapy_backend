@@ -35,7 +35,7 @@
         "react-youtube": "^7.13.1",
         "sass": "^1.43.3"
     },
-    "proxy": "http://localhost:8080",
+    "proxy": "https://online.artgrand.by",
     "scripts": {
         "start": "react-scripts start",
         "build": "react-scripts build",
