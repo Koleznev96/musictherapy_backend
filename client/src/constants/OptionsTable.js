@@ -1890,7 +1890,7 @@ export const optionPlaylist = {
         {
             translation: true,
             label: "Label",
-            value: "label_",
+            value: "label",
             type: "input_translation",
             filter: true,
             default: [
